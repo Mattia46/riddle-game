@@ -1,0 +1,10 @@
+{
+	"auth": {
+		"riddle9d37b344": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
+}

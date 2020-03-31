@@ -1,0 +1,20 @@
+{
+    "app": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-riddle-app-145420-authRole",
+            "UnauthRoleArn": "arn:aws:iam::673236677396:role/amplify-riddle-app-145420-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::673236677396:role/amplify-riddle-app-145420-authRole",
+            "Region": "eu-west-2",
+            "DeploymentBucketName": "amplify-riddle-app-145420-deployment",
+            "UnauthRoleName": "amplify-riddle-app-145420-unauthRole",
+            "StackName": "amplify-riddle-app-145420",
+            "StackId": "arn:aws:cloudformation:eu-west-2:673236677396:stack/amplify-riddle-app-145420/220f79d0-7357-11ea-ac31-0a5f6fd32d44",
+            "AmplifyAppId": "d29k8nyfkyiqdq"
+        },
+        "categories": {
+            "auth": {
+                "riddle9d37b344": {}
+            }
+        }
+    }
+}
