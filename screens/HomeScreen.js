@@ -8,7 +8,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
-          <Text>HomePage</Text>
+          <Text>Welcome to IndovinaLove</Text>
         </View>
       </ScrollView>
 

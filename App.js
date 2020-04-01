@@ -6,8 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { withAuthenticator } from 'aws-amplify-react-native'; // or 'aws-amplify-react-native';
-import Amplify from 'aws-amplify';
+import { withAuthenticator } from 'aws-amplify-react'; // or 'aws-amplify-react-native';
+import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
@@ -31,6 +31,7 @@ function App(props) {
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
 
+        console.log('here', Auth.user);
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
@@ -56,7 +57,7 @@ function App(props) {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator>
-            <Stack.Screen name="Room" component={BottomTabNavigator} />
+            <Stack.Screen name="Home" component={BottomTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
@@ -71,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withAuthenticator(App, { includeGreetings: true })
+export default withAuthenticator(App)
