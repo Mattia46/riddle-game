@@ -31,7 +31,7 @@ function App(props) {
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
 
-        console.log('here', Auth.user);
+        //console.log('here', Auth.user);
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,

@@ -1,0 +1,26 @@
+type Riddle @model {
+  id: ID!
+  date: AWSDate!
+  riddle: String!
+  solution: String!
+  expired: Boolean!
+}
+
+
+type Answer @model {
+  id: ID!
+  riddle: Riddle @connection
+  user: User @connection(name: "user")
+  date: AWSDate!
+  userSolution: String!
+  result: Boolean
+  attemps: Int
+}
+
+type User @model {
+  id: ID!
+  name: String!
+  avatar: String!
+  answers: [Answer] @connection(name: "user")
+}
+

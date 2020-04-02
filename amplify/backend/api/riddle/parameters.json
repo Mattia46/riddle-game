@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "riddle",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authriddle9d37b344",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

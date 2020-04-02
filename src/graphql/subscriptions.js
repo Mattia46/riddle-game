@@ -1,0 +1,180 @@
+/* eslint-disable */
+// this is an auto generated file. This will be overwritten
+
+export const onCreateRiddle = /* GraphQL */ `
+  subscription OnCreateRiddle {
+    onCreateRiddle {
+      id
+      date
+      riddle
+      solution
+      expired
+    }
+  }
+`;
+export const onUpdateRiddle = /* GraphQL */ `
+  subscription OnUpdateRiddle {
+    onUpdateRiddle {
+      id
+      date
+      riddle
+      solution
+      expired
+    }
+  }
+`;
+export const onDeleteRiddle = /* GraphQL */ `
+  subscription OnDeleteRiddle {
+    onDeleteRiddle {
+      id
+      date
+      riddle
+      solution
+      expired
+    }
+  }
+`;
+export const onCreateAnswer = /* GraphQL */ `
+  subscription OnCreateAnswer {
+    onCreateAnswer {
+      id
+      riddle {
+        id
+        date
+        riddle
+        solution
+        expired
+      }
+      user {
+        id
+        name
+        avatar
+        answers {
+          nextToken
+        }
+      }
+      date
+      userSolution
+      result
+      attemps
+    }
+  }
+`;
+export const onUpdateAnswer = /* GraphQL */ `
+  subscription OnUpdateAnswer {
+    onUpdateAnswer {
+      id
+      riddle {
+        id
+        date
+        riddle
+        solution
+        expired
+      }
+      user {
+        id
+        name
+        avatar
+        answers {
+          nextToken
+        }
+      }
+      date
+      userSolution
+      result
+      attemps
+    }
+  }
+`;
+export const onDeleteAnswer = /* GraphQL */ `
+  subscription OnDeleteAnswer {
+    onDeleteAnswer {
+      id
+      riddle {
+        id
+        date
+        riddle
+        solution
+        expired
+      }
+      user {
+        id
+        name
+        avatar
+        answers {
+          nextToken
+        }
+      }
+      date
+      userSolution
+      result
+      attemps
+    }
+  }
+`;
+export const onCreateUser2 = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
+      id
+      name
+      avatar
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
+      id
+      name
+      avatar
+      answers {
+        items {
+          id
+          date
+          userSolution
+          result
+          attemps
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
+      id
+      name
+      avatar
+      answers {
+        items {
+          id
+          date
+          userSolution
+          result
+          attemps
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
+      id
+      name
+      avatar
+      answers {
+        items {
+          id
+          date
+          userSolution
+          result
+          attemps
+        }
+        nextToken
+      }
+    }
+  }
+`;

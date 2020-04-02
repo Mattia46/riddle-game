@@ -1,19 +1,42 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
+import { Connect } from "aws-amplify-react";
+import { listUsers } from '../src/graphql/queries';
+import { onCreateUser } from '../src/graphql/subscriptions';
+import { API, graphqlOperation } from 'aws-amplify';
 
 export default function HomeScreen() {
+  const ListView = ({ users }) => (
+    <View>
+        {users.map(user => <Text key={user.id}>{user.name} ({user.id})</Text>)}
+    </View>
+  );
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
           <Text>Welcome to IndovinaLove</Text>
         </View>
-      </ScrollView>
 
+      <Connect
+        query={graphqlOperation(listUsers)}
+        subscription={graphqlOperation(onCreateUser)}
+        onSubscriptionMsg={(prev, { onCreateUser }) => {
+          prev.listUsers.items.push(onCreateUser);
+          return prev;
+        }}
+      >
+        {({ data: { listUsers }, loading, error }) => {
+          if (error) return (<h3>Error</h3>);
+          if (loading || !listUsers) return (<h3>Loading...</h3>);
+          return (<ListView users={listUsers ? listUsers.items : []} />);
+        }}
+      </Connect>
+      </ScrollView>
       <View style={styles.tabBarInfoContainer}>
-          <Text>Footer</Text>
+        <Text>Footer</Text>
       </View>
     </View>
   );
