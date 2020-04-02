@@ -39,7 +39,7 @@ function Rank ({usersAnswers}) {
       <View style={{display: "flex", flexDirection: "row"}}>
         {
           usersCorrect.map((user, index) => (
-            <Avatar key={index} rounded size={70} source={{uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }} />
+            <Avatar key={index} containerStyle={{padding: 3, backgroundColor: "#7CFC00"}} rounded size={70} source={{uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }} />
           ))
         }
       </View>
@@ -48,7 +48,7 @@ function Rank ({usersAnswers}) {
         {
           usersWrong.map((user, index) => (
             <View key={index} style={{ display: "flex", flexDirection: "row"}}>
-              <Avatar label="cD" size={70} rounded source={{uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }} />
+              <Avatar containerStyle={{padding: 3, backgroundColor: "#FF0000"}} size={70} rounded source={{uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }} />
               <Text>ciao Bella soluzione del cavolo</Text>
             </View>
           ))
