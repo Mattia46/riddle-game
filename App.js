@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, Text, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { listUsers } from './src/graphql/queries';
+import { API, graphqlOperation } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react-native'; // or 'aws-amplify-react-native';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
@@ -19,6 +21,7 @@ const Stack = createStackNavigator();
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
+  const [existingUser, setExistingUser] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
 
@@ -31,7 +34,6 @@ function App(props) {
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
 
-        //console.log('here', Auth.user);
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
@@ -45,12 +47,20 @@ function App(props) {
         SplashScreen.hide();
       }
     }
-
+    async function getUser() {
+      const users = await API.graphql(graphqlOperation(listUsers));
+      const currentUser = users.data.listUsers.items.find(user => user.name == Auth.user.username)
+      await setExistingUser(currentUser);
+    }
+    getUser()
     loadResourcesAndDataAsync();
   }, []);
+  console.log('>>>>>>>>. Exi', existingUser);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
+  } else if (!existingUser) {
+    return <View><Text>Please upload picture</Text></View>
   } else {
     return (
       <View style={styles.container}>
@@ -72,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withAuthenticator(App)
+export default withAuthenticator(App, { includeGreetings: true})

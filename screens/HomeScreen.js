@@ -6,35 +6,29 @@ import { Connect } from "aws-amplify-react-native";
 import { listUsers } from '../src/graphql/queries';
 import { onCreateUser } from '../src/graphql/subscriptions';
 import { API, graphqlOperation } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 
 export default function HomeScreen() {
-  const ListView = ({ users }) => (
-    <View>
-        {users.map(user => <Text key={user.id}>{user.name} ({user.id})</Text>)}
-    </View>
-  );
+  const [user, setUser] = useState({});
+  //useEffect(() => {
+    //const getUser = async () => {
+      //console.log('user');
+      //const users = await API.graphql(graphqlOperation(listUsers));
+      //console.log('user', users, Auth.user.username);
+      //const currentUser = users.data.listUsers.items.find(user => user.name == Auth.user.username)
+      //console.log('user', currentUser);
+
+      //return 'cia';
+    //}
+    //getUser()
+  //}, []);
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
           <Text>Welcome to IndovinaLove</Text>
         </View>
-
-      <Connect
-        query={graphqlOperation(listUsers)}
-        subscription={graphqlOperation(onCreateUser)}
-        onSubscriptionMsg={(prev, { onCreateUser }) => {
-          prev.listUsers.items.push(onCreateUser);
-          return prev;
-        }}
-      >
-        {({ data: { listUsers }, loading, error }) => {
-          if (error) return (<Text>Error</Text>);
-          if (loading || !listUsers) return (<Text>Loading...</Text>);
-          return (<ListView users={listUsers ? listUsers.items : []} />);
-        }}
-      </Connect>
-      </ScrollView>
+        </ScrollView>
       <View style={styles.tabBarInfoContainer}>
         <Text>Footer</Text>
       </View>
