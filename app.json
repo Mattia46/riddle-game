@@ -3,7 +3,7 @@
     "name": "indovinaLove",
     "slug": "IndovinaLove",
     "privacy": "public",
-    "owner": "Mattia Assogna",
+    "owner": "mattia46",
     "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
@@ -27,6 +27,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": ""
   }
 }
