@@ -6,26 +6,14 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listTodayAnswers, listUsersAnswers } from '../src/graphql/queries';
 import { Avatar } from "react-native-elements";
+import { ListItem } from 'react-native-elements'
 
-const today = new Date().toISOString().split('T')[0]
-
-function RankItem ({user}) {
-  return (
-    <View>
-      <View>
-        <Avatar alt={user.name} icon="https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" />
-      </View>
-      <Text> {user.name} </Text>
-      <Text> {user.avatar} </Text>
-      <Text> {user.answer} </Text>
-    </View>
-  );
-}
 function Rank ({usersAnswers}) {
   const normaliseList = usersAnswers.map(user => ({
     answer: user.answers?.items[0]?.result || false,
     name: user.name,
     avatar: user.avatar,
+    solution: user.answers?.items[0]?.userSolution || '',
     id: user.id
   })).sort((x, y) => y.answer - x.answer);
 
@@ -33,27 +21,30 @@ function Rank ({usersAnswers}) {
   const usersWrong = normaliseList.filter(item => item.answer !== true);
 
   return (
-    <View>
-      <Text> Classifica: </Text>
-      <Text> Correct </Text>
-      <View style={{display: "flex", flexDirection: "row"}}>
-        {
-          usersCorrect.map((user, index) => (
-            <Avatar key={index} containerStyle={{padding: 3, backgroundColor: "#7CFC00"}} rounded size={70} source={{uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }} />
-          ))
-        }
+    <View style={styles.container}>
+      <View style={styles.winner}>
+        { usersCorrect.map((user, index) => (
+          <Avatar key={index}
+            containerStyle={{padding: 3, backgroundColor: "#7CFC00", marginRight: 15,}}
+            rounded size={60}
+            source={{
+              uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
+            }}
+          />
+        )) }
       </View>
-      <Text style={{marginTop: 30, marginBottom: 20}}> Loosers </Text>
-      <View style={{display: "flex"}}>
-        {
-          usersWrong.map((user, index) => (
-            <View key={index} style={{ display: "flex", flexDirection: "row"}}>
-              <Avatar containerStyle={{padding: 3, backgroundColor: "#FF0000"}} size={70} rounded source={{uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }} />
-              <Text>ciao Bella soluzione del cavolo</Text>
-            </View>
-          ))
-        }
-      </View>
+          { usersWrong.map((user, index) => (
+            <ListItem
+              key={index}
+              leftAvatar={{
+                containerStyle: {marginLeft: 10, padding: 3, backgroundColor: "#FF0000"},
+                size: 50,
+                source: { uri: "https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }
+              }}
+              title={user.solution}
+              bottomDivider
+            />
+          ))}
     </View>
   )
 };
@@ -63,18 +54,27 @@ function TodayRank ({riddle}) {
 
   return (
     <View>
-      <Connect
-        query={graphqlOperation(listUsersAnswers, {filterAnswer: { date: { eq: today }}})}
-      >
+      <Connect query={graphqlOperation(listUsersAnswers,
+        {filterAnswer: { date: { eq: today }}}
+      )} >
         {({ data: { listUsers }, loading, error }) => {
           if (error) return (<Text>Error</Text>);
           if (loading || !listUsers) return (<Text>Loading...</Text>);
-          console.log('LIST', listUsers);
           return <Rank usersAnswers={listUsers ? listUsers.items : []}/>
         }}
       </Connect>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  winner: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    marginLeft: 15,
+    padding: 10,
+    flexDirection: 'row',
+  },
+});
 
 export { TodayRank };

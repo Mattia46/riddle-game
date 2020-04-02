@@ -13,8 +13,12 @@ function Riddle({ riddle }) {
   if(riddle.expired) {
     return (
       <View>
-        <Text> Solution: {riddle.solution} </Text>
-        <Text>---------------</Text>
+        <View style={styles.solution}>
+          <Text> Solution: {riddle.riddle} </Text>
+        </View>
+        <View style={styles.solution}>
+          <Text> Solution: {riddle.solution} </Text>
+        </View>
         <TodayRank />
       </View>
     );
@@ -34,28 +38,23 @@ export default function RoomScreen() {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Text>Room page</Text>
-
-          <Connect
-            query={graphqlOperation(listRiddles, {filter: { date: { eq: today }}})}
-            subscription={graphqlOperation(onUpdateRiddle)}
-            onSubscriptionMsg={(prev, { onUpdateRiddle }) => {
-              console.log('onsdf', onUpdateRiddle, prev);
-              return {listRiddles: {items: [onUpdateRiddle]}};
-            }}
-          >
-            {({ data: { listRiddles }, loading, error }) => {
-              if (error) return (<Text>Error</Text>);
-              if (loading || !listRiddles) return (<Text>Loading...</Text>);
-              return listRiddles.items && listRiddles.items.length > 0
-                ? <Riddle riddle={listRiddles.items[0]} />
-                : <Text> Next riddle at 10:00</Text>
-            }}
-          </Connect>
-        </View>
+      <Connect
+        query={graphqlOperation(listRiddles, {filter: { date: { eq: today }}})}
+        subscription={graphqlOperation(onUpdateRiddle)}
+        onSubscriptionMsg={(prev, { onUpdateRiddle }) => {
+          console.log('onsdf', onUpdateRiddle, prev);
+          return {listRiddles: {items: [onUpdateRiddle]}};
+        }}
+      >
+        {({ data: { listRiddles }, loading, error }) => {
+          if (error) return (<Text>Error</Text>);
+          if (loading || !listRiddles) return (<Text>Loading...</Text>);
+          return listRiddles.items && listRiddles.items.length > 0
+            ? <Riddle riddle={listRiddles.items[0]} />
+            : <Text> Next riddle at 10:00</Text>
+        }}
+      </Connect>
       </ScrollView>
-
     </View>
   );
 }
@@ -63,34 +62,14 @@ export default function RoomScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    alignSelf: 'stretch',
+    //padding: 5,
   },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
+  solution: {
+    margin: 8,
+    borderRadius: 24,
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
+    justifyContent: 'space-around',
+    padding: 20,
   },
 });
