@@ -23,5 +23,11 @@
 				}
 			}
 		}
+	},
+	"storage": {
+		"S3riddle": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }

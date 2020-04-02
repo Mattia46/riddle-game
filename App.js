@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StatusBar, Text, StyleSheet, View } from 'react-native';
+import { Platform, Button, Image, Input, StatusBar, Text, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { listUsers } from './src/graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react-native'; // or 'aws-amplify-react-native';
+import { Storage } from 'aws-amplify';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
@@ -17,6 +18,30 @@ import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
 const Stack = createStackNavigator();
+
+function AddAvatar() {
+  const [avatar, setAvatar] = React.useState();
+  const handleChange = e => {
+    const file = e.target.file[0]
+    setAvatar({
+      fileUrl: URL.createObjectURL(file),
+      file,
+      filename: file.name
+    });
+  }
+  const saveFile = () => {
+    Storage.put(avatar.filename, avatar.file)
+      .then(() => {
+        console.log('success saved picture');
+      })
+      .catch(err => console.log('ERR', err))
+  }
+  return (
+    <View>
+      <Text>UploadIMAGE</Text>
+    </View>
+  )
+};
 
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -60,7 +85,10 @@ function App(props) {
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
   } else if (!existingUser) {
-    return <View><Text>Please upload picture</Text></View>
+    return <View>
+      <Text>Please upload picture</Text>
+      <AddAvatar />
+    </View>
   } else {
     return (
       <View style={styles.container}>

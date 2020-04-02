@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
 import { Connect } from "aws-amplify-react-native";
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';
 import { onCreateUser, onUpdateRiddle } from '../src/graphql/subscriptions';
 import { TodayRank } from '../components/Rank';
+import { InputRiddle } from '../components/InputRiddle';
 
 
 function Riddle({ riddle }) {
@@ -24,13 +24,8 @@ function Riddle({ riddle }) {
     );
   }
 
-  return (
-    <View>
-      <Text> ID: {riddle.id}</Text>
-      <Text>Today: {riddle.date}</Text>
-      <Text>Riddle: {riddle.riddle}</Text>
-    </View>
-  )};
+  return <InputRiddle riddle={riddle} />;
+};
 
 export default function RoomScreen() {
   const today = new Date().toISOString().split('T')[0]
