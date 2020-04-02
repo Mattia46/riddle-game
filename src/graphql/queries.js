@@ -56,6 +56,25 @@ export const getAnswer = /* GraphQL */ `
     }
   }
 `;
+export const listTodayAnswers = /* GraphQL */ `
+  query ListAnswers(
+    $filter: ModelAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAnswers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        user {
+          name
+          avatar
+        }
+        userSolution
+        result
+      }
+      nextToken
+    }
+  }
+`;
 export const listAnswers = /* GraphQL */ `
   query ListAnswers(
     $filter: ModelAnswerFilterInput
@@ -103,6 +122,25 @@ export const getUser = /* GraphQL */ `
         nextToken
       }
     }
+  }
+`;
+export const listUsersAnswers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+    $filterAnswer: ModelAnswerFilterInput
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        avatar
+        answers(filter: $filterAnswer) { items {
+          userSolution result
+        } }
+        }
+      }
   }
 `;
 export const listUsers = /* GraphQL */ `

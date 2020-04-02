@@ -6,22 +6,29 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';
 import { onCreateUser, onUpdateRiddle } from '../src/graphql/subscriptions';
+import { TodayRank } from '../components/Rank';
 
 
-
-export default function RoomScreen() {
-  const Riddle = ({ riddle }) => {
-    console.log('jere');
-    if(riddle.expired) {
-      return <Text> Solution: {riddle.solution} </Text>
-    }
+function Riddle({ riddle }) {
+  if(riddle.expired) {
     return (
       <View>
-        <Text><strong> ID:</strong> {riddle.id}</Text>
-        <Text><strong>Today: </strong>{riddle.date}</Text>
-        <Text><strong>Riddle: </strong>{riddle.riddle}</Text>
+        <Text> Solution: {riddle.solution} </Text>
+        <Text>---------------</Text>
+        <TodayRank />
       </View>
-    )};
+    );
+  }
+
+  return (
+    <View>
+      <Text><strong> ID:</strong> {riddle.id}</Text>
+      <Text><strong>Today: </strong>{riddle.date}</Text>
+      <Text><strong>Riddle: </strong>{riddle.riddle}</Text>
+    </View>
+  )};
+
+export default function RoomScreen() {
   const today = new Date().toISOString().split('T')[0]
 
   return (
@@ -31,23 +38,20 @@ export default function RoomScreen() {
           <Text>Room page</Text>
 
           <Connect
-            //query={graphqlOperation(listRiddles, {filter: { date: { eq: "2019-04-23" }}})}
             query={graphqlOperation(listRiddles, {filter: { date: { eq: today }}})}
             subscription={graphqlOperation(onUpdateRiddle)}
             onSubscriptionMsg={(prev, { onUpdateRiddle }) => {
-              return onUpdateRiddle;
+              return {listRiddles: {items: [onUpdateRiddle]}};
             }}
           >
             {({ data: { listRiddles }, loading, error }) => {
               if (error) return (<h3>Error</h3>);
               if (loading || !listRiddles) return (<h3>Loading...</h3>);
-              console.log('listRiddles', listRiddles);
               return listRiddles.items && listRiddles.items.length > 0
                 ? <Riddle riddle={listRiddles.items[0]} />
                 : <Text> Next riddle at 10:00</Text>
             }}
           </Connect>
-          <Text>---------------</Text>
         </View>
       </ScrollView>
 
