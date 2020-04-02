@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import { Connect } from "aws-amplify-react";
+import { Connect } from "aws-amplify-react-native";
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';
@@ -22,9 +22,9 @@ function Riddle({ riddle }) {
 
   return (
     <View>
-      <Text><strong> ID:</strong> {riddle.id}</Text>
-      <Text><strong>Today: </strong>{riddle.date}</Text>
-      <Text><strong>Riddle: </strong>{riddle.riddle}</Text>
+      <Text> ID: {riddle.id}</Text>
+      <Text>Today: {riddle.date}</Text>
+      <Text>Riddle: {riddle.riddle}</Text>
     </View>
   )};
 
@@ -41,12 +41,13 @@ export default function RoomScreen() {
             query={graphqlOperation(listRiddles, {filter: { date: { eq: today }}})}
             subscription={graphqlOperation(onUpdateRiddle)}
             onSubscriptionMsg={(prev, { onUpdateRiddle }) => {
+              console.log('onsdf', onUpdateRiddle, prev);
               return {listRiddles: {items: [onUpdateRiddle]}};
             }}
           >
             {({ data: { listRiddles }, loading, error }) => {
-              if (error) return (<h3>Error</h3>);
-              if (loading || !listRiddles) return (<h3>Loading...</h3>);
+              if (error) return (<Text>Error</Text>);
+              if (loading || !listRiddles) return (<Text>Loading...</Text>);
               return listRiddles.items && listRiddles.items.length > 0
                 ? <Riddle riddle={listRiddles.items[0]} />
                 : <Text> Next riddle at 10:00</Text>
@@ -55,9 +56,6 @@ export default function RoomScreen() {
         </View>
       </ScrollView>
 
-      <View style={styles.tabBarInfoContainer}>
-        <Text>Footer</Text>
-      </View>
     </View>
   );
 }

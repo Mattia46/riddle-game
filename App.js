@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { withAuthenticator } from 'aws-amplify-react'; // or 'aws-amplify-react-native';
+import { withAuthenticator } from 'aws-amplify-react-native'; // or 'aws-amplify-react-native';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);

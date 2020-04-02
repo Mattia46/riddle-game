@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
-import { Connect } from "aws-amplify-react";
+import { Connect } from "aws-amplify-react-native";
 import { listUsers } from '../src/graphql/queries';
 import { onCreateUser } from '../src/graphql/subscriptions';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -29,8 +29,8 @@ export default function HomeScreen() {
         }}
       >
         {({ data: { listUsers }, loading, error }) => {
-          if (error) return (<h3>Error</h3>);
-          if (loading || !listUsers) return (<h3>Loading...</h3>);
+          if (error) return (<Text>Error</Text>);
+          if (loading || !listUsers) return (<Text>Loading...</Text>);
           return (<ListView users={listUsers ? listUsers.items : []} />);
         }}
       </Connect>
