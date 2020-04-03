@@ -80,7 +80,6 @@ function App(props) {
     getUser()
     loadResourcesAndDataAsync();
   }, []);
-  console.log('>>>>>>>>. Exi', existingUser);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;

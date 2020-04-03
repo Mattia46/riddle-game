@@ -6,30 +6,10 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';
 import { onCreateUser, onUpdateRiddle, onCreateRiddle } from '../src/graphql/subscriptions';
 import { TodayRank } from '../components/Rank';
-import { InputRiddle } from '../components/InputRiddle';
-
-
-function Riddle({ riddle }) {
-  if(riddle.expired) {
-    return (
-      <View>
-        <View style={styles.solution}>
-          <Text> Solution: {riddle.riddle} </Text>
-        </View>
-        <View style={styles.solution}>
-          <Text> Solution: {riddle.solution} </Text>
-        </View>
-        <TodayRank />
-      </View>
-    );
-  }
-
-  return <InputRiddle riddle={riddle} />;
-};
+import { Riddle } from '../components/Riddle';
 
 export default function RoomScreen() {
   const today = new Date().toISOString().split('T')[0]
-  console.log('tar', today);
 
   return (
     <View style={styles.container}>
@@ -69,7 +49,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'stretch',
-    //padding: 5,
   },
   solution: {
     margin: 8,

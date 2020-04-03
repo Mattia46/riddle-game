@@ -27,6 +27,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={RoomScreen}
         options={{
           title: 'Room',
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="logo-game-controller-b" />,
         }}
       />

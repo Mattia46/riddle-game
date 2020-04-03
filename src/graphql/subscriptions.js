@@ -112,15 +112,6 @@ export const onDeleteAnswer = /* GraphQL */ `
     }
   }
 `;
-export const onCreateUser2 = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
-      id
-      name
-      avatar
-    }
-  }
-`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
