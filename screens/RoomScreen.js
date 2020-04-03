@@ -4,7 +4,7 @@ import { Connect } from "aws-amplify-react-native";
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';
-import { onCreateUser, onUpdateRiddle } from '../src/graphql/subscriptions';
+import { onCreateUser, onUpdateRiddle, onCreateRiddle } from '../src/graphql/subscriptions';
 import { TodayRank } from '../components/Rank';
 import { InputRiddle } from '../components/InputRiddle';
 
@@ -29,26 +29,37 @@ function Riddle({ riddle }) {
 
 export default function RoomScreen() {
   const today = new Date().toISOString().split('T')[0]
+  console.log('tar', today);
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <Connect
-        query={graphqlOperation(listRiddles, {filter: { date: { eq: today }}})}
-        subscription={graphqlOperation(onUpdateRiddle)}
-        onSubscriptionMsg={(prev, { onUpdateRiddle }) => {
-          console.log('onsdf', onUpdateRiddle, prev);
-          return {listRiddles: {items: [onUpdateRiddle]}};
-        }}
-      >
-        {({ data: { listRiddles }, loading, error }) => {
-          if (error) return (<Text>Error</Text>);
-          if (loading || !listRiddles) return (<Text>Loading...</Text>);
-          return listRiddles.items && listRiddles.items.length > 0
-            ? <Riddle riddle={listRiddles.items[0]} />
-            : <Text> Next riddle at 10:00</Text>
-        }}
-      </Connect>
+        <Connect
+          query={graphqlOperation(listRiddles, {filter: { date: { eq: today }}})}
+          onSubscriptionMsg={(prev, { onUpdateRiddle }) => {
+            console.log('onsdf', onUpdateRiddle, prev);
+            console.log('onsdf', data, prev);
+            return {listRiddles: {items: [onUpdateRiddle]}};
+          }}
+        >
+          {({ data: { listRiddles }, loading, error }) => {
+            if (error) return (<Text>Error</Text>);
+            if (loading || !listRiddles) return (<Text>Loading...</Text>);
+            return listRiddles.items && listRiddles.items.length > 0
+              ? <Riddle riddle={listRiddles.items[0]} />
+              : <Text> Next riddle at 10:00</Text>
+          }}
+        </Connect>
+
+        <Connect
+          subscription={graphqlOperation(onCreateRiddle)}
+          onSubscriptionMsg={(prev, { onCreateRiddle }) => {
+            console.log('>.', prev, onCreateRiddle);
+            return prev;
+          }}
+        >
+          {() => {}}
+        </Connect>
       </ScrollView>
     </View>
   );

@@ -6,7 +6,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
-import CircleTimer from 'react-native-circle-timer';
 
 function UserSolution({solution, setSolution, shouldRender}) {
   if(!shouldRender) return (
@@ -46,18 +45,6 @@ function InputRiddle({riddle}) {
       <View style={styles.solution}>
         <Text> {riddle.riddle} </Text>
       </View>
-      <CircleTimer
-        radius={35}
-        borderWidth={5}
-        seconds={180}
-        borderColor={'#F5F5F5'}
-        borderBackgroundColor={"#FF0000"}
-        onTimeElapsed={() => {
-          setAnswered(true);
-          alert('Time\'s up');
-        }}
-        showSecond={true}
-      />
       <UserSolution
         solution={solution}
         shouldRender={answered}
