@@ -48,19 +48,34 @@ function Rank ({usersAnswers}) {
     </View>
   )
 };
+const getUserAnswer = /* GraphQL */ `
+  query ListUserAnswer(
+    $filter: ModelAnswerFilterInput
+  ) {
+  listUsers {
+    items {
+      name avatar id
+      answers(filter: $filter){
+        items{
+          date
+          userSolution
+          result
+        }
+      }
+  	}
+  }
+}`;
 
-function TodayRank ({riddle}) {
+function TodayRank () {
   const today = new Date().toISOString().split('T')[0]
 
   return (
     <View>
-      <Connect query={graphqlOperation(listUsersAnswers,
-        {filterAnswer: { date: { eq: today }}}
-      )} >
-        {({ data: { listUsers }, loading, error }) => {
+      <Connect query={graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}})}>
+        {({data}, loading, error) => {
           if (error) return (<Text>Error</Text>);
-          if (loading || !listUsers) return (<Text>Loading...</Text>);
-          return <Rank usersAnswers={listUsers ? listUsers.items : []}/>
+          if (loading || !data.listUsers) return (<Text>Loading...</Text>);
+          return <Rank usersAnswers={data.listUsers ? data.listUsers.items : []}/>
         }}
       </Connect>
     </View>

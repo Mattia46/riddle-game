@@ -4,11 +4,12 @@ import { InputRiddle } from './InputRiddle';
 import { TodayRank } from './Rank';
 
 function Riddle({ riddle }) {
+  if(!riddle) return null;
   if(riddle.expired) {
     return (
       <View>
         <View style={styles.solution}>
-          <Text> Solution: {riddle.riddle} </Text>
+          <Text> Riddle: {riddle.riddle} </Text>
         </View>
         <View style={styles.solution}>
           <Text> Solution: {riddle.solution} </Text>

@@ -20,7 +20,7 @@ type Answer @model {
 type User @model {
   id: ID!
   name: String!
-  avatar: String!
+  avatar: String
   answers: [Answer] @connection(name: "user")
 }
 
