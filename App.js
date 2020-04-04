@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Platform, Button, Image, Input, StatusBar, Text, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { createUser } from './src/graphql/mutations';
 import { listUsers } from './src/graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react-native'; // or 'aws-amplify-react-native';
-import { Storage } from 'aws-amplify';
+
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
@@ -19,36 +20,17 @@ import useLinking from './navigation/useLinking';
 
 const Stack = createStackNavigator();
 
-function AddAvatar() {
-  const [avatar, setAvatar] = React.useState();
-  const handleChange = e => {
-    const file = e.target.file[0]
-    setAvatar({
-      fileUrl: URL.createObjectURL(file),
-      file,
-      filename: file.name
-    });
-  }
-  const saveFile = () => {
-    Storage.put(avatar.filename, avatar.file)
-      .then(() => {
-        console.log('success saved picture');
-      })
-      .catch(err => console.log('ERR', err))
-  }
-  return (
-    <View>
-      <Text>UploadIMAGE</Text>
-    </View>
-  )
+async function createNewUser(username) {
+  const { data } = await API.graphql(graphqlOperation(createUser, { input: { name: username }}));
+  return data.createUser;
 };
 
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const [existingUser, setExistingUser] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
+  const [user, setUser] = React.useState();
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -56,10 +38,7 @@ function App(props) {
       try {
         SplashScreen.preventAutoHide();
 
-        // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
-
-        // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
           'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
@@ -74,8 +53,11 @@ function App(props) {
     }
     async function getUser() {
       const users = await API.graphql(graphqlOperation(listUsers));
-      const currentUser = users.data.listUsers.items.find(user => user.name == Auth.user.username)
-      await setExistingUser(currentUser);
+      let currentUser = users.data.listUsers.items.find(user => user.name == Auth.user.username)
+      if(!currentUser) {
+        currentUser = await createNewUser(Auth.user.username);
+      }
+      setUser(currentUser);
     }
     getUser()
     loadResourcesAndDataAsync();
@@ -83,18 +65,15 @@ function App(props) {
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
-  } else if (!existingUser) {
-    return <View>
-      <Text>Please upload picture</Text>
-      <AddAvatar />
-    </View>
   } else {
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={BottomTabNavigator} />
+            <Stack.Screen name="Home">
+              {props => <BottomTabNavigator {...props} user={user}/>}
+            </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </View>

@@ -8,20 +8,9 @@ import { onCreateUser } from '../src/graphql/subscriptions';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Auth } from 'aws-amplify';
 
-export default function HomeScreen() {
-  const [user, setUser] = useState({});
-  //useEffect(() => {
-    //const getUser = async () => {
-      //console.log('user');
-      //const users = await API.graphql(graphqlOperation(listUsers));
-      //console.log('user', users, Auth.user.username);
-      //const currentUser = users.data.listUsers.items.find(user => user.name == Auth.user.username)
-      //console.log('user', currentUser);
+export default function HomeScreen({user}) {
+  console.log('proHOMEsp', user);
 
-      //return 'cia';
-    //}
-    //getUser()
-  //}, []);
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>

@@ -11,8 +11,6 @@ export default function(containerRef) {
           Home: 'home',
           Room: 'room',
           Classifica: 'classifica',
-          Links: 'links',
-          Settings: 'settings',
         },
       },
     },
