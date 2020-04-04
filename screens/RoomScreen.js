@@ -38,7 +38,7 @@ export default function RoomScreen() {
         setRiddle(tmp);
       }
     });
-    getTodayRiddle().then(riddle => setRiddle(riddle.data.listRiddles?.items[0]));
+    getTodayRiddle().then(({data}) => setRiddle(data.listRiddles?.items[0]));
 
     return () => {
       onCreateSub.unsubscribe();
