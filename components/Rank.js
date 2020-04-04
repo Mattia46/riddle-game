@@ -8,24 +8,8 @@ import { listTodayAnswers, listUsersAnswers } from '../src/graphql/queries';
 import { Avatar } from "react-native-elements";
 import { ListItem } from 'react-native-elements'
 import { Rank } from './RankList';
+import { getUserAnswer } from './shared';
 
-const getUserAnswer = /* GraphQL */ `
-  query ListUserAnswer(
-    $filter: ModelAnswerFilterInput
-  ) {
-  listUsers {
-    items {
-      name avatar id
-      answers(filter: $filter){
-        items{
-          date
-          userSolution
-          result
-        }
-      }
-    }
-  }
-}`;
 
 function TodayRank () {
   const [listUsers, setListUsers] = useState([]);
