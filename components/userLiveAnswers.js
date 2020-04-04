@@ -7,3 +7,13 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { listTodayAnswers, listUsersAnswers } from '../src/graphql/queries';
 import { Avatar } from "react-native-elements";
 import { ListItem } from 'react-native-elements'
+
+function UserListAnwsers() {
+  return (
+    <View>
+      <Text>LIVE</Text>
+    </View>
+  )
+}
+
+export { UserListAnwsers }

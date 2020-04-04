@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
+import { UserListAnwsers } from './userLiveAnswers';
 
 function UserSolution({solution, setSolution, shouldRender}) {
   if(!shouldRender) return (
@@ -56,6 +57,7 @@ function InputRiddle({riddle}) {
         onPress={handler}
         containerStyle={styles.button}
       />
+      <UserListAnwsers />
     </View>
   );
 };
