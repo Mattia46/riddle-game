@@ -26,16 +26,14 @@ export default function RoomScreen() {
 
 
   useEffect(() => {
-    const onCreateSub = onCreate.subscribe(data => {
-      const tmp = data.value.data.onCreateRiddle;
-      if(tmp.date == today) {
-        setRiddle(tmp);
+    const onCreateSub = onCreate.subscribe(({value: { data: { onCreateRiddle }}}) => {
+      if(onCreateRiddle.date == today) {
+        return setRiddle(onCreateRiddle);
       }
     });
-    const onUpdateSub = onUpdate.subscribe(data => {
-      const tmp = data.value.data.onUpdateRiddle;
-      if(tmp.date == today) {
-        setRiddle(tmp);
+    const onUpdateSub = onUpdate.subscribe(({value: { data: { onUpdateRiddle }}}) => {
+      if(onUpdateRiddle.date == today) {
+        return setRiddle(onUpdateRiddle)
       }
     });
     getTodayRiddle().then(({data}) => setRiddle(data.listRiddles?.items[0]));
