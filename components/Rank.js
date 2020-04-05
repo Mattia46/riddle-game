@@ -6,7 +6,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listTodayAnswers, listUsersAnswers } from '../src/graphql/queries';
 import { Avatar } from "react-native-elements";
-import { ListItem } from 'react-native-elements'
 import { Rank } from './RankList';
 import { getUserAnswer } from './shared';
 
