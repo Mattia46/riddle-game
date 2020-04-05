@@ -24,7 +24,7 @@ query GetUser(
   }
 }`;
 
-const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id: id, filter: { date: { eq: today}}}));
+const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id, filter: { date: { eq: today}}}));
 useEffect(() => {
   if(user && riddle) {
     checkExistingAnswer({ id: user.id}).then(({data}) => console.log('today usre', data.getUser.answers.items));

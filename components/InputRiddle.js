@@ -49,13 +49,14 @@ function InputRiddle({riddle, user}) {
   const [answer, setAnswer] = useState();
   const today = new Date().toISOString().split('T')[0]
 
-  const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id: id, filter: { date: { eq: today}}}));
+  const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id, filter: { date: { eq: today}}}));
   //const initAnswer = ({user, riddle}) => API.graphql(graphqlOperation(createAnswer, getInput({user, riddle})))
+  //
 
   useEffect(() => {
     // Added the if statement in order to call GraphAPI only when props ready
     if(user && riddle) {
-      checkExistingAnswer({ id: user.id}).then(({data}) => console.log('today usre', data.getUser.answers.items));
+      checkExistingAnswer({ id: user.id}).then(({data}) => console.log('today usre', data.getUser?.answers?.items));
       //initAnswer({user, riddle})
         //.then(({data: { createAnswer }}) => setAnswer(createAnswer));
     }

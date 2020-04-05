@@ -31,6 +31,9 @@ const onCreateAnswer = /* GraphQL */ `
   }`
 ;
 
+// How to call getTodayUserAnswers
+// API.graphql(graphqlOperation(getTodayUserAnswers, {id: id, filter: { date: { eq: today}}}));
+
 const getTodayUserAnswers = /* GraphQL */ `
 query GetUser(
   $id: ID!
