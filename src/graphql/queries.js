@@ -45,14 +45,10 @@ export const getAnswer = /* GraphQL */ `
         id
         name
         avatar
-        answersByDate {
-          nextToken
-        }
         answers {
           nextToken
         }
       }
-      userID
       date
       userSolution
       result
@@ -81,7 +77,6 @@ export const listAnswers = /* GraphQL */ `
           name
           avatar
         }
-        userID
         date
         userSolution
         result
@@ -97,21 +92,9 @@ export const getUser = /* GraphQL */ `
       id
       name
       avatar
-      answersByDate {
-        items {
-          id
-          userID
-          date
-          userSolution
-          result
-          attemps
-        }
-        nextToken
-      }
       answers {
         items {
           id
-          userID
           date
           userSolution
           result
@@ -133,9 +116,6 @@ export const listUsers = /* GraphQL */ `
         id
         name
         avatar
-        answersByDate {
-          nextToken
-        }
         answers {
           nextToken
         }
@@ -199,7 +179,6 @@ export const answerByDate = /* GraphQL */ `
           name
           avatar
         }
-        userID
         date
         userSolution
         result
@@ -230,9 +209,6 @@ export const userByName = /* GraphQL */ `
         id
         name
         avatar
-        answersByDate {
-          nextToken
-        }
         answers {
           nextToken
         }
