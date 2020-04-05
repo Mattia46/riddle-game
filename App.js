@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { createUser } from './src/graphql/mutations';
-import { listUsers } from './src/graphql/queries';
+import { userByName } from './src/graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react-native'; // or 'aws-amplify-react-native';
 
@@ -52,8 +52,8 @@ function App(props) {
       }
     }
     async function getUser() {
-      const users = await API.graphql(graphqlOperation(listUsers));
-      let currentUser = users.data.listUsers.items.find(user => user.name == Auth.user.username)
+      const {data} = await API.graphql(graphqlOperation(userByName, {name: Auth.user.username}));
+      let currentUser = data.userByName?.items[0];
       if(!currentUser) {
         currentUser = await createNewUser(Auth.user.username);
       }

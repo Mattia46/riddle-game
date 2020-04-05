@@ -124,3 +124,34 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const userByName = /* GraphQL */ `
+  query UserByName(
+    $name: String
+    $id: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userByName(
+      name: $name
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        avatar
+        answers {
+          items {
+            id
+          }
+        }
+      }
+      nextToken
+    }
+  }
+`;

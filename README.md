@@ -3,6 +3,7 @@ get AWSDate:
 ```
 new Date().toISOString().split('T')[0]
 ```
+amplify api gql-compile
 
 Retrive today riddle:
 ```

@@ -6,7 +6,6 @@ type Riddle @model {
   expired: Boolean!
 }
 
-
 type Answer @model {
   id: ID!
   riddle: Riddle @connection
@@ -17,7 +16,7 @@ type Answer @model {
   attemps: Int
 }
 
-type User @model {
+type User @model @key(name: "name", fields: ["name", "id"], queryField: "userByName") {
   id: ID!
   name: String!
   avatar: String

@@ -53,7 +53,6 @@ function InputRiddle({riddle, user}) {
 
   useEffect(() => {
     if(user && riddle) {
-      console.log('user', user.id);
       checkExistingAnswer(user.id).then(x => console.log('xxx', x));
       initAnswer({user, riddle})
         .then(({data: { createAnswer }}) => setAnswer(createAnswer));
