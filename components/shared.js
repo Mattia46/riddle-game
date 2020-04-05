@@ -31,5 +31,29 @@ const onCreateAnswer = /* GraphQL */ `
   }`
 ;
 
+// How to call getTodayUserAnswers
+// API.graphql(graphqlOperation(getTodayUserAnswers, {id: id, filter: { date: { eq: today}}}));
 
-export { getUserAnswer, onCreateAnswer };
+const getTodayUserAnswers = /* GraphQL */ `
+query GetUser(
+  $id: ID!
+  $filter: ModelAnswerFilterInput!
+) {
+  getUser(id: $id) {
+    name
+    answers(filter: $filter) {
+      items {
+        id
+        date
+        userSolution
+      }
+    }
+  }
+}`;
+
+
+export {
+  getUserAnswer,
+  onCreateAnswer,
+  getTodayUserAnswers,
+};

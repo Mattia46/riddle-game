@@ -3,6 +3,34 @@ get AWSDate:
 ```
 new Date().toISOString().split('T')[0]
 ```
+amplify api gql-compile
+
+Nested QUERY:
+```
+const getTodayUserAnswers = /* GraphQL */ `
+query GetUser(
+  $id: ID!
+  $filter: ModelAnswerFilterInput!
+) {
+  getUser(id: $id) {
+    name
+    answers(filter: $filter) {
+      items {
+        id
+        date
+        userSolution
+      }
+    }
+  }
+}`;
+
+const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id, filter: { date: { eq: today}}}));
+useEffect(() => {
+  if(user && riddle) {
+    checkExistingAnswer({ id: user.id}).then(({data}) => console.log('today usre', data.getUser.answers.items));
+  }
+}, [user, riddle])
+```
 
 Retrive today riddle:
 ```

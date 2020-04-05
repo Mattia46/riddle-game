@@ -1,4 +1,4 @@
-type Riddle @model {
+type Riddle @model @key(name: "date", fields: ["date"], queryField: "riddleByDate") {
   id: ID!
   date: AWSDate!
   riddle: String!
@@ -6,8 +6,8 @@ type Riddle @model {
   expired: Boolean!
 }
 
-
-type Answer @model {
+type Answer @model
+@key(name: "date", fields: ["date"], queryField: "answerByDate") {
   id: ID!
   riddle: Riddle @connection
   user: User @connection(name: "user")
@@ -17,7 +17,7 @@ type Answer @model {
   attemps: Int
 }
 
-type User @model {
+type User @model @key(name: "name", fields: ["name", "id"], queryField: "userByName") {
   id: ID!
   name: String!
   avatar: String

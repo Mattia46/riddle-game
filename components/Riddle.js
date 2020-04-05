@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { InputRiddle } from './InputRiddle';
 import { TodayRank } from './Rank';
 
-function Riddle({ riddle }) {
+function Riddle({ riddle, user }) {
   if(!riddle) return null;
   if(riddle.expired) {
     return (
@@ -19,7 +19,7 @@ function Riddle({ riddle }) {
     );
   }
 
-  return <InputRiddle riddle={riddle} />;
+  return <InputRiddle riddle={riddle} user={user} />;
 };
 
 const styles = StyleSheet.create({

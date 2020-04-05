@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, Image, StyleSheet, Text,View } from 'react-native';
+import { TextInput, TouchableOpacity, Image, StyleSheet, Text,View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { Connect } from "aws-amplify-react-native";
 import { ScrollView } from 'react-native-gesture-handler';
@@ -7,6 +7,20 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import { UserListAnwsers } from './userLiveAnswers';
+import { createAnswer, updateAnswer } from '../src/graphql/mutations';
+import { getUser } from '../src/graphql/queries';
+import { getTodayUserAnswers } from './shared';
+
+function getInput ({user, riddle, solution}) {
+  return ({input: {
+    date: riddle.date,
+    userSolution: solution,
+    result: false,
+    attemps: 0,
+    answerRiddleId: riddle.id,
+    answerUserId: user.id
+  }})
+}
 
 function UserSolution({solution, setSolution, shouldRender}) {
   if(!shouldRender) return (
@@ -28,17 +42,46 @@ function UserSolution({solution, setSolution, shouldRender}) {
   )
 };
 
-function InputRiddle({riddle}) {
+function InputRiddle({riddle, user}) {
   const [solution, setSolution] = useState('');
   const [answered, setAnswered] = useState(false);
-  const [buttonValue, setButtonValue] = useState('Conferma');
+  const [answer, setAnswer] = useState();
+  const today = new Date().toISOString().split('T')[0]
+
+  const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id, filter: { date: { eq: today}}}));
+  const createTodayUserAnswer = ({user, riddle, solution}) => API.graphql(graphqlOperation(createAnswer, getInput({user, riddle, solution})));
+  const updateTodayUserAnswer = ({answer, solution}) => API.graphql(graphqlOperation(updateAnswer, { input: {id: answer.id, userSolution: solution}}));
+
+  useEffect(() => {
+    if(user && riddle) {
+      checkExistingAnswer({ id: user.id}).then(({data}) => {
+        const todayAnswer = data.getUser?.answers?.items[0];
+        if(todayAnswer) {
+          setAnswer(todayAnswer);
+          setSolution(todayAnswer.userSolution);
+          setAnswered(true);
+        }
+      });
+    }
+  }, [user, riddle]);
+
+  const confirm = async () => {
+    if(!solution) return alert('Aggiungi una risposta');
+    setAnswered(true);
+    if(answer) {
+      return updateTodayUserAnswer({answer, solution});
+    }
+    createTodayUserAnswer({user, riddle, solution}).then(({data: { createAnswer }}) => setAnswer(createAnswer));
+  };
 
   const handler = () => {
-    setAnswered(!answered);
-    const value = buttonValue === 'Conferma'
-      ? 'Modifica'
-      : 'Conferma';
-    setButtonValue(value);
+    if(answered) {
+      setAnswered(false);
+      console.log('modifie');
+    } else {
+      console.log('sending');
+      confirm();
+    }
   };
 
   return (
@@ -52,7 +95,7 @@ function InputRiddle({riddle}) {
         setSolution={setSolution}
       />
       <Button
-        title={buttonValue}
+        title={answered ? 'Modifica' : 'Conferma'}
         type="outline"
         onPress={handler}
         containerStyle={styles.button}
@@ -66,7 +109,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'stretch',
-    //padding: 5,
   },
   button: {
     width: 200,
@@ -74,7 +116,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   input: {
-    //margin: 8,
     borderRadius: 24,
     justifyContent: 'space-around',
     marginTop: 50,

@@ -124,3 +124,96 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const riddleByDate = /* GraphQL */ `
+  query RiddleByDate(
+    $date: AWSDate
+    $sortDirection: ModelSortDirection
+    $filter: ModelRiddleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    riddleByDate(
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        date
+        riddle
+        solution
+        expired
+      }
+      nextToken
+    }
+  }
+`;
+export const answerByDate = /* GraphQL */ `
+  query AnswerByDate(
+    $date: AWSDate
+    $sortDirection: ModelSortDirection
+    $filter: ModelAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    answerByDate(
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        riddle {
+          id
+          date
+          riddle
+          solution
+          expired
+        }
+        user {
+          id
+          name
+          avatar
+        }
+        date
+        userSolution
+        result
+        attemps
+      }
+      nextToken
+    }
+  }
+`;
+export const userByName = /* GraphQL */ `
+  query UserByName(
+    $name: String
+    $id: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userByName(
+      name: $name
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        avatar
+        answers {
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
