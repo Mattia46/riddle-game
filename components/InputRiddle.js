@@ -7,6 +7,20 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import { UserListAnwsers } from './userLiveAnswers';
+import { createAnswer } from '../src/graphql/mutations';
+import { getUser } from '../src/graphql/queries';
+import { getTodayUserAnswer } from './shared';
+
+function getInput ({user, riddle}) {
+  return {input: {
+    date: riddle.date,
+    userSolution: user.name,
+    result: false,
+    attemps: 0,
+    answerRiddleId: riddle.id,
+    answerUserId: user.id
+  }}
+}
 
 function UserSolution({solution, setSolution, shouldRender}) {
   if(!shouldRender) return (
@@ -28,17 +42,35 @@ function UserSolution({solution, setSolution, shouldRender}) {
   )
 };
 
-function InputRiddle({riddle}) {
+function InputRiddle({riddle, user}) {
   const [solution, setSolution] = useState('');
   const [answered, setAnswered] = useState(false);
   const [buttonValue, setButtonValue] = useState('Conferma');
+  const [answer, setAnswer] = useState();
 
+  const checkExistingAnswer = id => API.graphql(graphqlOperation(getUser, {id}))
+  const initAnswer = ({user, riddle}) => API.graphql(graphqlOperation(createAnswer, getInput({user, riddle})))
+
+  useEffect(() => {
+    if(user && riddle) {
+      console.log('user', user.id);
+      checkExistingAnswer(user.id).then(x => console.log('xxx', x));
+      initAnswer({user, riddle})
+        .then(({data: { createAnswer }}) => setAnswer(createAnswer));
+    }
+  }, [user, riddle]);
+
+  const handleAnswer = async () => {
+    console.log('>>>>...', user);
+    console.log('asnwere', riddle);
+  };
   const handler = () => {
     setAnswered(!answered);
     const value = buttonValue === 'Conferma'
       ? 'Modifica'
       : 'Conferma';
     setButtonValue(value);
+    handleAnswer();
   };
 
   return (

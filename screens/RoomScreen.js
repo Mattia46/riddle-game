@@ -16,7 +16,7 @@ function NoRiddle({riddle}) {
     </View>
   );
 }
-export default function RoomScreen() {
+export default function RoomScreen({user}) {
   const today = new Date().toISOString().split('T')[0]
   const [riddle, setRiddle] = useState();
 
@@ -47,7 +47,7 @@ export default function RoomScreen() {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Riddle riddle={riddle} />
+        <Riddle riddle={riddle} user={user} />
         <NoRiddle riddle={riddle} />
       </ScrollView>
     </View>

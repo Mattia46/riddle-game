@@ -31,5 +31,18 @@ const onCreateAnswer = /* GraphQL */ `
   }`
 ;
 
+const getTodayUserAnswer = /* GraphQL */ `
+  query getTodayUserAnswer(
+    $id: ID!
+    $filter: ModelAnswerFilterInput
+  ) {
+    id
+    name
+    answers(filter: $filter})
+    {
+      items { id }
+    }
+  }
+`;
 
-export { getUserAnswer, onCreateAnswer };
+export { getUserAnswer, onCreateAnswer, getTodayUserAnswer };
