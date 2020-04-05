@@ -31,6 +31,36 @@ useEffect(() => {
   }
 }, [user, riddle])
 ```
+Per GAME UPDATE:
+mutation updateRiddle{
+  updateRiddle(input:{
+      id:"4585ceb6-e63c-460f-aeb3-97d24dc85d80"
+    	expired:false
+  }) {
+    date
+    solution
+    expired
+    riddle
+    id
+  }
+}
+
+X CLASSIFICA
+query listAns2 {
+  listUsers {
+    items {
+      name
+      answers(filter:{result:{eq: false},date: {between:["2020-04-03", "2020-04-05"]}}) {
+        items {
+          date userSolution result
+        }
+      }
+    }
+  }
+}
+
+
+
 
 Retrive today riddle:
 ```

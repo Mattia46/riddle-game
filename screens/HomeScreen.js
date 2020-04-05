@@ -12,7 +12,9 @@ export default function HomeScreen(props) {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    setUser(props.user);
+    if(props.user) {
+      return setUser(props.user);
+    };
   }, [props.user]);
 
   return (
