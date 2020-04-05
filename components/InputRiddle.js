@@ -56,7 +56,11 @@ function InputRiddle({riddle, user}) {
     if(user && riddle) {
       checkExistingAnswer({ id: user.id}).then(({data}) => {
         const todayAnswer = data.getUser?.answers?.items[0];
-        if(todayAnswer) return setAnswer(todayAnswer);
+        if(todayAnswer) {
+          setAnswer(todayAnswer);
+          setSolution(todayAnswer.userSolution);
+          setAnswered(true);
+        }
       });
     }
   }, [user, riddle]);
@@ -65,7 +69,7 @@ function InputRiddle({riddle, user}) {
     if(!solution) return alert('Aggiungi una risposta');
     setAnswered(true);
     if(answer) {
-      return updateTodayUserAnswer({answer, solution}).then(({data: { updateAnswer }}) => console.log('update answer', updateAnswer));
+      return updateTodayUserAnswer({answer, solution});
     }
     createTodayUserAnswer({user, riddle, solution}).then(({data: { createAnswer }}) => setAnswer(createAnswer));
   };
