@@ -1,4 +1,4 @@
-type Riddle @model {
+type Riddle @model @key(name: "date", fields: ["date"], queryField: "riddleByDate") {
   id: ID!
   date: AWSDate!
   riddle: String!
@@ -6,10 +6,13 @@ type Riddle @model {
   expired: Boolean!
 }
 
-type Answer @model {
+type Answer @model
+@key(name: "byUserByDate", fields: ["userID", "date"])
+@key(name: "date", fields: ["date"], queryField: "answerByDate") {
   id: ID!
   riddle: Riddle @connection
   user: User @connection(name: "user")
+  userID: ID!
   date: AWSDate!
   userSolution: String!
   result: Boolean
@@ -20,6 +23,7 @@ type User @model @key(name: "name", fields: ["name", "id"], queryField: "userByN
   id: ID!
   name: String!
   avatar: String
+  answersByDate: [Answer] @connection(keyName: "byUserByDate", fields: ["id"])
   answers: [Answer] @connection(name: "user")
 }
 

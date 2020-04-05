@@ -45,10 +45,14 @@ export const getAnswer = /* GraphQL */ `
         id
         name
         avatar
+        answersByDate {
+          nextToken
+        }
         answers {
           nextToken
         }
       }
+      userID
       date
       userSolution
       result
@@ -77,6 +81,7 @@ export const listAnswers = /* GraphQL */ `
           name
           avatar
         }
+        userID
         date
         userSolution
         result
@@ -92,9 +97,21 @@ export const getUser = /* GraphQL */ `
       id
       name
       avatar
+      answersByDate {
+        items {
+          id
+          userID
+          date
+          userSolution
+          result
+          attemps
+        }
+        nextToken
+      }
       answers {
         items {
           id
+          userID
           date
           userSolution
           result
@@ -116,9 +133,77 @@ export const listUsers = /* GraphQL */ `
         id
         name
         avatar
+        answersByDate {
+          nextToken
+        }
         answers {
           nextToken
         }
+      }
+      nextToken
+    }
+  }
+`;
+export const riddleByDate = /* GraphQL */ `
+  query RiddleByDate(
+    $date: AWSDate
+    $sortDirection: ModelSortDirection
+    $filter: ModelRiddleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    riddleByDate(
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        date
+        riddle
+        solution
+        expired
+      }
+      nextToken
+    }
+  }
+`;
+export const answerByDate = /* GraphQL */ `
+  query AnswerByDate(
+    $date: AWSDate
+    $sortDirection: ModelSortDirection
+    $filter: ModelAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    answerByDate(
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        riddle {
+          id
+          date
+          riddle
+          solution
+          expired
+        }
+        user {
+          id
+          name
+          avatar
+        }
+        userID
+        date
+        userSolution
+        result
+        attemps
       }
       nextToken
     }
@@ -145,10 +230,11 @@ export const userByName = /* GraphQL */ `
         id
         name
         avatar
+        answersByDate {
+          nextToken
+        }
         answers {
-          items {
-            id
-          }
+          nextToken
         }
       }
       nextToken

@@ -31,18 +31,26 @@ const onCreateAnswer = /* GraphQL */ `
   }`
 ;
 
-const getTodayUserAnswer = /* GraphQL */ `
-  query getTodayUserAnswer(
-    $id: ID!
-    $filter: ModelAnswerFilterInput
-  ) {
-    id
+const getTodayUserAnswers = /* GraphQL */ `
+query GetUser(
+  $id: ID!
+  $filter: ModelAnswerFilterInput!
+) {
+  getUser(id: $id) {
     name
-    answers(filter: $filter})
-    {
-      items { id }
+    answers(filter: $filter) {
+      items {
+        id
+        date
+        userSolution
+      }
     }
   }
-`;
+}`;
 
-export { getUserAnswer, onCreateAnswer, getTodayUserAnswer };
+
+export {
+  getUserAnswer,
+  onCreateAnswer,
+  getTodayUserAnswers,
+};

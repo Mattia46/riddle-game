@@ -49,10 +49,14 @@ export const onCreateAnswer = /* GraphQL */ `
         id
         name
         avatar
+        answersByDate {
+          nextToken
+        }
         answers {
           nextToken
         }
       }
+      userID
       date
       userSolution
       result
@@ -75,10 +79,14 @@ export const onUpdateAnswer = /* GraphQL */ `
         id
         name
         avatar
+        answersByDate {
+          nextToken
+        }
         answers {
           nextToken
         }
       }
+      userID
       date
       userSolution
       result
@@ -101,10 +109,14 @@ export const onDeleteAnswer = /* GraphQL */ `
         id
         name
         avatar
+        answersByDate {
+          nextToken
+        }
         answers {
           nextToken
         }
       }
+      userID
       date
       userSolution
       result
@@ -118,9 +130,21 @@ export const onCreateUser = /* GraphQL */ `
       id
       name
       avatar
+      answersByDate {
+        items {
+          id
+          userID
+          date
+          userSolution
+          result
+          attemps
+        }
+        nextToken
+      }
       answers {
         items {
           id
+          userID
           date
           userSolution
           result
@@ -137,9 +161,21 @@ export const onUpdateUser = /* GraphQL */ `
       id
       name
       avatar
+      answersByDate {
+        items {
+          id
+          userID
+          date
+          userSolution
+          result
+          attemps
+        }
+        nextToken
+      }
       answers {
         items {
           id
+          userID
           date
           userSolution
           result
@@ -156,9 +192,21 @@ export const onDeleteUser = /* GraphQL */ `
       id
       name
       avatar
+      answersByDate {
+        items {
+          id
+          userID
+          date
+          userSolution
+          result
+          attemps
+        }
+        nextToken
+      }
       answers {
         items {
           id
+          userID
           date
           userSolution
           result

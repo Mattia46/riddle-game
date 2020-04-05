@@ -9,7 +9,7 @@ import { Button } from 'react-native-elements';
 import { UserListAnwsers } from './userLiveAnswers';
 import { createAnswer } from '../src/graphql/mutations';
 import { getUser } from '../src/graphql/queries';
-import { getTodayUserAnswer } from './shared';
+import { getTodayUserAnswers } from './shared';
 
 function getInput ({user, riddle}) {
   return {input: {
@@ -47,16 +47,19 @@ function InputRiddle({riddle, user}) {
   const [answered, setAnswered] = useState(false);
   const [buttonValue, setButtonValue] = useState('Conferma');
   const [answer, setAnswer] = useState();
+  const today = new Date().toISOString().split('T')[0]
 
-  const checkExistingAnswer = id => API.graphql(graphqlOperation(getUser, {id}))
-  const initAnswer = ({user, riddle}) => API.graphql(graphqlOperation(createAnswer, getInput({user, riddle})))
+  const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id: id, filter: { date: { eq: today}}}));
+  //const initAnswer = ({user, riddle}) => API.graphql(graphqlOperation(createAnswer, getInput({user, riddle})))
 
   useEffect(() => {
+    // Added the if statement in order to call GraphAPI only when props ready
     if(user && riddle) {
-      checkExistingAnswer(user.id).then(x => console.log('xxx', x));
-      initAnswer({user, riddle})
-        .then(({data: { createAnswer }}) => setAnswer(createAnswer));
+      checkExistingAnswer({ id: user.id}).then(({data}) => console.log('today usre', data.getUser.answers.items));
+      //initAnswer({user, riddle})
+        //.then(({data: { createAnswer }}) => setAnswer(createAnswer));
     }
+    // value in square brackets are observed like onPropsUpdate
   }, [user, riddle]);
 
   const handleAnswer = async () => {
