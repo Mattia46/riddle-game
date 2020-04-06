@@ -43,12 +43,12 @@ function UserSolution({solution, setSolution, shouldRender}) {
   )
 };
 
-function ButtonContainer({answered, enabled, handler, riddle, onFinish}) {
+function ButtonContainer({shouldRender, enabled, handler, riddle, onFinish}) {
   if(!enabled || riddle.expired) return null;
   return (
     <View>
       <Button
-        title={answered ? 'Modifica' : 'Conferma'}
+        title={shouldRender ? 'Modifica' : 'Conferma'}
         type="outline"
         onPress={handler}
         containerStyle={styles.button}
@@ -60,7 +60,7 @@ function ButtonContainer({answered, enabled, handler, riddle, onFinish}) {
 
 function InputRiddle({riddle, user}) {
   const [solution, setSolution] = useState('');
-  const [answered, setAnswered] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
   const [enabled, setEnabled] = useState(true);
   const [answer, setAnswer] = useState();
   const today = new Date().toISOString().split('T')[0]
@@ -70,8 +70,9 @@ function InputRiddle({riddle, user}) {
   const updateTodayUserAnswer = ({answer, solution}) => API.graphql(graphqlOperation(updateAnswer, { input: {id: answer.id, userSolution: solution}}));
 
   const onFinish = () => {
-    setAnswered(true);
-    setEnabled(false);
+    console.log('ere');
+    //setShouldRender(true);
+    //setEnabled(false);
   };
 
   useEffect(() => {
@@ -81,7 +82,7 @@ function InputRiddle({riddle, user}) {
         if(todayAnswer) {
           setAnswer(todayAnswer);
           setSolution(todayAnswer.userSolution);
-          setAnswered(true);
+          setShouldRender(true);
         }
       });
     }
@@ -89,7 +90,7 @@ function InputRiddle({riddle, user}) {
 
   const confirm = async () => {
     if(!solution) return alert('Aggiungi una risposta');
-    setAnswered(true);
+    setShouldRender(true);
     if(answer) {
       return updateTodayUserAnswer({answer, solution});
     }
@@ -97,26 +98,22 @@ function InputRiddle({riddle, user}) {
   };
 
   const handler = () => {
-    if(answered) {
-      setAnswered(false);
-    } else {
-      confirm();
+    if(shouldRender) {
+      return setShouldRender(false);
     }
+    return confirm();
   };
 
   return (
     <View>
-      <View style={styles.solution}>
-        <Text> {riddle.riddle} </Text>
-      </View>
       <UserSolution
         solution={solution}
-        shouldRender={answered}
+        shouldRender={shouldRender}
         setSolution={setSolution}
       />
       <ButtonContainer
         riddle={riddle}
-        answered={answered}
+        shouldRender={shouldRender}
         handler={handler}
         onFinish={onFinish}
         enabled={enabled}

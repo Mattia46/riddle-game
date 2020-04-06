@@ -3,24 +3,31 @@ import { StyleSheet, Text, View } from 'react-native';
 import { InputRiddle } from './InputRiddle';
 import { TodayRank } from './Rank';
 
+function Solution({riddle}) {
+  if(!riddle.expired) return null;
+
+  return (
+    <React.Fragment>
+      <Text> Solution: {riddle.solution} </Text>
+      <TodayRank riddle={riddle}/>
+    </React.Fragment>
+  )
+};
+
 function Riddle({ riddle, user }) {
   if(!riddle) return null;
-  if(riddle.expired) {
-    return (
-      <View>
-        <View style={styles.solution}>
-          <Text> Riddle: {riddle.riddle} </Text>
-        </View>
-        <View style={styles.solution}>
-          <Text> Solution: {riddle.solution} </Text>
-        </View>
-        <TodayRank />
-      </View>
-    );
-  }
 
-  return <InputRiddle riddle={riddle} user={user} />;
-};
+  return (
+    <React.Fragment>
+      <Text> Riddle: {riddle.riddle} </Text>
+      {riddle.expired
+        ? <Solution riddle={riddle} />
+        : <InputRiddle riddle={riddle} user={user} />
+      }
+    </React.Fragment>
+  );
+}
+
 
 const styles = StyleSheet.create({
   solution: {

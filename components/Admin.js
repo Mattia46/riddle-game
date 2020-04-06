@@ -7,6 +7,7 @@ import { Avatar } from "react-native-elements";
 import { riddleByDate } from '../src/graphql/queries';
 import { getUserAnswer } from './shared';
 import { createRiddle, updateRiddle } from '../src/graphql/mutations';
+import { onCreateAnswer, onUpdateAnswer } from '../src/graphql/subscriptions';
 import { TodayRank } from './Rank';
 
 function Admin({user}) {
@@ -20,6 +21,19 @@ function Admin({user}) {
     expired: false,
     date: today,
   });
+
+  useEffect(() => {
+    const onCreateUserAnswer = API.graphql(graphqlOperation(onCreateAnswer))
+      .subscribe(({value: { data: { onCreateAnswer }}}) => console.log('onCrea', onCreateAnswer));
+
+    const onUpdateUserAnswer =API.graphql(graphqlOperation(onUpdateAnswer))
+      .subscribe(({value: { data: { onUpdateAnswer }}}) => console.log('onCrea', onUpdateAnswer));
+
+    return () => {
+      onCreateAnswer.unsubscribe();
+      onUpdateAnswer.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     API.graphql(graphqlOperation(riddleByDate, { date: today }))
@@ -76,8 +90,16 @@ function Admin({user}) {
             checked={riddle.expired}
             onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
           />
-          <Button title="Confirm" onPress={submit}>Set Expired</Button>
-          <Button title="Update Answers" onPress={() => alert(windowWidth)}>Set Expired</Button>
+          <Button
+            type="outline"
+            title="Confirm"
+            onPress={submit}
+          />
+          <Button
+            type="outline"
+            title="Update Answers"
+            onPress={() => alert(windowWidth)}
+          />
         </View>
       </React.Fragment>
       <ScrollView>
