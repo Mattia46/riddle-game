@@ -5,11 +5,11 @@ import { Connect } from "aws-amplify-react-native";
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
-import { Button } from 'react-native-elements';
 import { UserListAnwsers } from './userLiveAnswers';
 import { createAnswer, updateAnswer } from '../src/graphql/mutations';
 import { getUser } from '../src/graphql/queries';
 import { getTodayUserAnswers } from './shared';
+import { Timer } from '../components/Timer';
 
 function getInput ({user, riddle, solution}) {
   return ({input: {
@@ -42,15 +42,36 @@ function UserSolution({solution, setSolution, shouldRender}) {
   )
 };
 
+function Button({answered, enabled, handler, riddle, onFinish}) {
+  if(!enabled || !riddle.expired) return null;
+  return (
+    <View>
+      <Button
+        title={answered ? 'Modifica' : 'Conferma'}
+        type="outline"
+        onPress={handler}
+        containerStyle={styles.button}
+      />
+      <Timer riddle={riddle} onFinish={onFinish}/>
+    </View>
+  );
+};
+
 function InputRiddle({riddle, user}) {
   const [solution, setSolution] = useState('');
   const [answered, setAnswered] = useState(false);
+  const [enabled, setEnabled] = useState(true);
   const [answer, setAnswer] = useState();
   const today = new Date().toISOString().split('T')[0]
 
   const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id, filter: { date: { eq: today}}}));
   const createTodayUserAnswer = ({user, riddle, solution}) => API.graphql(graphqlOperation(createAnswer, getInput({user, riddle, solution})));
   const updateTodayUserAnswer = ({answer, solution}) => API.graphql(graphqlOperation(updateAnswer, { input: {id: answer.id, userSolution: solution}}));
+
+  const onFinish = () => {
+    setAnswered(true);
+    setEnabled(false);
+  };
 
   useEffect(() => {
     if(user && riddle) {
@@ -77,9 +98,7 @@ function InputRiddle({riddle, user}) {
   const handler = () => {
     if(answered) {
       setAnswered(false);
-      console.log('modifie');
     } else {
-      console.log('sending');
       confirm();
     }
   };
@@ -95,10 +114,11 @@ function InputRiddle({riddle, user}) {
         setSolution={setSolution}
       />
       <Button
-        title={answered ? 'Modifica' : 'Conferma'}
-        type="outline"
-        onPress={handler}
-        containerStyle={styles.button}
+        riddle={riddle}
+        answered={answered}
+        handler={handler}
+        onFinish={onFinish}
+        enabled={enabled}
       />
       <UserListAnwsers />
     </View>

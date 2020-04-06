@@ -24,7 +24,6 @@ export default function RoomScreen({user}) {
   const onUpdate = API.graphql(graphqlOperation(onUpdateRiddle))
   const getTodayRiddle = () => API.graphql(graphqlOperation(listRiddles, { filter: { date: { eq: today }}}));
 
-
   useEffect(() => {
     const onCreateSub = onCreate.subscribe(({value: { data: { onCreateRiddle }}}) => {
       if(onCreateRiddle.date == today) {
