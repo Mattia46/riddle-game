@@ -10,6 +10,7 @@ import { createAnswer, updateAnswer } from '../src/graphql/mutations';
 import { getUser } from '../src/graphql/queries';
 import { getTodayUserAnswers } from './shared';
 import { Timer } from '../components/Timer';
+import { Button } from "react-native-elements";
 
 function getInput ({user, riddle, solution}) {
   return ({input: {
@@ -42,8 +43,8 @@ function UserSolution({solution, setSolution, shouldRender}) {
   )
 };
 
-function Button({answered, enabled, handler, riddle, onFinish}) {
-  if(!enabled || !riddle.expired) return null;
+function ButtonContainer({answered, enabled, handler, riddle, onFinish}) {
+  if(!enabled || riddle.expired) return null;
   return (
     <View>
       <Button
@@ -113,7 +114,7 @@ function InputRiddle({riddle, user}) {
         shouldRender={answered}
         setSolution={setSolution}
       />
-      <Button
+      <ButtonContainer
         riddle={riddle}
         answered={answered}
         handler={handler}
@@ -126,10 +127,6 @@ function InputRiddle({riddle, user}) {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignSelf: 'stretch',
-  },
   button: {
     width: 200,
     alignSelf: 'center',
