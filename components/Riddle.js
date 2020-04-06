@@ -4,8 +4,6 @@ import { InputRiddle } from './InputRiddle';
 import { TodayRank } from './Rank';
 
 function Solution({riddle}) {
-  if(!riddle.expired) return null;
-
   return (
     <React.Fragment>
       <Text> Solution: {riddle.solution} </Text>
