@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, CheckBox } from 'react-native-elements';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
+import { Avatar } from "react-native-elements";
 import { riddleByDate } from '../src/graphql/queries';
 import { getUserAnswer } from './shared';
 import { createRiddle, updateRiddle } from '../src/graphql/mutations';
@@ -11,6 +12,7 @@ import { TodayRank } from './Rank';
 function Admin({user}) {
   if(!user || user.name !== 'mattia') return null;
 
+  const windowWidth = Dimensions.get('window').width;
   const today = new Date().toISOString().split('T')[0]
   const init = { expired: false, date: today};
   const [userAnswer, setUserAnswer] = useState([]);
@@ -27,7 +29,7 @@ function Admin({user}) {
         }
         return setRiddle(init);
       });
-   API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
+    API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
       .then(({data: { listUsers: { items }}}) => {
         const list = items.map(user => ({
           id: user.id,
@@ -40,7 +42,6 @@ function Admin({user}) {
   }, []);
 
   const submit = () => {
-    console.log('list', userAnswer);
     if(riddle.id) {
       return API.graphql(graphqlOperation(updateRiddle, { input: riddle }))
         .then(({data: { updateRiddle }}) => alert(JSON.stringify(updateRiddle)));
@@ -52,12 +53,10 @@ function Admin({user}) {
 
   return (
     <React.Fragment>
-      <View>
-        <Text>Admin</Text>
+      <React.Fragment>
         <Input
           placeholder="Domanda"
           containerStyle={styles.input}
-          multiline={true}
           underlineColorAndroid='transparent'
           blurOnSubmit={true}
           value={riddle.riddle}
@@ -66,27 +65,52 @@ function Admin({user}) {
         <Input
           placeholder="Risposta"
           containerStyle={styles.input}
-          multiline={true}
           underlineColorAndroid='transparent'
           blurOnSubmit={true}
           value={riddle.solution}
           onChangeText={e => setRiddle({...riddle, solution: e})}
         />
-        <CheckBox
-          title="Expired"
-          checked={riddle.expired}
-          onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
-        />
-        <Button title="Confirm" onPress={submit}>Set Expired</Button>
-      </View>
+        <View style={styles.confirm}>
+          <CheckBox
+            title="Expired"
+            checked={riddle.expired}
+            onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
+          />
+          <Button title="Confirm" onPress={submit}>Set Expired</Button>
+          <Button title="Update Answers" onPress={() => alert(windowWidth)}>Set Expired</Button>
+        </View>
+      </React.Fragment>
       <ScrollView>
-        <TodayRank />
+        { userAnswer.map((user, index) => (
+          <View key={index} style={{display: 'flex', flexDirection: 'row'}}>
+            <Avatar
+              rounded size={60}
+              source={{
+                uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
+              }}
+            />
+            <Text style={{width: 150, marginLeft: 5}}>{user.answer?.userSolution}</Text>
+            <CheckBox
+              containerStyle={{width: 120}}
+              title="correct"
+              checked={user.answer?.result}
+              onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
+            />
+          </View>
+        ))}
       </ScrollView>
     </React.Fragment>
   )
 }
 
 const styles = StyleSheet.create({
+  confirm: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
+  },
   button: {
     width: 200,
     alignSelf: 'center',
@@ -95,7 +119,7 @@ const styles = StyleSheet.create({
   input: {
     borderRadius: 24,
     justifyContent: 'space-around',
-    marginTop: 50,
+    marginTop: 20,
   },
 });
 
