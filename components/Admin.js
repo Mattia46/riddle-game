@@ -10,30 +10,39 @@ import { createRiddle, updateRiddle } from '../src/graphql/mutations';
 import { onCreateAnswer, onUpdateAnswer } from '../src/graphql/subscriptions';
 import { TodayRank } from './Rank';
 
+function normaliseObject(obj) {
+  const { user, id, date, userSolution, result } = obj;
+  delete user.answers;
+  return ({
+    ...user,
+    answers: { id, date, userSolution, result }
+  });
+};
+
 function Admin({user}) {
   if(!user || user.name !== 'mattia') return null;
 
   const windowWidth = Dimensions.get('window').width;
   const today = new Date().toISOString().split('T')[0]
-  const init = { expired: false, date: today};
   const [userAnswer, setUserAnswer] = useState([]);
   const [riddle, setRiddle] = useState({
     expired: false,
     date: today,
+    solution: '',
+    riddle: '',
   });
 
-  useEffect(() => {
-    const onCreateUserAnswer = API.graphql(graphqlOperation(onCreateAnswer))
-      .subscribe(({value: { data: { onCreateAnswer }}}) => console.log('onCrea', onCreateAnswer));
+  // TODO: Update the userAnswer list
+  // TODO: update user result once flagged
+  const onCreateUserAnswer = API.graphql(graphqlOperation(onCreateAnswer))
+    .subscribe(({value: { data: { onCreateAnswer }}}) => {
+      console.log('create', normaliseObject(onCreateAnswer));
+    });
 
-    const onUpdateUserAnswer =API.graphql(graphqlOperation(onUpdateAnswer))
-      .subscribe(({value: { data: { onUpdateAnswer }}}) => console.log('onCrea', onUpdateAnswer));
-
-    return () => {
-      onCreateAnswer.unsubscribe();
-      onUpdateAnswer.unsubscribe();
-    };
-  }, []);
+  const onUpdateUserAnswer =API.graphql(graphqlOperation(onUpdateAnswer))
+    .subscribe(({value: { data: { onUpdateAnswer }}}) => {
+      console.log('upda', normaliseObject(onUpdateAnswer));
+    });
 
   useEffect(() => {
     API.graphql(graphqlOperation(riddleByDate, { date: today }))
@@ -41,7 +50,6 @@ function Admin({user}) {
         if(items.length > 0) {
           return setRiddle(items[0]);
         }
-        return setRiddle(init);
       });
     API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
       .then(({data: { listUsers: { items }}}) => {
@@ -53,6 +61,10 @@ function Admin({user}) {
         }));
         setUserAnswer(list);
       });
+    return () => {
+      onCreateAnswer.unsubscribe();
+      onUpdateAnswer.unsubscribe();
+    };
   }, []);
 
   const submit = () => {
