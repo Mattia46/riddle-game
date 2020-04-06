@@ -7,6 +7,7 @@ const getUserAnswer = /* GraphQL */ `
       name avatar id
       answers(filter: $filter){
         items{
+          id
           date
           userSolution
           result
@@ -30,26 +31,6 @@ const onCreateAnswer = /* GraphQL */ `
     }
   }`
 ;
-
-const listUsersResults = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelAnswerFilterInput
-  ) {
-    listUsers {
-      items {
-        name
-        avatar
-        answers(filter: $filter) {
-          items {
-            id
-            date
-            userSolution
-          }
-        }
-      }
-    }
-  }
-`;
 
 // How to call getTodayUserAnswers
 // API.graphql(graphqlOperation(getTodayUserAnswers, {id: id, filter: { date: { eq: today}}}));
@@ -76,5 +57,4 @@ export {
   getUserAnswer,
   onCreateAnswer,
   getTodayUserAnswers,
-  listUsersResults,
 };

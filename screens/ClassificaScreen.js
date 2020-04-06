@@ -3,14 +3,14 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react
 import { API, graphqlOperation } from 'aws-amplify';
 import { Avatar } from "react-native-elements";
 import { ScrollView } from 'react-native-gesture-handler';
-import { listUsersResults } from '../components/shared';
+import { getUserAnswer } from '../components/shared';
 import { ListItem } from 'react-native-elements'
 import { Rating, AirbnbRating } from 'react-native-elements';
 
 export default function ClassificaScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
 
-  const getUserResults = () => API.graphql(graphqlOperation(listUsersResults,
+  const getUserResults = () => API.graphql(graphqlOperation(getUserAnswer,
     {filter:{result:{eq: false},date: {between:["2020-04-03", "2020-04-05"]}}}
   ));
 

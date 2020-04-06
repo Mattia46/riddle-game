@@ -5,7 +5,7 @@ function Timer({riddle, onFinish}) {
   if(!riddle || riddle.expired) return null;
   const today = new Date();
   const endTime = new Date();
-  endTime.setHours(12);
+  endTime.setHours(19);
   endTime.setMinutes(25);
   endTime.setSeconds(60);
   const difference = (endTime.getTime() - today.getTime()) / 1000;

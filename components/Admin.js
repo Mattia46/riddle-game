@@ -4,13 +4,16 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { riddleByDate } from '../src/graphql/queries';
+import { getUserAnswer } from './shared';
 import { createRiddle, updateRiddle } from '../src/graphql/mutations';
+import { TodayRank } from './Rank';
 
 function Admin({user}) {
   if(!user || user.name !== 'mattia') return null;
 
   const today = new Date().toISOString().split('T')[0]
   const init = { expired: false, date: today};
+  const [userAnswer, setUserAnswer] = useState([]);
   const [riddle, setRiddle] = useState({
     expired: false,
     date: today,
@@ -24,13 +27,25 @@ function Admin({user}) {
         }
         return setRiddle(init);
       });
+   API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
+      .then(({data: { listUsers: { items }}}) => {
+        const list = items.map(user => ({
+          id: user.id,
+          name: user.name,
+          avatar: user.avatar,
+          answer: user.answers.items[0]
+        }));
+        setUserAnswer(list);
+      });
   }, []);
 
   const submit = () => {
+    console.log('list', userAnswer);
     if(riddle.id) {
       return API.graphql(graphqlOperation(updateRiddle, { input: riddle }))
         .then(({data: { updateRiddle }}) => alert(JSON.stringify(updateRiddle)));
     }
+    if(!riddle.riddle) return alert('add riddle and solution');
     return API.graphql(graphqlOperation(createRiddle, { input: riddle }))
       .then(({data: { createRiddle }}) => alert(JSON.stringify(createRiddle)));
   };
@@ -65,6 +80,7 @@ function Admin({user}) {
         <Button title="Confirm" onPress={submit}>Set Expired</Button>
       </View>
       <ScrollView>
+        <TodayRank />
       </ScrollView>
     </React.Fragment>
   )
@@ -80,13 +96,6 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     justifyContent: 'space-around',
     marginTop: 50,
-  },
-  solution: {
-    margin: 12,
-    borderRadius: 14,
-    backgroundColor: 'rgba(52, 52, 52, 0.4)',
-    justifyContent: 'space-around',
-    padding: 20,
   },
 });
 
