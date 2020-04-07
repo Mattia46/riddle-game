@@ -22,11 +22,8 @@ export default function ClassificaScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <React.Fragment style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Text>Classifica Page</Text>
-        </View>
         { userResultsList.map((user, index) => (
           <View key={index} style={{display: 'flex', flexDirection: 'row' }}>
             <ListItem
@@ -45,7 +42,7 @@ export default function ClassificaScreen() {
           </View>
         ))}
       </ScrollView>
-    </View>
+    </React.Fragment>
   );
 }
 

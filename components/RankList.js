@@ -8,7 +8,7 @@ function Rank ({usersAnswers}) {
   const usersWrong = usersAnswers.filter(item => item.answer !== true);
 
   return (
-    <View style={styles.container}>
+    <React.Fragment>
       <View style={styles.winner}>
         { usersCorrect.map((user, index) => (
           <Avatar key={index}
@@ -32,7 +32,7 @@ function Rank ({usersAnswers}) {
           bottomDivider
         />
       ))}
-    </View>
+    </React.Fragment>
   )
 };
 

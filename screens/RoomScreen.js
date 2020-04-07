@@ -11,9 +11,9 @@ function NoRiddle({riddle}) {
   if(riddle) return null;
 
   return (
-    <View>
+    <React.Fragment>
       <Text>Next riddle at 10:00</Text>
-    </View>
+    </React.Fragment>
   );
 }
 export default function RoomScreen({user}) {
@@ -43,12 +43,10 @@ export default function RoomScreen({user}) {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Riddle riddle={riddle} user={user} />
-        <NoRiddle riddle={riddle} />
-      </ScrollView>
-    </View>
+    <React.Fragment>
+      <Riddle riddle={riddle} user={user} />
+      <NoRiddle riddle={riddle} />
+    </React.Fragment>
   );
 }
 

@@ -51,7 +51,7 @@ function InputRiddle({riddle, user}) {
   };
 
   return (
-    <View>
+    <React.Fragment>
       { showSolution
         ? <Text> {answer.userSolution} </Text>
         : <Input
@@ -68,7 +68,7 @@ function InputRiddle({riddle, user}) {
         containerStyle={styles.button}
       />
       <UserListAnwsers />
-    </View>
+    </React.Fragment>
   );
 };
 

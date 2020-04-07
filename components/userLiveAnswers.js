@@ -47,22 +47,19 @@ function UserListAnwsers() {
   }, []);
 
   return (
-    <View>
-      <Text>LIVE</Text>
-      <View style={styles.container}>
-        { listUsers.map((user, index) => (
-          <View key={index} style={styles.avatar}>
-            <Avatar key={index}
-              rounded size={40}
-              source={{
-                uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
-              }}
-            />
-            <ShowBadge user={user}/>
-          </View>
-        )) }
-      </View>
-    </View>
+    <ScrollView style={styles.avatar}>
+      { listUsers.map((user, index) => (
+        <React.Fragment key={index}>
+          <Avatar key={index}
+            rounded size={40}
+            source={{
+              uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
+            }}
+          />
+          <ShowBadge user={user}/>
+        </React.Fragment>
+      )) }
+    </ScrollView>
   )
 };
 

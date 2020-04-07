@@ -67,7 +67,7 @@ function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
+      <React.Fragment>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator>
@@ -76,7 +76,7 @@ function App(props) {
             </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
-      </View>
+      </React.Fragment>
     );
   }
 }

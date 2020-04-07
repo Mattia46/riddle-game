@@ -52,6 +52,6 @@ function getHeaderTitle(route) {
     case 'Room':
       return 'Riddle App';
     case 'Classifica':
-      return 'Riddle App';
+      return 'Ranking';
   }
 }
