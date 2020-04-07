@@ -6,7 +6,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { Avatar } from "react-native-elements";
 import { riddleByDate } from '../src/graphql/queries';
 import { getUserAnswer } from './shared';
-import { createRiddle, updateRiddle } from '../src/graphql/mutations';
+import { createRiddle, updateRiddle, updateAnswer } from '../src/graphql/mutations';
 import { onCreateAnswer, onUpdateAnswer } from '../src/graphql/subscriptions';
 import { TodayRank } from './Rank';
 
@@ -33,7 +33,6 @@ function Admin({user}) {
     riddle: '',
   });
 
-  // TODO: update user result once flagged
   useEffect(() => {
     const newArray = userAnswer.map(user => {
       return user.id === newItem.id
@@ -78,13 +77,20 @@ function Admin({user}) {
 
   const submit = () => {
     if(riddle.id) {
-      return API.graphql(graphqlOperation(updateRiddle, { input: riddle }))
-        .then(({data: { updateRiddle }}) => alert(JSON.stringify(updateRiddle)));
+      return API.graphql(graphqlOperation(updateRiddle, { input: riddle }));
     }
     if(!riddle.riddle) return alert('add riddle and solution');
-    return API.graphql(graphqlOperation(createRiddle, { input: riddle }))
-      .then(({data: { createRiddle }}) => alert(JSON.stringify(createRiddle)));
+    return API.graphql(graphqlOperation(createRiddle, { input: riddle }));
   };
+
+  const updateUserAnswer = data => {
+    const { answer } = data;
+    if(answer) {
+      API.graphql(graphqlOperation(updateAnswer,
+        { input: { id: answer.id, result: !answer.result }}
+    ));
+    }
+  }
 
   return (
     <React.Fragment>
@@ -116,11 +122,6 @@ function Admin({user}) {
             title="Confirm"
             onPress={submit}
           />
-          <Button
-            type="outline"
-            title="Update Answers"
-            onPress={() => alert(windowWidth)}
-          />
         </View>
       </React.Fragment>
       <ScrollView>
@@ -137,7 +138,7 @@ function Admin({user}) {
               containerStyle={{width: 120}}
               title="correct"
               checked={user.answer?.result}
-              onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
+              onPress={() => updateUserAnswer(user)}
             />
           </View>
         ))}
