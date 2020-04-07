@@ -66,7 +66,7 @@ function Admin({user}) {
         setNewItem(normaliseObject(onUpdateAnswer)));
     const onCreateUserAnswer = API.graphql(graphqlOperation(onCreateAnswer))
       .subscribe(({value: { data: { onCreateAnswer }}}) => {
-          setNewItem(normaliseObject(onCreateAnswer));
+        setNewItem(normaliseObject(onCreateAnswer));
       });
 
     return () => {
@@ -77,10 +77,12 @@ function Admin({user}) {
 
   const submit = () => {
     if(riddle.id) {
-      return API.graphql(graphqlOperation(updateRiddle, { input: riddle }));
+      return API.graphql(graphqlOperation(updateRiddle, { input: riddle }))
+        .then(({data: { updateRiddle }}) => setRiddle(updateRiddle));
     }
     if(!riddle.riddle) return alert('add riddle and solution');
-    return API.graphql(graphqlOperation(createRiddle, { input: riddle }));
+    return API.graphql(graphqlOperation(createRiddle, { input: riddle }))
+      .then(({data: { createRiddle }}) => setRiddle(createRiddle));
   };
 
   const updateUserAnswer = data => {
@@ -88,7 +90,7 @@ function Admin({user}) {
     if(answer) {
       API.graphql(graphqlOperation(updateAnswer,
         { input: { id: answer.id, result: !answer.result }}
-    ));
+      ));
     }
   }
 
