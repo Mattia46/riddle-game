@@ -8,7 +8,7 @@ function Rank ({usersAnswers}) {
   const usersWrong = usersAnswers.filter(item => item.answer !== true);
 
   return (
-    <React.Fragment>
+    <View style={styles.container}>
       <View style={styles.winner}>
         { usersCorrect.map((user, index) => (
           <Avatar key={index}
@@ -32,11 +32,15 @@ function Rank ({usersAnswers}) {
           bottomDivider
         />
       ))}
-    </React.Fragment>
+    </View>
   )
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor:'#4286f4',
+    flex: 1,
+  },
   winner: {
     display: 'flex',
     justifyContent: 'flex-start',

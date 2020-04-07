@@ -30,9 +30,7 @@ function TodayRank () {
   }, []);
 
   return (
-    <View>
-      <Rank usersAnswers={listUsers ? listUsers : []}/>
-    </View>
+    <Rank usersAnswers={listUsers ? listUsers : []}/>
   );
 };
 

@@ -8,7 +8,10 @@ import { getUserAnswer, onCreateAnswer } from './shared';
 function ShowBadge({user}) {
   if(!user.hasAnswered) return null;
 
-  return <Badge status="success" />
+  return <Badge
+    containerStyle={{ position: 'absolute', top: -2, right: 2 }}
+    status="success"
+  />
 }
 
 function UserListAnwsers() {
@@ -47,31 +50,35 @@ function UserListAnwsers() {
   }, []);
 
   return (
-    <ScrollView style={styles.avatar}>
+    <View style={styles.container}>
       { listUsers.map((user, index) => (
-        <React.Fragment key={index}>
+        <View key={index} style={styles.avatar}>
           <Avatar key={index}
-            rounded size={40}
+            rounded
+            containerStyle={{padding: 1, backgroundColor: "white" }}
+            activeOpacity={0.4}
+            size={30}
             source={{
               uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
             }}
           />
           <ShowBadge user={user}/>
-        </React.Fragment>
+        </View>
       )) }
-    </ScrollView>
+    </View>
   )
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    justifyContent: 'flex-start',
+    flex: 1,
     flexDirection: 'row',
+    alignItems:'flex-end',
+    padding: 20,
   },
   avatar: {
     display: 'flex',
-    flexDirection: 'row',
+    marginLeft: -5,
   },
 });
 

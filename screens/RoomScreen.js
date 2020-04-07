@@ -11,9 +11,9 @@ function NoRiddle({riddle}) {
   if(riddle) return null;
 
   return (
-    <React.Fragment>
-      <Text>Next riddle at 10:00</Text>
-    </React.Fragment>
+    <View  style={styles.noRiddle}>
+      <Text style={{fontSize: 30}}>Next riddle at 10:00</Text>
+    </View>
   );
 }
 export default function RoomScreen({user}) {
@@ -45,14 +45,15 @@ export default function RoomScreen({user}) {
   return (
     <React.Fragment>
       <Riddle riddle={riddle} user={user} />
-      <NoRiddle riddle={riddle} />
+      <NoRiddle riddle={riddle}/>
     </React.Fragment>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  noRiddle: {
     flex: 1,
-    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
