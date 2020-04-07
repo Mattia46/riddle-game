@@ -1,16 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
-import { Avatar, Badge, Icon } from "react-native-elements";
-
-function ShowBadge({user}) {
-  const status = user.answer ? 'success' : 'error';
-  console.log('s\ta\ ', status);
-
-  return <Badge
-    containerStyle={{ top: -2, right: 15 }}
-    status={status} value=""
-  />
-}
+import { Avatar, Icon } from "react-native-elements";
 
 function Rank ({usersAnswers}) {
   const usersCorrect = usersAnswers.filter(item => item.answer === true);
@@ -47,25 +37,14 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
   },
-  correct: {
-    backgroundColor: "#7CFC00",
-    padding: 3,
-    marginRight: 15,
-  },
-  wrong: {
-    backgroundColor: "red",
-    padding: 3,
-    marginRight: 15,
-  },
   container: {
-    display: 'flex',
+    borderBottomColor: '#B8B3A7',
+    borderBottomWidth: 0.4,
     justifyContent: 'flex-start',
     flexDirection: 'row',
     padding: 10,
     marginLeft: 10,
-    flex: 1,
-  },
-  winner: {
+    marginRight: 30,
   },
 });
 

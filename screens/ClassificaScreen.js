@@ -22,7 +22,7 @@ export default function ClassificaScreen() {
   }, []);
 
   return (
-    <React.Fragment style={styles.container}>
+    <React.Fragment>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         { userResultsList.map((user, index) => (
           <View key={index} style={{display: 'flex', flexDirection: 'row' }}>
@@ -53,31 +53,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
   },
 });
 

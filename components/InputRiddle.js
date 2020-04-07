@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
   solution: {
     margin: 12,
     borderRadius: 14,
-    backgroundColor: 'rgba(52, 52, 52, 0.4)',
     justifyContent: 'space-around',
     padding: 20,
   },
