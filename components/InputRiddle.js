@@ -42,7 +42,11 @@ function InputRiddle({riddle, user}) {
           attemps: 0,
           answerRiddleId: riddle.id,
           answerUserId: user.id
-        }})).then(({data: { createAnswer }}) => setAnswer(createAnswer));
+        }})).then(({data: { createAnswer }}) => {
+          delete createAnswer.riddle;
+          delete createAnswer.user;
+          setAnswer(createAnswer)
+        });
     setShowSolution(true);
   };
 

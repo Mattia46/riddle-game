@@ -15,7 +15,7 @@ function normaliseObject(obj) {
   delete user.answers;
   return ({
     ...user,
-    answers: { id, date, userSolution, result }
+    answer: { id, date, userSolution, result }
   });
 };
 
@@ -25,6 +25,7 @@ function Admin({user}) {
   const windowWidth = Dimensions.get('window').width;
   const today = new Date().toISOString().split('T')[0]
   const [userAnswer, setUserAnswer] = useState([]);
+  const [newItem, setNewItem] = useState({});
   const [riddle, setRiddle] = useState({
     expired: false,
     date: today,
@@ -32,8 +33,15 @@ function Admin({user}) {
     riddle: '',
   });
 
-  // TODO: Update the userAnswer list
   // TODO: update user result once flagged
+  useEffect(() => {
+    const newArray = userAnswer.map(user => {
+      return user.id === newItem.id
+        ? newItem
+        : user;
+    });
+    setUserAnswer(newArray);
+  }, [newItem]);
 
   useEffect(() => {
     API.graphql(graphqlOperation(riddleByDate, { date: today }))
@@ -42,6 +50,7 @@ function Admin({user}) {
           return setRiddle(items[0]);
         }
       });
+
     API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
       .then(({data: { listUsers: { items }}}) => {
         const list = items.map(user => ({
@@ -54,18 +63,16 @@ function Admin({user}) {
       });
 
     const onUpdateUserAnswer = API.graphql(graphqlOperation(onUpdateAnswer))
-      .subscribe(({value: { data: { onUpdateAnswer }}}) => {
-        console.log('upda', normaliseObject(onUpdateAnswer));
-      });
+      .subscribe(({value: { data: { onUpdateAnswer }}}) =>
+        setNewItem(normaliseObject(onUpdateAnswer)));
     const onCreateUserAnswer = API.graphql(graphqlOperation(onCreateAnswer))
       .subscribe(({value: { data: { onCreateAnswer }}}) => {
-        console.log('create', normaliseObject(onCreateAnswer));
+          setNewItem(normaliseObject(onCreateAnswer));
       });
+
     return () => {
-      console.log('update before', onUpdateAnswer);
       onUpdateAnswer.unsubscribe();
       onCreateAnswer.unsubscribe();
-      console.log('update after', onUpdateAnswer);
     };
   }, []);
 
