@@ -4,7 +4,7 @@ import { Connect } from "aws-amplify-react-native";
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';
-import { onCreateUser, onUpdateRiddle, onCreateRiddle } from '../src/graphql/subscriptions';
+import { onUpdateRiddle, onCreateRiddle } from '../src/graphql/subscriptions';
 import { Riddle } from '../components/Riddle';
 
 function NoRiddle({riddle}) {
@@ -20,22 +20,21 @@ export default function RoomScreen({user}) {
   const today = new Date().toISOString().split('T')[0]
   const [riddle, setRiddle] = useState();
 
-  const onCreate = API.graphql(graphqlOperation(onCreateRiddle))
-  const onUpdate = API.graphql(graphqlOperation(onUpdateRiddle))
-  const getTodayRiddle = () => API.graphql(graphqlOperation(listRiddles, { filter: { date: { eq: today }}}));
-
   useEffect(() => {
-    const onCreateSub = onCreate.subscribe(({value: { data: { onCreateRiddle }}}) => {
-      if(onCreateRiddle.date == today) {
-        return setRiddle(onCreateRiddle);
-      }
-    });
-    const onUpdateSub = onUpdate.subscribe(({value: { data: { onUpdateRiddle }}}) => {
-      if(onUpdateRiddle.date == today) {
-        return setRiddle(onUpdateRiddle)
-      }
-    });
-    getTodayRiddle().then(({data}) => setRiddle(data.listRiddles?.items[0]));
+    const onCreateSub = API.graphql(graphqlOperation(onCreateRiddle))
+      .subscribe(({value: { data: { onCreateRiddle }}}) => {
+        if(onCreateRiddle.date == today) {
+          return setRiddle(onCreateRiddle);
+        }
+      });
+    const onUpdateSub = API.graphql(graphqlOperation(onUpdateRiddle))
+      .subscribe(({value: { data: { onUpdateRiddle }}}) => {
+        if(onUpdateRiddle.date == today) {
+          return setRiddle(onUpdateRiddle)
+        }
+      });
+    API.graphql(graphqlOperation(listRiddles, { filter: { date: { eq: today }}}))
+      .then(({data}) => setRiddle(data.listRiddles?.items[0]));
 
     return () => {
       onCreateSub.unsubscribe();

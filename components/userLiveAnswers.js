@@ -27,24 +27,21 @@ function UserListAnwsers() {
     setListUsers(updatedList);
   };
 
-  const getListUsers = () =>
-    API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}));
-
-  const onCreate = API.graphql(graphqlOperation(onCreateAnswer)).subscribe(data =>
-    updateUser(data.value.data.onCreateAnswer.user.id));
-
-
   useEffect(() => {
-    getListUsers().then(({data}) => {
-      const normaliseList = data.listUsers?.items.map(user => ({
-        hasAnswered: user.answers?.items[0]?.userSolution ? true : false,
-        name: user.name,
-        avatar: user.avatar,
-        id: user.id
-      }));
+    const onCreate = API.graphql(graphqlOperation(onCreateAnswer))
+      .subscribe(data => updateUser(data.value.data.onCreateAnswer.user.id));
 
-      setListUsers([...normaliseList])
-    });
+    API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
+      .then(({data}) => {
+        const normaliseList = data.listUsers?.items.map(user => ({
+          hasAnswered: user.answers?.items[0]?.userSolution ? true : false,
+          name: user.name,
+          avatar: user.avatar,
+          id: user.id
+        }));
+
+        setListUsers([...normaliseList])
+      });
 
     return () => onCreate.unsubscribe();
   }, []);

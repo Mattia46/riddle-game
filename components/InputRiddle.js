@@ -19,10 +19,6 @@ function InputRiddle({riddle, user}) {
   const [showSolution, setShowSolution] = useState(false);
   const today = new Date().toISOString().split('T')[0]
 
-  const onFinish = () => {
-    console.log('ere');
-  };
-
   useEffect(() => {
     if(user && riddle) {
       API.graphql(graphqlOperation(getTodayUserAnswers, {id: user.id, filter: { date: { eq: today}}}))
@@ -34,10 +30,6 @@ function InputRiddle({riddle, user}) {
         });
     }
   }, [user, riddle]);
-
-  useEffect(() => {
-    console.log('sowh', showSolution, answer);
-  }, [showSolution])
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');

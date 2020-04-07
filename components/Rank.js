@@ -12,23 +12,21 @@ import { getUserAnswer } from './shared';
 
 function TodayRank () {
   const [listUsers, setListUsers] = useState([]);
-
   const today = new Date().toISOString().split('T')[0]
-  const getListUsers = () =>
-    API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}));
 
   useEffect(() => {
-    getListUsers().then(({data}) => {
-      const normaliseList = data.listUsers?.items.map(user => ({
-        answer: user.answers?.items[0]?.result || false,
-        name: user.name,
-        avatar: user.avatar,
-        solution: user.answers?.items[0]?.userSolution || '',
-        id: user.id
-      })).sort((x, y) => y.answer - x.answer);
+    API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
+      .then(({data}) => {
+        const normaliseList = data.listUsers?.items.map(user => ({
+          answer: user.answers?.items[0]?.result || false,
+          name: user.name,
+          avatar: user.avatar,
+          solution: user.answers?.items[0]?.userSolution || '',
+          id: user.id
+        })).sort((x, y) => y.answer - x.answer);
 
-      setListUsers(normaliseList)
-    });
+        setListUsers(normaliseList)
+      });
   }, []);
 
   return (

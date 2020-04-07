@@ -10,13 +10,11 @@ import { Rating, AirbnbRating } from 'react-native-elements';
 export default function ClassificaScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
 
-  const getUserResults = () => API.graphql(graphqlOperation(getUserAnswer,
-    {filter:{result:{eq: false},date: {between:["2020-04-03", "2020-04-05"]}}}
-  ));
 
   useEffect(() => {
-    getUserResults().then(({data: { listUsers }}) => {
-      console.log('>>>>>.', listUsers);
+    API.graphql(graphqlOperation(getUserAnswer,
+      {filter:{result:{eq: false},date: {between:["2020-04-03", "2020-04-05"]}}}
+    )).then(({data: { listUsers }}) => {
       if(listUsers && listUsers.items) {
         setUserResultsList(listUsers.items)
       }

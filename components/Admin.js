@@ -34,15 +34,6 @@ function Admin({user}) {
 
   // TODO: Update the userAnswer list
   // TODO: update user result once flagged
-  const onCreateUserAnswer = API.graphql(graphqlOperation(onCreateAnswer))
-    .subscribe(({value: { data: { onCreateAnswer }}}) => {
-      console.log('create', normaliseObject(onCreateAnswer));
-    });
-
-  const onUpdateUserAnswer =API.graphql(graphqlOperation(onUpdateAnswer))
-    .subscribe(({value: { data: { onUpdateAnswer }}}) => {
-      console.log('upda', normaliseObject(onUpdateAnswer));
-    });
 
   useEffect(() => {
     API.graphql(graphqlOperation(riddleByDate, { date: today }))
@@ -61,9 +52,20 @@ function Admin({user}) {
         }));
         setUserAnswer(list);
       });
+
+    const onUpdateUserAnswer = API.graphql(graphqlOperation(onUpdateAnswer))
+      .subscribe(({value: { data: { onUpdateAnswer }}}) => {
+        console.log('upda', normaliseObject(onUpdateAnswer));
+      });
+    const onCreateUserAnswer = API.graphql(graphqlOperation(onCreateAnswer))
+      .subscribe(({value: { data: { onCreateAnswer }}}) => {
+        console.log('create', normaliseObject(onCreateAnswer));
+      });
     return () => {
-      onCreateAnswer.unsubscribe();
+      console.log('update before', onUpdateAnswer);
       onUpdateAnswer.unsubscribe();
+      onCreateAnswer.unsubscribe();
+      console.log('update after', onUpdateAnswer);
     };
   }, []);
 
