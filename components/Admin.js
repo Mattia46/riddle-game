@@ -8,7 +8,6 @@ import { riddleByDate } from '../src/graphql/queries';
 import { getUserAnswer } from './shared';
 import { createRiddle, updateRiddle, updateAnswer } from '../src/graphql/mutations';
 import { onCreateAnswer, onUpdateAnswer } from '../src/graphql/subscriptions';
-import { TodayRank } from './Rank';
 
 function normaliseObject(obj) {
   const { user, id, date, userSolution, result } = obj;

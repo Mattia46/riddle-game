@@ -48,10 +48,10 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'Riddle App';
+      return 'IndovinaLove';
     case 'Room':
-      return 'Riddle App';
+      return 'IndovinaLove';
     case 'Classifica':
-      return 'Ranking';
+      return 'IndovinaLove';
   }
 }

@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import { Avatar, Icon } from "react-native-elements";
+import { API, graphqlOperation } from 'aws-amplify';
+import { getUserAnswer } from './shared';
 
-function Rank ({usersAnswers}) {
+function RankList () {
+  const [usersAnswers, setUsersAnswers] = useState([]);
+  const today = new Date().toISOString().split('T')[0]
+
+  useEffect(() => {
+    API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
+      .then(({data}) => {
+        const normaliseList = data.listUsers?.items.map(user => ({
+          answer: user.answers?.items[0]?.result || false,
+          name: user.name,
+          avatar: user.avatar,
+          solution: user.answers?.items[0]?.userSolution || '',
+          id: user.id
+        })).sort((x, y) => y.answer - x.answer);
+
+        setUsersAnswers(normaliseList)
+      });
+  }, []);
+
+
   const usersCorrect = usersAnswers.filter(item => item.answer === true);
   const usersWrong = usersAnswers.filter(item => item.answer !== true);
 
   return (
     <ScrollView>
+      <View style={{backgroundColor: 'white'}}>
       { usersAnswers.map((user, index) => (
         <View style={styles.container} key={index}>
           <Avatar
@@ -21,9 +43,10 @@ function Rank ({usersAnswers}) {
             size={20}
             containerStyle={[styles.icon, user.answer ? {backgroundColor: "#50F403"} : {backgroundColor: "#F42E03"}]}
           />
-          <Text>{user.solution}</Text>
+          <Text style={styles.solution}>{user.solution}</Text>
         </View>
       )) }
+        </View>
     </ScrollView>
   )
 };
@@ -45,6 +68,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 30,
   },
+  solution: {
+    flex: 1,
+    marginTop: 5,
+  },
 });
 
-export { Rank };
+export { RankList };

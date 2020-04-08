@@ -83,12 +83,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginTop: 50,
   },
-  solution: {
-    margin: 12,
-    borderRadius: 14,
-    justifyContent: 'space-around',
-    padding: 20,
-  },
 });
 
 export { InputRiddle };

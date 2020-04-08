@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { InputRiddle } from './InputRiddle';
-import { TodayRank } from './Rank';
+import { RankList } from './RankList';
 import { styles } from './sharedStyle';
 
 function Solution({riddle}) {
   return (
     <React.Fragment>
       <Text style={styles.boxSolution}> {riddle.solution} </Text>
-      <TodayRank riddle={riddle}/>
+      <RankList/>
     </React.Fragment>
   )
 };
