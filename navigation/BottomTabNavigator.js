@@ -36,6 +36,7 @@ export default function BottomTabNavigator({ navigation, route, user }) {
         component={ClassificaScreen}
         options={{
           title: 'Classifica',
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-trophy" />,
         }}
       />

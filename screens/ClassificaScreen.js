@@ -15,18 +15,24 @@ export default function ClassificaScreen() {
 
   useEffect(() => {
     API.graphql(graphqlOperation(getUserAnswer,
-      {filter:{result:{eq: false},date: {between:[initDate, endDate]}}}
+      {filter:{result:{eq: true},date: {between:[initDate, endDate]}}}
     )).then(({data: { listUsers }}) => {
-      console.log('list', listUsers);
       if(listUsers && listUsers.items) {
-        setUserResultsList(listUsers.items)
+        const newList = listUsers.items.map(x => ({
+          name: x.name,
+          avatar: x.avatar,
+          id: x.id,
+          result: x.answers.items.length
+        }))
+        const sortedList =  newList.sort((a,b) => (b.result - a.result));
+        setUserResultsList(sortedList)
       }
     });
   }, []);
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
-      <Text>Classifica del {initDate} al {endDate}</Text>
+      <Text style={styles.header}>Classifica settimanale</Text>
       { userResultsList.map((user, index) => (
         <View key={index} style={styles.container}>
           <Avatar key={index}
@@ -34,13 +40,14 @@ export default function ClassificaScreen() {
             size={50}
             source={{uri: user.avatar}}
             title={user.name}
-            containerStyle={{marginRight: 20}}
+            containerStyle={{marginRight: 50}}
           />
-          <Rating
-            readonly
-            ratingCount={5}
-            startingValue={user.answers.items.length}
-          />
+            <Rating
+              readonly
+              imageSize={25}
+              ratingCount={5}
+              startingValue={user.result}
+            />
         </View>
       ))}
     </ScrollView>
@@ -48,7 +55,14 @@ export default function ClassificaScreen() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    fontSize: 20,
+    padding: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   container: {
+    alignItems: 'center',
     borderBottomColor: '#B8B3A7',
     borderBottomWidth: 0.4,
     justifyContent: 'flex-start',
