@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, TouchableOpacity, Image, StyleSheet, Text,View } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
-import { Connect } from "aws-amplify-react-native";
-import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
 import { UserListAnwsers } from './userLiveAnswers';
 import { createAnswer, updateAnswer } from '../src/graphql/mutations';
-import { getUser } from '../src/graphql/queries';
 import { getTodayUserAnswers } from './shared';
-import { Timer } from '../components/Timer';
 import { Button } from "react-native-elements";
-
-//<Timer riddle={riddle} onFinish={onFinish}/>
 
 function InputRiddle({riddle, user}) {
   const [answer, setAnswer] = useState({});
@@ -53,9 +46,10 @@ function InputRiddle({riddle, user}) {
   return (
     <React.Fragment>
       { showSolution
-        ? <Text> {answer.userSolution} </Text>
+        ? <Text style={styles.boxSolution}> {answer.userSolution} </Text>
         : <Input
           placeholder="Inseristi la tua risposta"
+          containerStyle={styles.input}
           multiline={true}
           value={answer.userSolution}
           onChangeText={e => setAnswer({...answer, userSolution: e})}
@@ -82,6 +76,10 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     justifyContent: 'space-around',
     marginTop: 50,
+  },
+  boxSolution: {
+    backgroundColor: 'red',
+    padding: 20,
   },
 });
 

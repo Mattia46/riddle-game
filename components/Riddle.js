@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { InputRiddle } from './InputRiddle';
 import { RankList } from './RankList';
-import { styles } from './sharedStyle';
 
 function Solution({riddle}) {
   return (
@@ -17,14 +16,25 @@ function Riddle({ riddle, user }) {
   if(!riddle) return null;
 
   return (
-    <React.Fragment>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <Text style={styles.boxContainer}> {riddle.riddle} </Text>
       {riddle.expired
         ? <Solution riddle={riddle} />
         : <InputRiddle riddle={riddle} user={user} />
       }
-    </React.Fragment>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  boxContainer: {
+    padding: 20,
+    backgroundColor: 'green',
+  },
+  boxSolution: {
+    backgroundColor: 'red',
+    padding: 20,
+  },
+});
 
 export { Riddle };

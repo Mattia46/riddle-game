@@ -24,10 +24,10 @@ export default function HomeScreen(props) {
   }, [props.user]);
 
   return (
-    <React.Fragment>
+    <View style={{backgroundColor: 'white'}}>
       <Welcome user={user} />
       <Admin user={user} />
-    </React.Fragment>
+    </View>
   );
 }
 

@@ -96,7 +96,6 @@ function Admin({user}) {
   return (
     <React.Fragment>
       <ScrollView>
-        <React.Fragment>
           <Input
             placeholder="Domanda"
             containerStyle={styles.input}
@@ -126,7 +125,6 @@ function Admin({user}) {
               onPress={submit}
             />
           </View>
-        </React.Fragment>
         { userAnswer.map((user, index) => (
           <View key={index} style={styles.container}>
             <Avatar
