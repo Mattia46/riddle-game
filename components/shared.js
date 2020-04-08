@@ -2,7 +2,7 @@ const getUserAnswer = /* GraphQL */ `
   query ListUserAnswer(
     $filter: ModelAnswerFilterInput
   ) {
-  listUsers {
+  listUsers(limit: 15) {
     items {
       name avatar id
       answers(filter: $filter){

@@ -22,34 +22,34 @@ export default function ClassificaScreen() {
   }, []);
 
   return (
-    <React.Fragment>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        { userResultsList.map((user, index) => (
-          <View key={index} style={{display: 'flex', flexDirection: 'row' }}>
-            <ListItem
-              title={user.name}
-              leftAvatar={{
-                containerStyle: {marginLeft: 10, padding: 3},
-                size: 50,
-                source: { uri: "https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg" }
-              }}
-            />
-            <Rating
-              type='heart'
-              ratingCount={5}
-              startingValue={user.answers.items.length}
-            />
-          </View>
-        ))}
-      </ScrollView>
-    </React.Fragment>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      { userResultsList.map((user, index) => (
+        <View key={index} style={styles.avatar}>
+          <Avatar key={index}
+            rounded
+            size={50}
+            source={{uri: user.avatar}}
+            title={user.name}
+          />
+          <Rating
+            type='heart'
+            ratingCount={5}
+            startingValue={user.answers.items.length}
+          />
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    flexDirection: 'row',
+    padding: 20,
+  },
+  avatar: {
+    display: 'flex',
   },
   contentContainer: {
     paddingTop: 30,

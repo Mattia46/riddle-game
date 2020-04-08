@@ -131,9 +131,8 @@ function Admin({user}) {
           <View key={index} style={{display: 'flex', flexDirection: 'row'}}>
             <Avatar
               rounded size={60}
-              source={{
-                uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
-              }}
+              source={{uri: user.avatar}}
+              title={user.name}
             />
             <Text style={{width: 150, marginLeft: 5}}>{user.answer?.userSolution}</Text>
             <CheckBox

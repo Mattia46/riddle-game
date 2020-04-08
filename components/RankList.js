@@ -12,9 +12,8 @@ function Rank ({usersAnswers}) {
         <View style={styles.container} key={index}>
           <Avatar
             rounded size={50}
-            source={{
-              uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
-            }}
+            source={{uri: user.avatar}}
+            title={user.name}
           />
           <Icon
             name={user.answer ? 'check' : 'clear'}

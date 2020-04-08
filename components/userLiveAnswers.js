@@ -58,9 +58,8 @@ function UserListAnwsers() {
             containerStyle={{padding: 1, backgroundColor: "white" }}
             activeOpacity={0.4}
             size={30}
-            source={{
-              uri:"https://img1.looper.com/img/gallery/the-5-best-and-5-worst-things-about-the-hulk-of-the-mcu/intro-1557524944.jpg"
-            }}
+            source={{uri: user.avatar}}
+            title={user.name}
           />
           <ShowBadge user={user}/>
         </View>
