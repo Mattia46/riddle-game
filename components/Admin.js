@@ -95,48 +95,47 @@ function Admin({user}) {
 
   return (
     <React.Fragment>
-      <React.Fragment>
-        <Input
-          placeholder="Domanda"
-          containerStyle={styles.input}
-          underlineColorAndroid='transparent'
-          blurOnSubmit={true}
-          value={riddle.riddle}
-          onChangeText={e => setRiddle({...riddle, riddle: e})}
-        />
-        <Input
-          placeholder="Risposta"
-          containerStyle={styles.input}
-          underlineColorAndroid='transparent'
-          blurOnSubmit={true}
-          value={riddle.solution}
-          onChangeText={e => setRiddle({...riddle, solution: e})}
-        />
-        <View style={styles.confirm}>
-          <CheckBox
-            title="Expired"
-            checked={riddle.expired}
-            onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
-          />
-          <Button
-            type="outline"
-            title="Confirm"
-            onPress={submit}
-          />
-        </View>
-      </React.Fragment>
       <ScrollView>
+        <React.Fragment>
+          <Input
+            placeholder="Domanda"
+            containerStyle={styles.input}
+            multiline={true}
+            blurOnSubmit={true}
+            value={riddle.riddle}
+            onChangeText={e => setRiddle({...riddle, riddle: e})}
+          />
+          <Input
+            placeholder="Risposta"
+            containerStyle={styles.input}
+            underlineColorAndroid='transparent'
+            multiline={true}
+            blurOnSubmit={true}
+            value={riddle.solution}
+            onChangeText={e => setRiddle({...riddle, solution: e})}
+          />
+          <View style={styles.confirm}>
+            <CheckBox
+              title="Expired"
+              checked={riddle.expired}
+              onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
+            />
+            <Button
+              type="outline"
+              title="Confirm"
+              onPress={submit}
+            />
+          </View>
+        </React.Fragment>
         { userAnswer.map((user, index) => (
-          <View key={index} style={{display: 'flex', flexDirection: 'row'}}>
+          <View key={index} style={styles.container}>
             <Avatar
               rounded size={60}
               source={{uri: user.avatar}}
               title={user.name}
             />
-            <Text style={{width: 150, marginLeft: 5}}>{user.answer?.userSolution}</Text>
+            <Text style={{flex: 1, marginLeft: 5}}>{user.answer?.userSolution}</Text>
             <CheckBox
-              containerStyle={{width: 120}}
-              title="correct"
               checked={user.answer?.result}
               onPress={() => updateUserAnswer(user)}
             />
@@ -148,6 +147,15 @@ function Admin({user}) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    borderBottomColor: '#B8B3A7',
+    borderBottomWidth: 0.4,
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    padding: 10,
+    marginLeft: 10,
+    marginRight: 30,
+  },
   confirm: {
     display: 'flex',
     flexDirection: 'row',

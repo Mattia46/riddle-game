@@ -3,6 +3,16 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react
 import { ScrollView } from 'react-native-gesture-handler';
 import { Admin } from '../components/Admin';
 
+function Welcome({user}) {
+  if(user.name === 'mattia') return null;
+
+  return (
+    <React.Fragment>
+      <Text>Hey {user?.name}</Text>
+      <Text>Welcome to IndovinaLove</Text>
+    </React.Fragment>
+  );
+};
 export default function HomeScreen(props) {
   const [user, setUser] = useState({});
   if(!user) return null;
@@ -14,11 +24,10 @@ export default function HomeScreen(props) {
   }, [props.user]);
 
   return (
-    <View style={styles.container}>
-      <Text>Hey {user?.name}</Text>
-      <Text>Welcome to IndovinaLove</Text>
+    <React.Fragment>
+      <Welcome user={user} />
       <Admin user={user} />
-    </View>
+    </React.Fragment>
   );
 }
 
