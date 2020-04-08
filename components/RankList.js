@@ -51,7 +51,7 @@ function RankList () {
 
 const styles = StyleSheet.create({
   icon: {
-    top: -6,
+    top: -16,
     right: 20,
     borderRadius: 25,
     height: 20,
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#B8B3A7',
     borderBottomWidth: 0.4,
     justifyContent: 'flex-start',
+    alignItems: 'center',
     flexDirection: 'row',
     padding: 10,
     marginLeft: 10,

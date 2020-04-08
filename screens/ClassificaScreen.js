@@ -42,12 +42,12 @@ export default function ClassificaScreen() {
             title={user.name}
             containerStyle={{marginRight: 50}}
           />
-            <Rating
-              readonly
-              imageSize={25}
-              ratingCount={5}
-              startingValue={user.result}
-            />
+          <Rating
+            readonly
+            imageSize={25}
+            ratingCount={5}
+            startingValue={user.result}
+          />
         </View>
       ))}
     </ScrollView>
