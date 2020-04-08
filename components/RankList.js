@@ -28,8 +28,7 @@ function RankList () {
   const usersWrong = usersAnswers.filter(item => item.answer !== true);
 
   return (
-    <ScrollView>
-      <View style={{backgroundColor: 'white'}}>
+    <ScrollView style={{backgroundColor: 'white'}}>
       { usersAnswers.map((user, index) => (
         <View style={styles.container} key={index}>
           <Avatar
@@ -46,7 +45,6 @@ function RankList () {
           <Text style={styles.solution}>{user.solution}</Text>
         </View>
       )) }
-        </View>
     </ScrollView>
   )
 };
@@ -67,6 +65,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 10,
     marginRight: 30,
+    marginTop: 15,
   },
   solution: {
     flex: 1,

@@ -130,7 +130,7 @@ function Admin({user}) {
         { userAnswer.map((user, index) => (
           <View key={index} style={styles.container}>
             <Avatar
-              rounded size={60}
+              rounded size={50}
               source={{uri: user.avatar}}
               title={user.name}
             />
