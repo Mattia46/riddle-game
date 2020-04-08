@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   boxSolution: {
-    backgroundColor: 'red',
+    backgroundColor: '#70c8b7',
     padding: 20,
   },
 });

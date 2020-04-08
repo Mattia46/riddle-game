@@ -70,7 +70,13 @@ function App(props) {
       <React.Fragment>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-          <Stack.Navigator>
+          <Stack.Navigator
+            //screenOptions={{
+              //headerStyle: {
+                //backgroundColor: '#5c4fa1',
+              //},
+            //}}
+          >
             <Stack.Screen name="Home">
               {props => <BottomTabNavigator {...props} user={user}/>}
             </Stack.Screen>

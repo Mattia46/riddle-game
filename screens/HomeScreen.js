@@ -8,6 +8,10 @@ function Welcome({user}) {
 
   return (
     <React.Fragment>
+      <Image
+        source={require('../assets/images/indovinalove_logo_01.png')}
+        style={styles.logo}
+      />
       <Text>Hey {user?.name}</Text>
       <Text>Welcome to IndovinaLove</Text>
     </React.Fragment>
@@ -32,6 +36,11 @@ export default function HomeScreen(props) {
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    height: 250,
+    width: 200,
+    //resizeMode: 'stretch',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

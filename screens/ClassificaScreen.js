@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
     padding: 20,
-    fontWeight: 'bold',
     textAlign: 'center',
+    color: '#70c8b7',
   },
   container: {
     alignItems: 'center',

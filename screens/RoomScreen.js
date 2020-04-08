@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Connect } from "aws-amplify-react-native";
+import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';

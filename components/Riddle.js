@@ -29,10 +29,11 @@ function Riddle({ riddle, user }) {
 const styles = StyleSheet.create({
   boxContainer: {
     padding: 20,
-    backgroundColor: 'green',
+    backgroundColor: '#5c4fa1',
+    color: 'white',
   },
   boxSolution: {
-    backgroundColor: 'red',
+    backgroundColor: '#70c8b7',
     padding: 20,
   },
 });
