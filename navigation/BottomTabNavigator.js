@@ -4,7 +4,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ClassificaScreen from '../screens/ClassificaScreen';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -49,10 +49,25 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'IndovinaLove';
+      return <Image
+        source={require('../assets/images/indovinalove_main.png')}
+        style={styles.logo}
+      />
     case 'Room':
-      return 'IndovinaLove';
+      return <Image
+        source={require('../assets/images/indovinalove_main.png')}
+        style={styles.logo}
+      />
     case 'Classifica':
-      return 'IndovinaLove';
+      return <Image
+        source={require('../assets/images/indovinalove_main.png')}
+        style={styles.logo}
+      />
   }
 }
+const styles = StyleSheet.create({
+  logo: {
+    height: 60,
+    width: 200,
+  },
+});

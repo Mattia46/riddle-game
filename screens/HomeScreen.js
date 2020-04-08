@@ -12,8 +12,7 @@ function Welcome({user}) {
         source={require('../assets/images/indovinalove_logo_01.png')}
         style={styles.logo}
       />
-      <Text>Hey {user?.name}</Text>
-      <Text>Welcome to IndovinaLove</Text>
+      <Text style={styles.name}>Hello {user?.name}</Text>
     </React.Fragment>
   );
 };
@@ -28,7 +27,7 @@ export default function HomeScreen(props) {
   }, [props.user]);
 
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={styles.container}>
       <Welcome user={user} />
       <Admin user={user} />
     </View>
@@ -37,13 +36,19 @@ export default function HomeScreen(props) {
 
 const styles = StyleSheet.create({
   logo: {
-    height: 250,
+    height: 200,
     width: 200,
-    //resizeMode: 'stretch',
+  },
+  name: {
+    fontSize: 20,
+    padding: 20,
+    textAlign: 'center',
+    color: '#70c8b7',
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

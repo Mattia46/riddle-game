@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   boxSolution: {
-    backgroundColor: '#70c8b7',
+    backgroundColor: '#ffc910',
     padding: 20,
   },
 });
