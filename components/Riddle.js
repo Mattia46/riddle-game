@@ -17,23 +17,42 @@ function Riddle({ riddle, user }) {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
+      <Text style={styles.riddle}> Riddle</Text>
       <Text style={styles.boxContainer}> {riddle.riddle} </Text>
-      {riddle.expired
-        ? <Solution riddle={riddle} />
-        : <InputRiddle riddle={riddle} user={user} />
-      }
+        <Text style={styles.answer}> Answer </Text>
+        {riddle.expired
+          ? <Solution riddle={riddle} />
+          : <InputRiddle riddle={riddle} user={user} />
+        }
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  riddle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    paddingBottom: 10,
+    paddingTop: 20,
+    backgroundColor: '#5c4fa1',
+    color: 'white',
+  },
+  answer: {
+    fontSize: 16,
+    paddingLeft: 20,
+    paddingTop: 20,
+    fontSize: 25,
+  },
   boxContainer: {
-    padding: 20,
+    fontSize: 16,
+    paddingLeft: 20,
+    paddingBottom: 20,
     backgroundColor: '#5c4fa1',
     color: 'white',
   },
   boxSolution: {
-    backgroundColor: '#ffc910',
+    fontSize: 16,
     padding: 20,
   },
 });

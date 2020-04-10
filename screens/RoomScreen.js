@@ -11,7 +11,8 @@ function NoRiddle({riddle}) {
 
   return (
     <View  style={styles.noRiddle}>
-      <Text style={{fontSize: 30}}>Next riddle at 10:00</Text>
+      <Text style={{fontSize: 30, color: 'white', marginBottom: 10}}>Next riddle</Text>
+      <Text style={{fontSize: 17, color: 'white'}}>Tomorrow at 10:00</Text>
     </View>
   );
 }
@@ -54,5 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#5c4fa1',
   },
 });

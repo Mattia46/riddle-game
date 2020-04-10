@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
 import { UserListAnwsers } from './userLiveAnswers';
@@ -29,38 +29,41 @@ function InputRiddle({riddle, user}) {
     answer.id
       ? API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}))
       : API.graphql(graphqlOperation(createAnswer, { input: {
-          date: riddle.date,
-          userSolution: answer.userSolution,
-          result: false,
-          attemps: 0,
-          answerRiddleId: riddle.id,
-          answerUserId: user.id
-        }})).then(({data: { createAnswer }}) => {
-          delete createAnswer.riddle;
-          delete createAnswer.user;
-          setAnswer(createAnswer)
-        });
+        date: riddle.date,
+        userSolution: answer.userSolution,
+        result: false,
+        attemps: 0,
+        answerRiddleId: riddle.id,
+        answerUserId: user.id
+      }})).then(({data: { createAnswer }}) => {
+        delete createAnswer.riddle;
+        delete createAnswer.user;
+        setAnswer(createAnswer)
+      });
     setShowSolution(true);
   };
 
   return (
     <React.Fragment>
-      { showSolution
-        ? <Text style={styles.boxSolution}> {answer.userSolution} </Text>
-        : <Input
-          placeholder="Inseristi la tua risposta"
-          containerStyle={styles.input}
-          multiline={true}
-          value={answer.userSolution}
-          onChangeText={e => setAnswer({...answer, userSolution: e})}
-        />
-      }
+      <ScrollView>
+      <View style={styles.container}>
+        { showSolution
+          ? <Text style={styles.boxSolution}> {answer.userSolution} </Text>
+          : <Input
+            placeholder="Add your answer"
+            multiline={true}
+            value={answer.userSolution}
+            onChangeText={e => setAnswer({...answer, userSolution: e})}
+          />
+        }
+      </View>
       <Button
-        title={showSolution ? 'Modifica' : 'Conferma'}
+        title={showSolution ? 'Modify' : 'Confirm'}
         type="outline"
         onPress={() => showSolution ? setShowSolution(false) : confirm()}
         containerStyle={styles.button}
       />
+      </ScrollView>
       <UserListAnwsers />
     </React.Fragment>
   );
@@ -72,14 +75,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
   },
+  container: {
+    height: 140,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+  },
   input: {
-    borderRadius: 24,
-    justifyContent: 'space-around',
-    marginTop: 50,
+    padding: 10,
+    marginLeft: 10,
+    fontSize: 16,
   },
   boxSolution: {
-    backgroundColor: '#ffc910',
-    padding: 20,
+    fontSize: 18,
   },
 });
 
