@@ -4,28 +4,29 @@ import { Button } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Admin } from '../components/Admin';
 import { Auth } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listRiddles } from '../src/graphql/queries';
 
-function GameAction({active}) {
-  const buttonText = "ciao";
-  const text = active
+function GameAction({isGameOn, navigate}) {
+  const text = isGameOn
     ? "Click on the button below to play today's game. Good luck!"
-    : "When the button below is active, the game room is open and you can start playing";
+    : "When the button below is isGameOn, the game room is open and you can start playing";
 
   return (
     <View style={styles.gameContainer}>
       <Text style={styles.messageText}> Are You ready to play? </Text>
       <Text style={styles.messageText}>{text}</Text>
       <Button
-        backgroundColor="green"
-        disabled={!active}
-        onPress={() => alert('ciao')}
+        disabled={!isGameOn}
+        onPress={() => navigate('Room')}
         containerStyle={styles.button}
-        title={buttonText} />
+        buttonStyle={{backgroundColor: 'orange'}}
+        title="let's play" />
     </View>
   );
 };
 
-function Welcome({user}) {
+function Welcome({user, navigate, isGameOn}) {
   if(user.name === 'mattia') return null;
 
   return (
@@ -35,13 +36,26 @@ function Welcome({user}) {
         style={styles.logo}
       />
       <Text style={styles.name}>Hello {user?.name}</Text>
-      <GameAction active={true} />
+      <GameAction isGameOn={isGameOn} navigate={navigate}/>
     </React.Fragment>
   );
 };
 export default function HomeScreen(props) {
+  const today = new Date().toISOString().split('T')[0]
   const [user, setUser] = useState({});
+  const [isGameOn, setIsGameOn] = useState(false);
+
   if(!user) return null;
+
+  useEffect(() => {
+    API.graphql(graphqlOperation(listRiddles, { filter: { date: { eq: today }}}))
+      .then(({data}) => {
+        if(data.listRiddles.items[0]) {
+          return setIsGameOn(true);
+        }
+      });
+  }, []);
+
 
   useEffect(() => {
     if(props.user) {
@@ -51,7 +65,10 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Welcome user={user} />
+      <Welcome
+        user={user}
+        navigate={props.navigation.navigate}
+        isGameOn={isGameOn} />
       <Admin user={user} />
     </View>
   );
@@ -68,15 +85,15 @@ const styles = StyleSheet.create({
     width: 150,
   },
   gameContainer: {
-    padding: 20,
+    width: 320,
   },
   messageText: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     color: 'white',
   },
   name: {
-    fontSize: 30,
+    fontSize: 25,
     padding: 20,
     textAlign: 'center',
     color: 'white',

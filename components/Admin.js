@@ -94,7 +94,7 @@ function Admin({user}) {
   }
 
   return (
-    <React.Fragment>
+    <View style={styles.container}>
       <ScrollView>
           <Input
             placeholder="Domanda"
@@ -126,7 +126,7 @@ function Admin({user}) {
             />
           </View>
         { userAnswer.map((user, index) => (
-          <View key={index} style={styles.container}>
+          <View key={index} style={styles.userListContainer}>
             <Avatar
               rounded size={50}
               source={{uri: user.avatar}}
@@ -140,12 +140,15 @@ function Admin({user}) {
           </View>
         ))}
       </ScrollView>
-    </React.Fragment>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
+  },
+  userListContainer: {
     borderBottomColor: '#B8B3A7',
     borderBottomWidth: 0.4,
     justifyContent: 'flex-start',

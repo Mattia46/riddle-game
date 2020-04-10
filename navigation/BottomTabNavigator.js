@@ -67,7 +67,7 @@ function getHeaderTitle(route) {
 }
 const styles = StyleSheet.create({
   logo: {
-    height: 60,
+    height: 50,
     width: 200,
   },
 });
