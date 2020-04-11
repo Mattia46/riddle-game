@@ -7,10 +7,10 @@ import { getUserAnswer } from '../components/shared';
 import { ListItem } from 'react-native-elements'
 import { Rating } from 'react-native-elements';
 
-export default function ClassificaScreen() {
+export default function RankScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
-  const initDate = '2020-04-04';
-  const endDate = '2020-04-11';
+  const initDate = '2020-04-12';
+  const endDate = '2020-04-19';
 
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function ClassificaScreen() {
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
-      <Text style={styles.header}>Classifica settimanale</Text>
+      <Text style={styles.header}>Weekly Rank</Text>
       { userResultsList.map((user, index) => (
         <View key={index} style={styles.container}>
           <Avatar key={index}

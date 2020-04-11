@@ -10,7 +10,7 @@ export default function(containerRef) {
         screens: {
           Home: 'home',
           Room: 'room',
-          Classifica: 'classifica',
+          Rank: 'rank',
         },
       },
     },

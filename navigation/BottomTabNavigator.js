@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import RoomScreen from '../screens/RoomScreen';
-import ClassificaScreen from '../screens/ClassificaScreen';
+import RankScreen from '../screens/RankScreen';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -35,10 +35,10 @@ export default function BottomTabNavigator({ navigation, route, user }) {
         {props => <RoomScreen {...props} user={user} />}
       </BottomTab.Screen>
       <BottomTab.Screen
-        name="Classifica"
-        component={ClassificaScreen}
+        name="Rank"
+        component={RankScreen}
         options={{
-          title: 'Classifica',
+          title: 'Rank',
           unmountOnBlur: true,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-trophy" />,
         }}
@@ -61,7 +61,7 @@ function getHeaderTitle(route) {
         source={require('../assets/images/indovinalove_main.png')}
         style={styles.logo}
       />
-    case 'Classifica':
+    case 'Rank':
       return (
         <View style={styles.container} >
           <Image

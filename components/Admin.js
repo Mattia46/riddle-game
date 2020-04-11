@@ -97,7 +97,7 @@ function Admin({user}) {
     <View style={styles.container}>
       <ScrollView>
           <Input
-            placeholder="Domanda"
+            placeholder="Question"
             containerStyle={styles.input}
             multiline={true}
             blurOnSubmit={true}
@@ -105,7 +105,7 @@ function Admin({user}) {
             onChangeText={e => setRiddle({...riddle, riddle: e})}
           />
           <Input
-            placeholder="Risposta"
+            placeholder="Answer"
             containerStyle={styles.input}
             underlineColorAndroid='transparent'
             multiline={true}
