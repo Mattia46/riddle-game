@@ -66,7 +66,7 @@ function getHeaderTitle(route) {
         <View style={styles.container} >
           <Image
             source={require('../assets/images/indovinalove_main.png')}
-            style={styles.logo}
+            style={styles.exitLogo}
           />
           <Button
             buttonStyle={{backgroundColor: '#5c4fc1'}}
@@ -94,9 +94,15 @@ const styles = StyleSheet.create({
     height: 30,
     alignSelf: 'flex-end',
   },
-  logo: {
+  exitLogo: {
     alignSelf: 'center',
     height: 30,
+    width: 200,
+  },
+  logo: {
+    alignSelf: 'center',
+    height: 35,
+    top: -10,
     width: 200,
   },
 });
