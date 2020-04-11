@@ -5,6 +5,9 @@ import HomeScreen from '../screens/HomeScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ClassificaScreen from '../screens/ClassificaScreen';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Auth } from 'aws-amplify';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -59,15 +62,41 @@ function getHeaderTitle(route) {
         style={styles.logo}
       />
     case 'Classifica':
-      return <Image
-        source={require('../assets/images/indovinalove_main.png')}
-        style={styles.logo}
-      />
+      return (
+        <View style={styles.container} >
+          <Image
+            source={require('../assets/images/indovinalove_main.png')}
+            style={styles.logo}
+          />
+          <Button
+            buttonStyle={{backgroundColor: '#5c4fc1'}}
+            containerStyle={styles.button}
+            icon={
+              <Icon
+                name="sign-out"
+                size={15}
+                color="white"
+              />
+            }
+            onPress={() => Auth.signOut()} />
+        </View>
+      )
   }
 }
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    //flex: 1,
+  },
+  button: {
+    width: 20,
+    height: 30,
+    alignSelf: 'flex-end',
+  },
   logo: {
-    height: 50,
+    alignSelf: 'center',
+    height: 30,
     width: 200,
   },
 });
