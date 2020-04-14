@@ -6,6 +6,7 @@ import { Admin } from '../components/Admin';
 import { Auth } from 'aws-amplify';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listRiddles } from '../src/graphql/queries';
+import { onCreateRiddle } from '../src/graphql/subscriptions';
 
 function GameAction({isGameOn, navigate}) {
   const text = isGameOn
@@ -54,6 +55,15 @@ export default function HomeScreen(props) {
           return setIsGameOn(true);
         }
       });
+
+    const onCreateGame = API.graphql(graphqlOperation(onCreateRiddle))
+      .subscribe(({value: { data: { onCreateRiddle }}}) => {
+        if(onCreateRiddle.date == today) {
+          return setIsGameOn(true);
+        }
+      });
+
+    return () => onCreateGame.unsubscribe();
   }, []);
 
 
