@@ -16,6 +16,7 @@ function ShowBadge({user}) {
 
 function UserListAnwsers() {
   const [listUsers, setListUsers] = useState([]);
+  const latestUpdateUser = React.useRef(null);
 
   const today = new Date().toISOString().split('T')[0]
   const updateUser = userId => {
@@ -29,10 +30,11 @@ function UserListAnwsers() {
       });
     setListUsers(updatedList);
   };
+  latestUpdateUser.current = updateUser;
 
   useEffect(() => {
     const onCreate = API.graphql(graphqlOperation(onCreateAnswer))
-      .subscribe(data => updateUser(data.value.data.onCreateAnswer.user.id));
+      .subscribe(data => latestUpdateUser.current(data.value.data.onCreateAnswer.user.id));
 
     API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
       .then(({data}) => {
