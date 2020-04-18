@@ -68,10 +68,10 @@ function Admin({user}) {
         setNewItem(normaliseObject(onCreateAnswer));
       });
 
-    return () => {
-      onUpdateAnswer.unsubscribe();
-      onCreateAnswer.unsubscribe();
-    };
+    //return () => {
+      //onUpdateAnswer.unsubscribe();
+      //onCreateAnswer.unsubscribe();
+    //};
   }, []);
 
   const submit = () => {

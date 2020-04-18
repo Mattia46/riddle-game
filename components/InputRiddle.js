@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
-import { UserListAnwsers } from './userLiveAnswers';
 import { createAnswer, updateAnswer } from '../src/graphql/mutations';
 import { getTodayUserAnswers } from './shared';
 import { Button } from "react-native-elements";
@@ -45,7 +44,6 @@ function InputRiddle({riddle, user}) {
 
   return (
     <React.Fragment>
-      <ScrollView>
       <View style={styles.container}>
         { showSolution
           ? <Text style={styles.boxSolution}> {answer.userSolution} </Text>
@@ -63,8 +61,6 @@ function InputRiddle({riddle, user}) {
         onPress={() => showSolution ? setShowSolution(false) : confirm()}
         containerStyle={styles.button}
       />
-      </ScrollView>
-      <UserListAnwsers />
     </React.Fragment>
   );
 };
