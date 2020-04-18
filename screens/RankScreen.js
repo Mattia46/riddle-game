@@ -7,11 +7,30 @@ import { getUserAnswer } from '../components/shared';
 import { ListItem } from 'react-native-elements'
 import { Rating } from 'react-native-elements';
 
+
+function getWeekDates() {
+  const today = new Date();
+  const monthDay = today.getDate();
+  let month = today.getMonth() + 1;
+  const weekDay = today.getDay();
+  const year = today.getFullYear();
+
+  if(month < 10) {
+    month = `0${month}`;
+  }
+
+  const initWeekDay = `${year}-${month}-${monthDay - weekDay}`
+  const endWeekDay = `${year}-${month}-${monthDay + (7 - weekDay)}`
+  return [initWeekDay, endWeekDay]
+};
+
+getWeekDates();
 export default function RankScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
-  const initDate = '2020-04-19';
-  const endDate = '2020-04-25';
+  const today = new Date();
+  const dayNumber = today.getDate();
 
+  const [initDate, endDate] = getWeekDates();
 
   useEffect(() => {
     API.graphql(graphqlOperation(getUserAnswer,
