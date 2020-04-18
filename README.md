@@ -6,6 +6,8 @@ This project was an excercise to practive various technologies, like AWS cloudfo
 AppSync, AWS S3, AWS DynamoDB with [Amplify](https://aws-amplify.github.io/) as well as
 [Expo](https://docs.expo.io/versions/v37.0.0/get-started/installation/) and [React Native](https://reactnative.dev/).
 
+![alt welcomePage]('./assets/images/welcomePage.jpg')
+
 ## How run the project
 Make sure to have an `AWS account` first 😉, then
 

@@ -9,8 +9,8 @@ import { Rating } from 'react-native-elements';
 
 export default function RankScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
-  const initDate = '2020-04-12';
-  const endDate = '2020-04-19';
+  const initDate = '2020-04-19';
+  const endDate = '2020-04-25';
 
 
   useEffect(() => {
