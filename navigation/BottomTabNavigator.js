@@ -7,7 +7,6 @@ import RankScreen from '../screens/RankScreen';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Auth } from 'aws-amplify';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -62,25 +61,10 @@ function getHeaderTitle(route) {
         style={styles.logo}
       />
     case 'Rank':
-      return (
-        <View style={styles.container} >
-          <Image
-            source={require('../assets/images/indovinalove_main.png')}
-            style={styles.exitLogo}
-          />
-          <Button
-            buttonStyle={{backgroundColor: '#5c4fc1'}}
-            containerStyle={styles.button}
-            icon={
-              <Icon
-                name="sign-out"
-                size={15}
-                color="white"
-              />
-            }
-            onPress={() => Auth.signOut()} />
-        </View>
-      )
+      return <Image
+        source={require('../assets/images/indovinalove_main.png')}
+        style={styles.exitLogo}
+      />
   }
 }
 const styles = StyleSheet.create({
