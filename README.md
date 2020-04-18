@@ -7,6 +7,8 @@ AppSync, AWS S3, AWS DynamoDB with [Amplify](https://aws-amplify.github.io/) as 
 [Expo](https://docs.expo.io/versions/v37.0.0/get-started/installation/) and [React Native](https://reactnative.dev/)
 
 ![alt text](/welcomePage.png)
+![alt text](/assets/images/RankList.png)
+![alt text](/assets/images/room.png)
 
 ## How run the project
 Make sure to have an `AWS account` first 😉, then
