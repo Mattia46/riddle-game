@@ -51,7 +51,6 @@ export default function RankScreen() {
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
-      <Text style={styles.header}>Weekly Rank</Text>
       { userResultsList.map((user, index) => (
         <View key={index} style={styles.container}>
           <Avatar key={index}
