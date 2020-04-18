@@ -1,38 +1,40 @@
 # Riddle game
 
 Riddle game is a project that let's you play with your friend.
+
 This project was an excercise to practive various technologies, like AWS cloudformation, AWS
-AppSync, AWS S3, AWS DynamoDB as well as Expo and React Native.
+AppSync, AWS S3, AWS DynamoDB with [Amplify](https://aws-amplify.github.io/) as well as
+[Expo](https://docs.expo.io/versions/v37.0.0/get-started/installation/) and [React Native](https://reactnative.dev/).
 
 ## How run the project
 Make sure to have an AWS account first 😉, then
 
-### Configure the dependencies and you AWS cloudformation
+### 1.1) Configure the dependencies and you AWS cloudformation
 
-Clone the repo to your local machine:
+#### Clone the repo to your local machine:
 ```
 git clone https://github.com/Mattia46/riddle-game.git
 ```
 
-Make sure to globally install Expo and AWS Amplify:
+#### Globally install Expo and AWS Amplify:
 ```
 npm install -g @aws-amplify/cli
 npm install -g expo-cli
 ```
 
-Once you've done it, install the project dependencies:
+#### Once you've done it, install the project dependencies:
 ```
 npm i
 ```
 
-Then it's time to configure your `aws-exports` file that let's you run you Backend with AWS
+#### Then it's time to configure your `aws-exports` file that let's you run you Backend with AWS
 ```
 amplify configure
 amplify init
 amplify push
 ```
 
-### How to run start the project
+### 1.2) How to run start the project
 ```
 npm start
 ```
