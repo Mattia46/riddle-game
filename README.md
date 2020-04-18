@@ -7,7 +7,7 @@ AppSync, AWS S3, AWS DynamoDB with [Amplify](https://aws-amplify.github.io/) as 
 [Expo](https://docs.expo.io/versions/v37.0.0/get-started/installation/) and [React Native](https://reactnative.dev/).
 
 ## How run the project
-Make sure to have an AWS account first 😉, then
+Make sure to have an `AWS account` first 😉, then
 
 ### 1.1) Configure the dependencies and you AWS cloudformation
 
@@ -16,7 +16,7 @@ Make sure to have an AWS account first 😉, then
 git clone https://github.com/Mattia46/riddle-game.git
 ```
 
-#### Globally install Expo and AWS Amplify:
+#### Globally install `Expo` and `AWS Amplify`:
 ```
 npm install -g @aws-amplify/cli
 npm install -g expo-cli
@@ -39,6 +39,6 @@ amplify push
 npm start
 ```
 
-Enjoy
+### Enjoy 🎉🎉
 
 Fell free to contribute opening a [PR](https://github.com/mattia46/riddle-game/pulls) to the project or open an [issue](https://github.com/mattia46/riddle-game/issues)
