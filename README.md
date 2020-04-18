@@ -1,160 +1,42 @@
-window.LOG_LEVEL = "DEBUG";
-get AWSDate:
+# Riddle game
+
+Riddle game is a project that let's you play with your friend.
+This project was an excercise to practive various technologies, like AWS cloudformation, AWS
+AppSync, AWS S3, AWS DynamoDB as well as Expo and React Native.
+
+## How run the project
+Make sure to have an AWS account first 😉, then
+
+### Configure the dependencies and you AWS cloudformation
+
+Clone the repo to your local machine:
 ```
-new Date().toISOString().split('T')[0]
+git clone https://github.com/Mattia46/riddle-game.git
 ```
-amplify api gql-compile
 
-Nested QUERY:
+Make sure to globally install Expo and AWS Amplify:
 ```
-const getTodayUserAnswers = /* GraphQL */ `
-query GetUser(
-  $id: ID!
-  $filter: ModelAnswerFilterInput!
-) {
-  getUser(id: $id) {
-    name
-    answers(filter: $filter) {
-      items {
-        id
-        date
-        userSolution
-      }
-    }
-  }
-}`;
-
-const checkExistingAnswer = ({id}) => API.graphql(graphqlOperation(getTodayUserAnswers, {id, filter: { date: { eq: today}}}));
-useEffect(() => {
-  if(user && riddle) {
-    checkExistingAnswer({ id: user.id}).then(({data}) => console.log('today usre', data.getUser.answers.items));
-  }
-}, [user, riddle])
+npm install -g @aws-amplify/cli
+npm install -g expo-cli
 ```
-Per GAME UPDATE:
-mutation updateRiddle{
-  updateRiddle(input:{
-      id:"4585ceb6-e63c-460f-aeb3-97d24dc85d80"
-    	expired:false
-  }) {
-    date
-    solution
-    expired
-    riddle
-    id
-  }
-}
 
-X CLASSIFICA
-query listAns2 {
-  listUsers {
-    items {
-      name
-      answers(filter:{result:{eq: false},date: {between:["2020-04-03", "2020-04-05"]}}) {
-        items {
-          date userSolution result
-        }
-      }
-    }
-  }
-}
-
-
-
-
-Retrive today riddle:
+Once you've done it, install the project dependencies:
 ```
-query listTodayRiddle{
-  listRiddles(filter:{
-    date: { eq:"2019-04-26"}
-  }) {
-    items {
-      id riddle solution date
-    }
-  }
-}
-
-query listTodayRiddle {
-  listRiddles(filter:{
-    date:{ eq:"2019-04-25"}
-  }) {
-    items {
-      id riddle
-    }
-  }
-}
-
-query listTodayRiddleSolution {
-  listRiddles(filter:{
-    date:{ eq:"2019-04-25"}
-  }) {
-    items {
-      id riddle solution
-    }
-  }
-}
-mutation createUser {
-  createUser(input:{
-    name:"mau"
-    avatar:"s3:location"
-  }) {
-    id name
-  }
-}
-
-query listUser {
-  listUsers {
-    items {
-      id name
-    }
-  }
-}
-
-query getUserAnwsers {
-	getUser(id:"673c7c9e-0de4-405d-82ee-30115d21a3ee") {
-    answers {
-      items {
-        result
-        userSolution
-      }
-    }
-  }
-}
-
-mutation createAnswer{
-  createAnswer(input:{
-  	answerRiddleId: "5053e46a-3947-4775-a7df-283df1dc14d7"
-    answerUserId:"673c7c9e-0de4-405d-82ee-30115d21a3ee"
-    userSolution:"some solution"
-  }) {
-    id userSolution user {
-    	name id
-    }
-  }
-}
-
-query listUserCorrect {
-  listAnswers(filter:{
-    result:{ eq: false}
-  }) {
-    items{
-      user {
-        name
-      }
-    }
-  }
-}
-
-query listUserThatAnswered {
-  listAnswers(filter:{
-    hasAnswered:{ eq: false}
-  }) {
-    items{
-      user {
-        name
-      }
-    }
-  }
-}
-
+npm i
 ```
+
+Then it's time to configure your `aws-exports` file that let's you run you Backend with AWS
+```
+amplify configure
+amplify init
+amplify push
+```
+
+### How to run start the project
+```
+npm start
+```
+
+Enjoy
+
+Fell free to contribute opening a [PR](https://github.com/mattia46/riddle-game/pulls) to the project or open an [issue](https://github.com/mattia46/riddle-game/issues)
