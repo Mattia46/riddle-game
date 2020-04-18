@@ -4,10 +4,9 @@ Riddle game is a project that let's you play with your friend.
 
 This project was an excercise to practive various technologies, like AWS cloudformation, AWS
 AppSync, AWS S3, AWS DynamoDB with [Amplify](https://aws-amplify.github.io/) as well as
-[Expo](https://docs.expo.io/versions/v37.0.0/get-started/installation/) and [React Native](https://reactnative.dev/).
+[Expo](https://docs.expo.io/versions/v37.0.0/get-started/installation/) and [React Native](https://reactnative.dev/)
 
-![alt welcomePage]('welcomePage.png')
-![alt welcomePage]('/welcomePage.png')
+![alt text](/welcomePage.png)
 
 ## How run the project
 Make sure to have an `AWS account` first 😉, then
