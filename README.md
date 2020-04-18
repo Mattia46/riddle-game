@@ -8,7 +8,7 @@ AppSync, AWS S3, AWS DynamoDB with [Amplify](https://aws-amplify.github.io/) as 
 
 <img src="/assets/images/welcomePage.png" height="500" align="left"/>
 <img src="/assets/images/room.png" height="500" align="center"/>
-<img src="/assets/images/RankList.png" height="500" align="right" />
+<img src="/assets/images/RankList.png" height="500" align="right"/>
 
 ## How run the project
 Make sure to have an `AWS account` first 😉, then
