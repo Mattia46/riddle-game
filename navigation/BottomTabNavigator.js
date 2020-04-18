@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   exitLogo: {
     alignSelf: 'center',
-    height: 30,
+    height: 35,
     width: 200,
   },
   logo: {

@@ -7,7 +7,7 @@ import { UserListAnwsers } from './userLiveAnswers';
 function Solution({riddle}) {
   return (
     <React.Fragment>
-      <Text style={styles.boxSolution}> {riddle.solution} </Text>
+      <Text style={styles.boxSolution}>{riddle.solution} </Text>
       <RankList/>
     </React.Fragment>
   )
@@ -19,9 +19,9 @@ function Riddle({ riddle, user }) {
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <ScrollView>
-      <Text style={styles.riddle}> Riddle</Text>
-      <Text style={styles.boxContainer}> {riddle.riddle} </Text>
-        <Text style={styles.answer}> Answer </Text>
+        <Text style={styles.riddle}>Riddle</Text>
+        <Text style={styles.boxContainer}>{riddle.riddle}</Text>
+        <Text style={styles.answer}>Answer</Text>
         {riddle.expired
           ? <Solution riddle={riddle} />
           : <InputRiddle riddle={riddle} user={user} />
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   },
   boxContainer: {
     fontSize: 16,
+    paddingRight: 20,
     paddingLeft: 20,
     paddingBottom: 20,
     backgroundColor: '#5c4fa1',

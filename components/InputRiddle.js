@@ -46,7 +46,7 @@ function InputRiddle({riddle, user}) {
     <React.Fragment>
       <View style={styles.container}>
         { showSolution
-          ? <Text style={styles.boxSolution}> {answer.userSolution} </Text>
+          ? <Text style={styles.boxSolution}>{answer.userSolution}</Text>
           : <Input
             placeholder="Add your answer"
             multiline={true}
