@@ -26,13 +26,6 @@ function Riddle({ riddle, user }) {
 
   const Game = () => (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <OptionDialog
-        visible={showDialog}
-        setCompletedGame={setCompletedGame}
-        setShowDialog={setShowDialog}
-        setSecondAttempt={setSecondAttempt}
-        setShowTimer={setShowTimer}
-      />
       <ScrollView>
         <View style={styles.timer}>
           <Text style={styles.riddle}>Riddle</Text>
@@ -49,6 +42,13 @@ function Riddle({ riddle, user }) {
             completedGame={completedGame}
           />
         }
+      <OptionDialog
+        visible={showDialog}
+        setCompletedGame={setCompletedGame}
+        setShowDialog={setShowDialog}
+        setSecondAttempt={setSecondAttempt}
+        setShowTimer={setShowTimer}
+      />
       </ScrollView>
       { !riddle.expired && <UserListAnwsers /> }
     </View>

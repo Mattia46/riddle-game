@@ -11,6 +11,7 @@ const getUserAnswer = /* GraphQL */ `
           date
           userSolution
           result
+          attemps
         }
       }
     }

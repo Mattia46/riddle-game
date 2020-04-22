@@ -24,13 +24,17 @@ function getWeekDates() {
   return [initWeekDay, endWeekDay]
 };
 
-getWeekDates();
 export default function RankScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
   const today = new Date();
   const dayNumber = today.getDate();
 
   const [initDate, endDate] = getWeekDates();
+
+  const getScore = (array = []) => {
+    const extraPoint = array.filter(x => x.attemps === 0).length / 2;
+    return extraPoint + array.length;
+  };
 
   useEffect(() => {
     API.graphql(graphqlOperation(getUserAnswer,
@@ -41,7 +45,7 @@ export default function RankScreen() {
           name: x.name,
           avatar: x.avatar,
           id: x.id,
-          result: x.answers.items.length
+          result: getScore(x.answers.items),
         }))
         const sortedList =  newList.sort((a,b) => (b.result - a.result));
         setUserResultsList(sortedList)
@@ -63,7 +67,7 @@ export default function RankScreen() {
           <Rating
             readonly
             imageSize={25}
-            ratingCount={5}
+            ratingCount={8}
             startingValue={user.result}
           />
         </View>
