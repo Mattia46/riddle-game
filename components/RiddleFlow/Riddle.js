@@ -25,13 +25,13 @@ function Riddle({ riddle, user }) {
 
   const Game = () => (
     <View style={{backgroundColor: 'white', flex: 1}}>
+      <OptionDialog
+        visible={showDialog}
+        setCompletedGame={setCompletedGame}
+        setShowDialog={setShowDialog}
+        setSecondAttempt={setSecondAttempt}
+      />
       <ScrollView>
-        <OptionDialog
-          visible={showDialog}
-          setCompletedGame={setCompletedGame}
-          setShowDialog={setShowDialog}
-          setSecondAttempt={setSecondAttempt}
-        />
         <View style={styles.timer}>
           <Text style={styles.riddle}>Riddle</Text>
           { !completedGame && <Timer setShowDialog={setShowDialog}/> }
@@ -43,7 +43,6 @@ function Riddle({ riddle, user }) {
           : <InputRiddle
             riddle={riddle}
             user={user}
-            completedGame={completedGame}
             secondAttempt={secondAttempt}
           />
         }

@@ -3,6 +3,7 @@ import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import { Avatar, Icon } from "react-native-elements";
 import { API, graphqlOperation } from 'aws-amplify';
 import { getUserAnswer } from '../shared';
+import { styles } from './style';
 
 function RankList () {
   const [usersAnswers, setUsersAnswers] = useState([]);
@@ -30,7 +31,7 @@ function RankList () {
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
       { usersAnswers.map((user, index) => (
-        <View style={styles.container} key={index}>
+        <View style={styles.rankContainer} key={index}>
           <Avatar
             rounded size={50}
             source={{uri: user.avatar}}
@@ -48,30 +49,5 @@ function RankList () {
     </ScrollView>
   )
 };
-
-const styles = StyleSheet.create({
-  icon: {
-    top: -16,
-    right: 20,
-    borderRadius: 25,
-    height: 20,
-    width: 20,
-  },
-  container: {
-    borderBottomColor: '#B8B3A7',
-    borderBottomWidth: 0.4,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection: 'row',
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 30,
-    marginTop: 15,
-  },
-  solution: {
-    flex: 1,
-    marginTop: 5,
-  },
-});
 
 export { RankList };

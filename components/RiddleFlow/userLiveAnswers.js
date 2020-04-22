@@ -4,6 +4,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { Avatar, Badge } from "react-native-elements";
 import { ScrollView } from 'react-native-gesture-handler';
 import { getUserAnswer, onCreateAnswer } from '../shared';
+import { styles } from './style';
 
 function ShowBadge({user}) {
   if(!user.hasAnswered) return null;
@@ -52,7 +53,7 @@ function UserListAnwsers() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.liveContainer}>
       { listUsers.map((user, index) => (
         <View key={index} style={styles.avatar}>
           <Avatar key={index}
@@ -69,18 +70,5 @@ function UserListAnwsers() {
     </View>
   )
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems:'flex-end',
-    padding: 20,
-  },
-  avatar: {
-    display: 'flex',
-    marginLeft: -5,
-  },
-});
 
 export { UserListAnwsers }

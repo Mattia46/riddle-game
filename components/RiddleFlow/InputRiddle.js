@@ -5,6 +5,22 @@ import { Input } from 'react-native-elements';
 import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
 import { getTodayUserAnswers } from '../shared';
 import { Button } from "react-native-elements";
+import { styles } from './style';
+
+function createUserAnswer(riddle, user, answer){
+  return API.graphql(graphqlOperation(createAnswer, { input: {
+    date: riddle.date,
+    userSolution: answer.userSolution,
+    result: false,
+    attemps: 0,
+    answerRiddleId: riddle.id,
+    answerUserId: user.id
+  }}))
+};
+
+function updateUserAnswer(answer) {
+  return API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}));
+};
 
 function InputRiddle({
   riddle,
@@ -32,20 +48,14 @@ function InputRiddle({
     if(completedGame) setShowSolution(true);
     //if(secondAttempt && answer) setAnswer(...answer, {attemps: 2});
     console.log('Answer', answer);
-  }, [completedGame, secondAttempt]);
+  }, [completedGame, answer]);
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
     answer.id
-      ? API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}))
-      : API.graphql(graphqlOperation(createAnswer, { input: {
-        date: riddle.date,
-        userSolution: answer.userSolution,
-        result: false,
-        attemps: 0,
-        answerRiddleId: riddle.id,
-        answerUserId: user.id
-      }})).then(({data: { createAnswer }}) => {
+      ? updateUserAnswer(answer)
+      : createUserAnswer(riddle, user, answer)
+      .then(({data: { createAnswer }}) => {
         delete createAnswer.riddle;
         delete createAnswer.user;
         setAnswer(createAnswer)
@@ -75,27 +85,5 @@ function InputRiddle({
     </React.Fragment>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    width: 200,
-    alignSelf: 'center',
-    marginTop: 20,
-  },
-  container: {
-    height: 140,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
-  },
-  input: {
-    padding: 10,
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  boxSolution: {
-    fontSize: 18,
-  },
-});
 
 export { InputRiddle };
