@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
-import { createAnswer, updateAnswer } from '../src/graphql/mutations';
-import { getTodayUserAnswers } from './shared';
+import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
+import { getTodayUserAnswers } from '../shared';
 import { Button } from "react-native-elements";
 
-function InputRiddle({riddle, user}) {
+function InputRiddle({
+  riddle,
+  user,
+  completedGame,
+  secondAttempt,
+}) {
   const [answer, setAnswer] = useState({});
   const [showSolution, setShowSolution] = useState(false);
   const today = new Date().toISOString().split('T')[0]
@@ -22,6 +27,12 @@ function InputRiddle({riddle, user}) {
         });
     }
   }, [user, riddle]);
+
+  useEffect(() => {
+    if(completedGame) setShowSolution(true);
+    //if(secondAttempt && answer) setAnswer(...answer, {attemps: 2});
+    console.log('Answer', answer);
+  }, [completedGame, secondAttempt]);
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
@@ -55,12 +66,12 @@ function InputRiddle({riddle, user}) {
           />
         }
       </View>
-      <Button
+      {!completedGame && <Button
         title={showSolution ? 'Modify' : 'Confirm'}
         type="outline"
         onPress={() => showSolution ? setShowSolution(false) : confirm()}
         containerStyle={styles.button}
-      />
+      />}
     </React.Fragment>
   );
 };

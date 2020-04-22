@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import { Avatar, Icon } from "react-native-elements";
 import { API, graphqlOperation } from 'aws-amplify';
-import { getUserAnswer } from './shared';
+import { getUserAnswer } from '../shared';
 
 function RankList () {
   const [usersAnswers, setUsersAnswers] = useState([]);

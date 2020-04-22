@@ -3,7 +3,7 @@ import { StyleSheet, Platform, Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Avatar, Badge } from "react-native-elements";
 import { ScrollView } from 'react-native-gesture-handler';
-import { getUserAnswer, onCreateAnswer } from './shared';
+import { getUserAnswer, onCreateAnswer } from '../shared';
 
 function ShowBadge({user}) {
   if(!user.hasAnswered) return null;

@@ -2,8 +2,23 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import CountdownCircle from 'react-native-countdown-circle'
+import CountDown from 'react-native-countdown-component';
 
-function TimerCircle({setCountDown}) {
+function Timer({setShowDialog}) {
+  return (
+    <CountDown
+      digitStyle={{backgroundColor: 'orange'}}
+      digitTxtStyle={{color: 'white'}}
+      until={10}
+      timeToShow={['M', 'S']}
+      timeLabels={{m: 'MM', s: 'SS'}}
+      onFinish={() => setShowDialog(true)}
+      size={15}
+    />
+  )
+}
+
+function TimerCircle({setShowMainTimer}) {
   return <CountdownCircle
     seconds={5}
     radius={80}
@@ -11,16 +26,16 @@ function TimerCircle({setCountDown}) {
     color="orange"
     bgColor="#fff"
     textStyle={{ fontSize: 50 }}
-    onTimeElapsed={() => setCountDown(Date.now())}
+    onTimeElapsed={() => setShowMainTimer(false)}
   />
 }
 
-function CountDown({setCountDown}) {
+function LetsPlay({setShowMainTimer}) {
   const [showTimer, setShowTimer] = useState(false);
   return (
     <View style={styles.container}>
       { showTimer
-        ? <TimerCircle setCountDown={setCountDown}/>
+        ? <TimerCircle setShowMainTimer={setShowMainTimer}/>
         : <React.Fragment>
           <Text style={{fontSize: 30, color: 'white', marginBottom: 10}}>Ready to play?</Text>
           <Text style={{fontSize: 14, color: 'white'}}>If you finish within 15 min and get it right</Text>
@@ -50,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CountDown;
+export { LetsPlay, Timer };

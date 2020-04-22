@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../src/graphql/queries';
 import { onUpdateRiddle, onCreateRiddle } from '../src/graphql/subscriptions';
-import { Riddle } from '../components/Riddle';
+import { Riddle } from '../components/RiddleFlow/Riddle';
 
 function NoRiddle({riddle}) {
   if(riddle) return null;
