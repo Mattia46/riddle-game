@@ -44,12 +44,6 @@ function InputRiddle({
     }
   }, [user, riddle]);
 
-  useEffect(() => {
-    if(completedGame) setShowSolution(true);
-    //if(secondAttempt && answer) setAnswer(...answer, {attemps: 2});
-    console.log('Answer', answer);
-  }, [completedGame, answer]);
-
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
     answer.id
@@ -66,7 +60,7 @@ function InputRiddle({
   return (
     <React.Fragment>
       <View style={styles.container}>
-        { showSolution
+        { showSolution || completedGame
           ? <Text style={styles.boxSolution}>{answer.userSolution}</Text>
           : <Input
             placeholder="Add your answer"

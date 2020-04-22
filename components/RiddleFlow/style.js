@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   container: {
-    height: 140,
+    maxHeight: 140,
+    minHeight: 80,
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,

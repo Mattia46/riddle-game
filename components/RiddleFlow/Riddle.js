@@ -10,7 +10,7 @@ import { styles } from './style';
 function Solution({riddle}) {
   return (
     <React.Fragment>
-      <Text style={styles.boxSolution}>{riddle.solution} </Text>
+      <Text style={styles.answer}>{riddle.solution} </Text>
       <RankList/>
     </React.Fragment>
   )
@@ -20,6 +20,7 @@ function Riddle({ riddle, user }) {
   if(!riddle) return null;
   const [showMainTimer, setShowMainTimer] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
+  const [showTimer, setShowTimer] = useState(true);
   const [completedGame, setCompletedGame] = useState(false);
   const [secondAttempt, setSecondAttempt] = useState(false);
 
@@ -30,11 +31,12 @@ function Riddle({ riddle, user }) {
         setCompletedGame={setCompletedGame}
         setShowDialog={setShowDialog}
         setSecondAttempt={setSecondAttempt}
+        setShowTimer={setShowTimer}
       />
       <ScrollView>
         <View style={styles.timer}>
           <Text style={styles.riddle}>Riddle</Text>
-          { !completedGame && <Timer setShowDialog={setShowDialog}/> }
+          { showTimer && !riddle.expired && <Timer setShowDialog={setShowDialog}/> }
         </View>
         <Text style={styles.boxContainer}>{riddle.riddle}</Text>
         <Text style={styles.answer}>Answer</Text>
@@ -44,6 +46,7 @@ function Riddle({ riddle, user }) {
             riddle={riddle}
             user={user}
             secondAttempt={secondAttempt}
+            completedGame={completedGame}
           />
         }
       </ScrollView>
@@ -53,7 +56,7 @@ function Riddle({ riddle, user }) {
 
   return (
     <React.Fragment>
-      {showMainTimer
+      {showMainTimer && !riddle.expired
         ? <LetsPlay setShowMainTimer={setShowMainTimer} />
         : <Game />
       }

@@ -6,15 +6,18 @@ function OptionDialog({
   setCompletedGame,
   setShowDialog,
   setSecondAttempt,
+  setShowTimer,
 }) {
   const completeTheGame = () => {
     setShowDialog(false);
     setCompletedGame(true);
+    setShowTimer(false);
   };
 
   const continueTheGame = () => {
     setShowDialog(false);
     setSecondAttempt(true);
+    setShowTimer(false);
   };
 
   return (
