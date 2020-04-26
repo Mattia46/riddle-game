@@ -48,6 +48,7 @@ query GetUser(
         id
         date
         userSolution
+        attemps
       }
     }
   }

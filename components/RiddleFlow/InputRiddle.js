@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Input } from 'react-native-elements';
 import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
-import { getTodayUserAnswers } from '../shared';
 import { Button } from "react-native-elements";
 import { styles } from './style';
 
@@ -27,23 +26,14 @@ function InputRiddle({
   user,
   completedGame,
   secondAttempt,
+  answer,
+  setAnswer
 }) {
-  console.log('riddle', riddle);
-  const [answer, setAnswer] = useState({});
   const [showSolution, setShowSolution] = useState(false);
-  const today = new Date().toISOString().split('T')[0]
 
   useEffect(() => {
-    if(user && riddle) {
-      API.graphql(graphqlOperation(getTodayUserAnswers, {id: user.id, filter: { date: { eq: today}}}))
-        .then(({data: { getUser: { answers: { items }}}}) => {
-          if(items.length > 0) {
-            setAnswer(items[0]);
-            setShowSolution(true);
-          }
-        });
-    }
-  }, [user, riddle]);
+    if(answer) return setShowSolution(true);
+  }, []);
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');

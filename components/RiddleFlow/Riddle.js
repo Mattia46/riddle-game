@@ -7,6 +7,8 @@ import { Timer, LetsPlay } from './LetsPlay';
 import { OptionDialog } from './Dialog';
 import { styles } from './style';
 import {AsyncStorage} from 'react-native';
+import { API, graphqlOperation } from 'aws-amplify';
+import { getTodayUserAnswers } from '../shared';
 
 function Solution({riddle}) {
   return (
@@ -18,17 +20,36 @@ function Solution({riddle}) {
 };
 
 const Game = ({ riddle, user }) => {
+  const [answer, setAnswer] = useState({});
   const [showDialog, setShowDialog] = useState(false);
   const [showTimer, setShowTimer] = useState(true);
   const [completedGame, setCompletedGame] = useState(false);
   const [secondAttempt, setSecondAttempt] = useState(0);
+  const today = new Date().toISOString().split('T')[0]
 
+  useEffect(() => {
+    if(user && riddle) {
+      API.graphql(graphqlOperation(getTodayUserAnswers, {id: user.id, filter: { date: { eq: today}}}))
+        .then(({data: { getUser: { answers: { items }}}}) => {
+          if(items.length > 0) {
+            setAnswer(items[0]);
+          }
+        });
+    }
+  }, [user, riddle]);
+
+  const shouldRenderTimer = () => {
+    const { attemps } = answer;
+    const { expired } = riddle;
+    if(attemps > 0 && showTimer && !expired) return <Timer setShowDialog={setShowDialog} />;
+    return null;
+  };
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <ScrollView>
         <View style={styles.timer}>
           <Text style={styles.riddle}>Riddle</Text>
-          { showTimer && !riddle.expired && <Timer setShowDialog={setShowDialog}/> }
+          { shouldRenderTimer() }
         </View>
         <Text style={styles.boxContainer}>{riddle.riddle}</Text>
         <Text style={styles.answer}>Answer</Text>
@@ -39,6 +60,8 @@ const Game = ({ riddle, user }) => {
             user={user}
             secondAttempt={secondAttempt}
             completedGame={completedGame}
+            answer={answer}
+            setAnswer={setAnswer}
           />
         }
         <OptionDialog
