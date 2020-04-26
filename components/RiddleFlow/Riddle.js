@@ -32,7 +32,7 @@ const Game = ({ riddle, user }) => {
         </View>
         <Text style={styles.boxContainer}>{riddle.riddle}</Text>
         <Text style={styles.answer}>Answer</Text>
-        {riddle.expired
+        { riddle.expired
           ? <Solution riddle={riddle} />
           : <InputRiddle
             riddle={riddle}
@@ -49,7 +49,7 @@ const Game = ({ riddle, user }) => {
           setShowTimer={setShowTimer}
         />
       </ScrollView>
-      { !riddle.expired && <UserListAnwsers /> }
+      { !riddle && !riddle.expired && <UserListAnwsers /> }
     </View>
   );
 }
@@ -60,12 +60,19 @@ function Riddle({ riddle, user }) {
 
   useEffect(() => {
     const getLocalStorage = async () => {
+      const today = await AsyncStorage.getItem('today');
       const flag = await AsyncStorage.getItem('mainTimer');
-      if(!flag) {
+      if(!flag && !today) {
+        AsyncStorage.setItem('today', new Date().getDate())
         AsyncStorage.setItem('mainTimer', true);
         return setShowMainTimer('true');
       }
-      setShowMainTimer(flag);
+      if(flag && today == new Date().getDate()) {
+        return setShowMainTimer(flag);
+      };
+      AsyncStorage.setItem('today', new Date().getDate());
+      AsyncStorage.setItem('mainTimer', true);
+      return setShowMainTimer('true');
     }
     getLocalStorage();
   }, []);

@@ -28,6 +28,7 @@ function InputRiddle({
   completedGame,
   secondAttempt,
 }) {
+  console.log('riddle', riddle);
   const [answer, setAnswer] = useState({});
   const [showSolution, setShowSolution] = useState(false);
   const today = new Date().toISOString().split('T')[0]
