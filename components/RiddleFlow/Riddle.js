@@ -6,6 +6,7 @@ import { UserListAnwsers } from './userLiveAnswers';
 import { Timer, LetsPlay } from './LetsPlay';
 import { OptionDialog } from './Dialog';
 import { styles } from './style';
+import {AsyncStorage} from 'react-native';
 
 function Solution({riddle}) {
   return (
@@ -16,15 +17,13 @@ function Solution({riddle}) {
   )
 };
 
-function Riddle({ riddle, user }) {
-  if(!riddle) return null;
-  const [showMainTimer, setShowMainTimer] = useState(true);
+const Game = ({ riddle, user }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [showTimer, setShowTimer] = useState(true);
   const [completedGame, setCompletedGame] = useState(false);
-  const [secondAttempt, setSecondAttempt] = useState(false);
+  const [secondAttempt, setSecondAttempt] = useState(0);
 
-  const Game = () => (
+  return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <ScrollView>
         <View style={styles.timer}>
@@ -42,23 +41,40 @@ function Riddle({ riddle, user }) {
             completedGame={completedGame}
           />
         }
-      <OptionDialog
-        visible={showDialog}
-        setCompletedGame={setCompletedGame}
-        setShowDialog={setShowDialog}
-        setSecondAttempt={setSecondAttempt}
-        setShowTimer={setShowTimer}
-      />
+        <OptionDialog
+          visible={showDialog}
+          setCompletedGame={setCompletedGame}
+          setShowDialog={setShowDialog}
+          setSecondAttempt={setSecondAttempt}
+          setShowTimer={setShowTimer}
+        />
       </ScrollView>
       { !riddle.expired && <UserListAnwsers /> }
     </View>
   );
+}
+
+function Riddle({ riddle, user }) {
+  if(!riddle) return null;
+  const [showMainTimer, setShowMainTimer] = useState();
+
+  useEffect(() => {
+    const getLocalStorage = async () => {
+      const flag = await AsyncStorage.getItem('mainTimer');
+      if(!flag) {
+        AsyncStorage.setItem('mainTimer', true);
+        return setShowMainTimer('true');
+      }
+      setShowMainTimer(flag);
+    }
+    getLocalStorage();
+  }, []);
 
   return (
     <React.Fragment>
-      {showMainTimer && !riddle.expired
+      { showMainTimer == 'true' && !riddle.expired
         ? <LetsPlay setShowMainTimer={setShowMainTimer} />
-        : <Game />
+        : <Game riddle={riddle} user={user}/>
       }
     </React.Fragment>
   )

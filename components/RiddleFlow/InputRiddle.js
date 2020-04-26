@@ -47,12 +47,12 @@ function InputRiddle({
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
     answer.id
-      ? updateUserAnswer(answer)
+      ? updateUserAnswer({...answer, attemps: secondAttempt})
       : createUserAnswer(riddle, user, answer)
       .then(({data: { createAnswer }}) => {
         delete createAnswer.riddle;
         delete createAnswer.user;
-        setAnswer(createAnswer)
+        setAnswer({...createAnswer, attemps: secondAttempt})
       });
     setShowSolution(true);
   };

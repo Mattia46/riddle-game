@@ -16,7 +16,7 @@ function OptionDialog({
 
   const continueTheGame = () => {
     setShowDialog(false);
-    setSecondAttempt(true);
+    setSecondAttempt(1);
     setShowTimer(false);
   };
 

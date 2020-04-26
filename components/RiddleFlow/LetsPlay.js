@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import CountdownCircle from 'react-native-countdown-circle'
 import CountDown from 'react-native-countdown-component';
+import {AsyncStorage} from 'react-native';
 
 function Timer({setShowDialog}) {
   return (
@@ -19,6 +20,11 @@ function Timer({setShowDialog}) {
 }
 
 function TimerCircle({setShowMainTimer}) {
+  const handler = async () => {
+    await AsyncStorage.setItem('mainTimer', false);
+    setShowMainTimer(false);
+  };
+
   return <CountdownCircle
     seconds={5}
     radius={80}
@@ -26,7 +32,7 @@ function TimerCircle({setShowMainTimer}) {
     color="orange"
     bgColor="#fff"
     textStyle={{ fontSize: 50 }}
-    onTimeElapsed={() => setShowMainTimer(false)}
+    onTimeElapsed={handler}
   />
 }
 
