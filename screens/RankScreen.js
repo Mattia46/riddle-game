@@ -19,7 +19,11 @@ function getWeekDates() {
     month = `0${month}`;
   }
 
-  const initWeekDay = `${year}-${month}-${monthDay - weekDay}`
+  const initDay = monthDay < 10
+    ? `0${monthDay - weekDay}`
+    : `${monthDay - weekDay}`;
+
+  const initWeekDay = `${year}-${month}-${initDay}`
   const endWeekDay = `${year}-${month}-${monthDay + (7 - weekDay)}`
   return [initWeekDay, endWeekDay]
 };
