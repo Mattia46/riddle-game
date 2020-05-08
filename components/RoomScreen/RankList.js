@@ -24,7 +24,7 @@ const RankList = () => {
       { usersAnswers.map((user, index) => (
         <View style={styles.containerRankList} key={index}>
           <Avatar
-            rounded size={50}
+            rounded size={45}
             source={{uri: user.avatar}}
             title={user.name}
           />

@@ -19,7 +19,6 @@ function Riddle({ riddle, user }) {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <ScrollView>
         <Text style={styles.riddle}>Riddle</Text>
         <Text style={styles.boxContainer}>{riddle.riddle}</Text>
         <Text style={styles.answer}>Answer</Text>
@@ -27,7 +26,6 @@ function Riddle({ riddle, user }) {
           ? <Solution riddle={riddle} />
           : <InputRiddle riddle={riddle} user={user} />
         }
-      </ScrollView>
       { !riddle.expired && <UserListAnwsers /> }
     </View>
   );
