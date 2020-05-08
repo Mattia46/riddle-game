@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Platform, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Avatar, Badge } from "react-native-elements";
-import { ScrollView } from 'react-native-gesture-handler';
-import { getUserAnswer, onCreateAnswer } from './shared';
+import { getUserAnswer, onCreateAnswer } from '../shared';
+import { styles } from './style';
+import { getNormaliseUserLiveList } from '../utils';
 
 function ShowBadge({user}) {
   if(!user.hasAnswered) return null;
@@ -14,11 +15,15 @@ function ShowBadge({user}) {
   />
 }
 
-function UserListAnwsers() {
+const UserListAnwsers = () => {
   const [listUsers, setListUsers] = useState([]);
   const latestUpdateUser = React.useRef(null);
 
   const today = new Date().toISOString().split('T')[0]
+  const getLiveUserStatus = () => API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
+    .then(({data}) => setListUsers([...getNormaliseUserLiveList(data)]))
+    .catch(err => alert('Error LiveUser getTodayUserAnswer'));
+
   const updateUser = userId => {
     const updatedList = listUsers
       .map(user => {
@@ -33,26 +38,17 @@ function UserListAnwsers() {
   latestUpdateUser.current = updateUser;
 
   useEffect(() => {
+    getLiveUserStatus();
     const onCreate = API.graphql(graphqlOperation(onCreateAnswer))
-      .subscribe(data => latestUpdateUser.current(data.value.data.onCreateAnswer.user.id));
-
-    API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
-      .then(({data}) => {
-        const normaliseList = data.listUsers?.items.map(user => ({
-          hasAnswered: user.answers?.items[0]?.userSolution ? true : false,
-          name: user.name,
-          avatar: user.avatar,
-          id: user.id
-        }));
-
-        setListUsers([...normaliseList])
+      .subscribe({
+        next: data => latestUpdateUser.current(data.value.data.onCreateAnswer.user.id),
+        error: err => alert('Error LiveUser onCreateAnswer')
       });
-
     return () => onCreate.unsubscribe();
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.containerLive}>
       { listUsers.map((user, index) => (
         <View key={index} style={styles.avatar}>
           <Avatar key={index}
@@ -69,18 +65,5 @@ function UserListAnwsers() {
     </View>
   )
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems:'flex-end',
-    padding: 20,
-  },
-  avatar: {
-    display: 'flex',
-    marginLeft: -5,
-  },
-});
 
 export { UserListAnwsers }
