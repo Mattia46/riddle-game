@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -21,9 +21,9 @@ async function createNewUser(username) {
 };
 
 function App(props) {
-  const [user, setUser] = React.useState();
+  const [user, setUser] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function getUser() {
       const {data} = await API.graphql(graphqlOperation(userByName, {name: Auth.user.username}));
       let currentUser = data.userByName?.items[0];
@@ -36,7 +36,7 @@ function App(props) {
   }, []);
 
     return (
-      <React.Fragment>
+      <>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#5c4fa1' }}} >
@@ -45,7 +45,7 @@ function App(props) {
             </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
-      </React.Fragment>
+      </>
     );
   }
 //}
@@ -57,5 +57,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withAuthenticator(App)
-//export default withAuthenticator(App, { includeGreetings: true})
+//export default withAuthenticator(App)
+export default withAuthenticator(App, { includeGreetings: true})

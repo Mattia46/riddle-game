@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Input, Button, CheckBox } from 'react-native-elements';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
-import { riddleByDate } from '../src/graphql/queries';
-import { getUserAnswer } from './shared';
-import { createRiddle, updateRiddle, updateAnswer } from '../src/graphql/mutations';
+import { riddleByDate } from '../../src/graphql/queries';
+import { getUserAnswer } from '../shared';
+import { createRiddle, updateRiddle, updateAnswer } from '../../src/graphql/mutations';
+import { styles } from './style';
 
 const normaliseList = items =>
   items.map(user => ({
@@ -65,7 +66,7 @@ const Admin = ({user}) => {
   }, [newItem]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.adminContainer}>
       <ScrollView>
         <Input
           placeholder="Question"
@@ -119,37 +120,5 @@ const Admin = ({user}) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-  },
-  userListContainer: {
-    borderBottomColor: '#B8B3A7',
-    borderBottomWidth: 0.4,
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 30,
-  },
-  confirm: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-evenly'
-  },
-  button: {
-    width: 200,
-    alignSelf: 'center',
-    marginTop: 20,
-  },
-  input: {
-    borderRadius: 24,
-    justifyContent: 'space-around',
-    marginTop: 20,
-  },
-});
 
 export { Admin };
