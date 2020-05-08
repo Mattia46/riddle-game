@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listUsers, listRiddles } from '../../src/graphql/queries';
-import { onUpdateRiddle, onCreateRiddle } from '../../src/graphql/subscriptions';
 import { Riddle } from './Riddle';
 import { styles } from './style';
 
