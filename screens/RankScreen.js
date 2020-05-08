@@ -28,7 +28,6 @@ function getWeekDates() {
   return [initWeekDay, endWeekDay]
 };
 
-getWeekDates();
 export default function RankScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
   const today = new Date();

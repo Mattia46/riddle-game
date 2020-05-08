@@ -27,7 +27,6 @@ export default function BottomTabNavigator({ navigation, route, user }) {
       <BottomTab.Screen name="Room"
         options={{
           title: 'Room',
-          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="logo-game-controller-b" />,
         }}
       >
@@ -38,7 +37,6 @@ export default function BottomTabNavigator({ navigation, route, user }) {
         component={RankScreen}
         options={{
           title: 'Rank',
-          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-trophy" />,
         }}
       />
