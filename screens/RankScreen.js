@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
-import { Avatar } from "react-native-elements";
-import { ScrollView } from 'react-native-gesture-handler';
+import { Avatar, Rating } from "react-native-elements";
 import { getUserAnswer } from '../components/shared';
-import { ListItem } from 'react-native-elements'
-import { Rating } from 'react-native-elements';
+import { mapAndSortUserList } from '../components/utils';
 
 
 function getWeekDates() {
@@ -30,30 +28,29 @@ function getWeekDates() {
 
 export default function RankScreen() {
   const [userResultsList, setUserResultsList] = useState([]);
-  const today = new Date();
-  const dayNumber = today.getDate();
+  const [refreshing, setRefreshing] = useState(false);
 
   const [initDate, endDate] = getWeekDates();
+  const getFilter = () => ({ filter: {result: {eq: true}, date: {between:[initDate, endDate]}}})
+
+  const getAnswers = () => API.graphql(graphqlOperation(getUserAnswer, getFilter()))
+    .then(({data: { listUsers }}) => setUserResultsList(mapAndSortUserList(listUsers?.items)))
+    .catch(err => alert('Error RankScreen: getUserAnswers'));
+
+  const onRefresh = () => {
+    getAnswers();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
-    API.graphql(graphqlOperation(getUserAnswer,
-      {filter:{result:{eq: true},date: {between:[initDate, endDate]}}}
-    )).then(({data: { listUsers }}) => {
-      if(listUsers && listUsers.items) {
-        const newList = listUsers.items.map(x => ({
-          name: x.name,
-          avatar: x.avatar,
-          id: x.id,
-          result: x.answers.items.length
-        }))
-        const sortedList =  newList.sort((a,b) => (b.result - a.result));
-        setUserResultsList(sortedList)
-      }
-    });
+    getAnswers();
   }, []);
 
   return (
-    <ScrollView style={{backgroundColor: 'white'}}>
+    <ScrollView
+      style={{backgroundColor: 'white'}}
+      refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> }
+    >
       { userResultsList.map((user, index) => (
         <View key={index} style={styles.container}>
           <Avatar key={index}
