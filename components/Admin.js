@@ -21,7 +21,6 @@ function normaliseObject(obj) {
 function Admin({user}) {
   if(!user || user.name !== 'mattia') return null;
 
-  const windowWidth = Dimensions.get('window').width;
   const today = new Date().toISOString().split('T')[0]
   const [userAnswer, setUserAnswer] = useState([]);
   const [newItem, setNewItem] = useState({});
