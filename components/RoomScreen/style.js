@@ -2,12 +2,12 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const styles = StyleSheet.create({
   button: {
+    marginTop: 10,
     width: 200,
     alignSelf: 'center',
-    marginTop: 20,
   },
   container: {
-    height: 140,
+    minHeight: 70,
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,
