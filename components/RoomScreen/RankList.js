@@ -2,20 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { Avatar, Icon } from "react-native-elements";
 import { API, graphqlOperation } from 'aws-amplify';
-import { getUserAnswer } from '../shared';
 import { styles } from './style';
-import { normaliseUserList } from '../utils';
+import { getUsersAnswer } from '../utils';
 
 const RankList = () => {
   const [usersAnswers, setUsersAnswers] = useState([]);
   const today = new Date().toISOString().split('T')[0]
 
-  const getTodayUsersAnswer = () => API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
-    .then(({data: { listUsers: { items }}}) => setUsersAnswers(normaliseUserList(items).sort((a, b) => b.answer - a.answer)))
-    .catch(err => alert('Error RankList getTodayUsersAnswer'));
-
   useEffect(() => {
-    getTodayUsersAnswer();
+    getUsersAnswer().then(setUsersAnswers);
   }, []);
 
 
