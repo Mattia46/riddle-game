@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { Admin } from './Admin';
 import { API, graphqlOperation } from 'aws-amplify';
-import { getTodayRiddle } from '../utils';
+import { getTodayRiddle, getUserFromLocal } from '../utils';
 import { onCreateRiddle } from '../../src/graphql/subscriptions';
 import { Welcome } from './Welcome';
 import { styles } from './style';
-import { getUserFromLocal } from '../utils';
 
 const HomeScreen = ({ navigation }) => {
   const today = new Date().toISOString().split('T')[0]

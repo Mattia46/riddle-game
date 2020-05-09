@@ -48,10 +48,18 @@ const getTodayUserAnswer = async ({id}) => await API.graphql(graphqlOperation(an
     return {};
   }).catch(err => alert('Error getTodayUserAnswer utils'));
 
+const initRiddle = () => ({
+  expired: false,
+  date: today,
+  solution: '',
+  riddle: '',
+});
+
 export {
   getUserFromLocal,
   getTodayRiddle,
   getTodayUserAnswer,
   normaliseUserList,
   getUsersAnswer,
+  initRiddle,
 }

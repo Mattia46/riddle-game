@@ -13,22 +13,18 @@ function NoRiddle({riddle}) {
     </View>
   );
 }
-export default function RoomScreen({user}) {
+
+const RoomScreen = ({user}) => {
   const [riddle, setRiddle] = useState();
   const [refreshing, setRefreshing] = useState(false);
 
-  const init = () => getTodayRiddle()
-    .then(setRiddle)
-    .catch(err => console.log('Error RoomScreen getTodayRiddle', err));
-
   const onRefresh = () => {
-    init();
+    getTodayRiddle().then(setRiddle);
     setRefreshing(false);
   };
 
   useEffect(() => {
-    init();
-    console.log('ridle', riddle);
+    getTodayRiddle().then(setRiddle);
   }, []);
 
   return (
@@ -38,3 +34,5 @@ export default function RoomScreen({user}) {
     </ScrollView>
   );
 }
+
+export default RoomScreen;

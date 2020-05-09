@@ -12,40 +12,38 @@ const InputRiddle = ({riddle}) => {
   const [user, setUser] = useState({});
   const [showSolution, setShowSolution] = useState(false);
 
-  const updateUserAnswer = () => API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}))
-    .catch(err => alert('Error InputRiddle updateAnswer'));
-
-  const createUserAnswer = () => API.graphql(graphqlOperation(createAnswer, { input: {
-    date: riddle.date,
-    userSolution: answer.userSolution,
-    result: false,
-    attemps: 0,
-    answerRiddleId: riddle.id,
-    answerUserId: user.id
-  }})).then(({data: { createAnswer }}) => {
-    delete createAnswer.riddle;
-    delete createAnswer.user;
-    setAnswer(createAnswer)
-  }).catch(err => alert('Error InputRiddle CreateAnswer'));
-
   useEffect(() => {
     if(riddle) {
-    getUserFromLocal()
-      .then(user => {
-        setUser(user);
-        return user;
-      })
-      .then(getTodayUserAnswer)
-      .then(answer => {
-        setAnswer(answer);
-        setShowSolution(true);
-      });
+      getUserFromLocal()
+        .then(user => {
+          setUser(user);
+          return user;
+        })
+        .then(getTodayUserAnswer)
+        .then(answer => {
+          setAnswer(answer);
+          setShowSolution(true);
+        });
     }
   }, [riddle]);
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
-    answer.id ? updateUserAnswer() : createUserAnswer();
+    answer.id
+      ? API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}))
+      : API.graphql(graphqlOperation(createAnswer, { input: {
+        date: riddle.date,
+        userSolution: answer.userSolution,
+        result: false,
+        attemps: 0,
+        answerRiddleId: riddle.id,
+        answerUserId: user.id
+      }})).then(({data: { createAnswer }}) => {
+        delete createAnswer.riddle;
+        delete createAnswer.user;
+        setAnswer(createAnswer)
+      }).catch(err => alert('Error InputRiddle CreateAnswer'));
+
     setShowSolution(true);
   };
 

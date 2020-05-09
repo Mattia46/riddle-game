@@ -4,26 +4,17 @@ import { Text, View, ScrollView, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createRiddle, updateRiddle, updateAnswer } from '../../src/graphql/mutations';
 import { styles } from './style';
-import { getTodayRiddle, getUsersAnswer } from '../utils';
-
-const initRiddle = today => ({
-  expired: false,
-  date: today,
-  solution: '',
-  riddle: '',
-});
+import { getTodayRiddle, getUsersAnswer, initRiddle } from '../utils';
 
 const Admin = ({user}) => {
   if(!user || user.name !== 'mattia') return null;
 
-  const today = new Date().toISOString().split('T')[0]
   const [userAnswer, setUserAnswer] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
   const [riddle, setRiddle] = useState({});
+  const [refreshing, setRefreshing] = useState(false);
 
   const init = () => {
-    getTodayRiddle()
-      .then(data => data ? setRiddle(data) : setRiddle(initRiddle(today)));
+    getTodayRiddle().then(data => data ? setRiddle(data) : setRiddle(initRiddle()));
     getUsersAnswer().then(setUserAnswer);
   };
 

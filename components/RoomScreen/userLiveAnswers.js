@@ -19,8 +19,6 @@ const UserListAnwsers = () => {
   const [listUsers, setListUsers] = useState([]);
   const latestUpdateUser = React.useRef(null);
 
-  const today = new Date().toISOString().split('T')[0]
-
   const updateUser = userId => {
     const updatedList = listUsers
       .map(user => {
