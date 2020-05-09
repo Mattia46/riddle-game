@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Input, Button, CheckBox } from 'react-native-elements';
 import { Text, View, ScrollView, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
-import { getUserAnswer } from '../shared';
 import { createRiddle, updateRiddle, updateAnswer } from '../../src/graphql/mutations';
 import { styles } from './style';
-import { getTodayRiddle, normaliseUserList } from '../utils';
+import { getTodayRiddle, getUsersAnswer } from '../utils';
 
 const initRiddle = today => ({
   expired: false,
@@ -25,17 +24,13 @@ const Admin = ({user}) => {
   const init = () => {
     getTodayRiddle()
       .then(data => data ? setRiddle(data) : setRiddle(initRiddle(today)));
-    getUsersAnswer();
+    getUsersAnswer().then(setUserAnswer);
   };
 
   const onRefresh = () => {
     init();
     setRefreshing(false);
   };
-
-  const getUsersAnswer = () => API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
-    .then(({data: { listUsers: { items }}}) => setUserAnswer(normaliseUserList(items)))
-    .catch(({errors}) => alert('Error user Answer'));
 
   const submit = () => {
     if(riddle.id) {
@@ -52,7 +47,7 @@ const Admin = ({user}) => {
 
   const updateUserAnswer = ({ answer }) => { if(answer)  {
     return API.graphql(graphqlOperation(updateAnswer, { input: { id: answer.id, result: !answer.result }}))
-      .then(getUsersAnswer)
+      .then(() => getUsersAnswer().then(setUserAnswer))
       .catch(({errors}) => alert('Error updating the anser', errors[0].message))
   }}
 

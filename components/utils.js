@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { riddleByDate, answerByDate } from '../src/graphql/queries';
+import { getUserAnswer } from './shared';
 
 const normaliseUserList = data => data.map(user => ({
   id: user.id,
@@ -34,7 +35,9 @@ const getTodayRiddle = async () => await API.graphql(graphqlOperation(riddleByDa
   .then(({data: { riddleByDate: { items }}}) => items[0])
   .catch(err => alert('Error getTodayRiddle utils'))
 
-const getTodayAnswers = async () => await API.graphql(graphqlOperation(answerByDate, { limit: 15, date: today }));
+const getUsersAnswer = async () => await API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
+    .then(({data: { listUsers: { items }}}) => normaliseUserList(items))
+    .catch(({errors}) => alert('Error user Answer'));
 
 const getTodayUserAnswer = async ({id}) => await API.graphql(graphqlOperation(answerByDate, { limit: 15, date: today }))
   .then(({data: { answerByDate: { items }}}) => {
@@ -42,13 +45,13 @@ const getTodayUserAnswer = async ({id}) => await API.graphql(graphqlOperation(an
     if(answer && answer.userSolution && answer.riddle) {
       return normaliseUserAnswer(answer);
     }
-    return null;
+    return {};
   }).catch(err => alert('Error getTodayUserAnswer utils'));
 
 export {
   getUserFromLocal,
   getTodayRiddle,
-  getTodayAnswers,
   getTodayUserAnswer,
   normaliseUserList,
+  getUsersAnswer,
 }
