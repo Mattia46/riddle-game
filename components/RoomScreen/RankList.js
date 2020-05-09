@@ -4,18 +4,18 @@ import { Avatar, Icon } from "react-native-elements";
 import { API, graphqlOperation } from 'aws-amplify';
 import { getUserAnswer } from '../shared';
 import { styles } from './style';
-import { getNormaliseList } from '../utils';
+import { normaliseUserList } from '../utils';
 
 const RankList = () => {
   const [usersAnswers, setUsersAnswers] = useState([]);
   const today = new Date().toISOString().split('T')[0]
 
-  const getTodayUserAnswer = () => API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
-    .then(({data}) => setUsersAnswers(getNormaliseList(data)))
-    .catch(err => alert('Error RankList getTodayUseranswer'));
+  const getTodayUsersAnswer = () => API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
+    .then(({data: { listUsers: { items }}}) => setUsersAnswers(normaliseUserList(items).sort((a, b) => b.answer - a.answer)))
+    .catch(err => alert('Error RankList getTodayUsersAnswer'));
 
   useEffect(() => {
-    getTodayUserAnswer();
+    getTodayUsersAnswer();
   }, []);
 
 

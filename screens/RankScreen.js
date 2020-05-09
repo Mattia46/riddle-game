@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Avatar, Rating } from "react-native-elements";
 import { getUserAnswer } from '../components/shared';
-import { mapAndSortUserList } from '../components/utils';
+import { normaliseUserList } from '../components/utils';
 
 
 function getWeekDates() {
@@ -34,7 +34,7 @@ export default function RankScreen() {
   const getFilter = () => ({ filter: {result: {eq: true}, date: {between:[initDate, endDate]}}})
 
   const getAnswers = () => API.graphql(graphqlOperation(getUserAnswer, getFilter()))
-    .then(({data: { listUsers }}) => setUserResultsList(mapAndSortUserList(listUsers?.items)))
+    .then(({data: { listUsers: { items }}}) => setUserResultsList(normaliseUserList(items).sort((a, b) => b.result = a.result)))
     .catch(err => alert('Error RankScreen: getUserAnswers'));
 
   const onRefresh = () => {

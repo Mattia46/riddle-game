@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, RefreshControl } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
-import { listUsers, listRiddles } from '../../src/graphql/queries';
+import { getTodayRiddle } from '../utils';
 import { Riddle } from './Riddle';
 import { styles } from './style';
 
-function NoRiddle({riddle, getTodayRiddle}) {
+function NoRiddle({riddle}) {
   if(riddle) return null;
   return (
     <View  style={styles.noRiddle}>
@@ -15,21 +14,21 @@ function NoRiddle({riddle, getTodayRiddle}) {
   );
 }
 export default function RoomScreen({user}) {
-  const today = new Date().toISOString().split('T')[0]
   const [riddle, setRiddle] = useState();
   const [refreshing, setRefreshing] = useState(false);
 
-  const getTodayRiddle = () => API.graphql(graphqlOperation(listRiddles, { filter: { date: { eq: today }}}))
-    .then(({data}) => setRiddle(data.listRiddles?.items[0]))
-    .catch(err => alert('Error RoomScreen getTodayRiddle'));
+  const init = () => getTodayRiddle()
+    .then(setRiddle)
+    .catch(err => console.log('Error RoomScreen getTodayRiddle', err));
 
   const onRefresh = () => {
-    getTodayRiddle();
+    init();
     setRefreshing(false);
   };
 
   useEffect(() => {
-    getTodayRiddle();
+    init();
+    console.log('ridle', riddle);
   }, []);
 
   return (

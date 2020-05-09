@@ -1,35 +1,54 @@
 import { AsyncStorage } from 'react-native';
+import { API, graphqlOperation } from 'aws-amplify';
+import { riddleByDate, answerByDate } from '../src/graphql/queries';
 
-const mapAndSortUserList = (items = []) => items.map(x => ({
-  name: x.name,
-  avatar: x.avatar,
-  id: x.id,
-  result: x.answers.items.length
-})).sort((a,b) => (b.result - a.result));
-
-const getNormaliseList = data => data.listUsers?.items.map(user => ({
-  answer: user.answers?.items[0]?.result || false,
+const normaliseUserList = data => data.map(user => ({
+  id: user.id,
   name: user.name,
   avatar: user.avatar,
   solution: user.answers?.items[0]?.userSolution || '',
-  id: user.id
-})).sort((x, y) => y.answer - x.answer);
-
-const getNormaliseUserLiveList = data => data.listUsers?.items.map(user => ({
+  answer: user.answers?.items[0]?.result || false,
+  answer: user.answers.items[0],
   hasAnswered: user.answers?.items[0]?.userSolution ? true : false,
-  name: user.name,
-  avatar: user.avatar,
-  id: user.id
+  result: user.answers?.items.length
 }));
 
-async function getUserFromLocal(setUser) {
+const normaliseUserAnswer = answer => ({
+  date: answer.riddle.date,
+  userSolution: answer.userSolution,
+  id: answer.id,
+  result: answer.result,
+  attemps: answer.attemps,
+  answerRiddleId: answer.riddle.id,
+  answerUserId: answer.user.id,
+})
+
+const today = new Date().toISOString().split('T')[0]
+
+const getUserFromLocal = async () => {
   const user = await AsyncStorage.getItem('user');
   return JSON.parse(user);
 }
 
+const getTodayRiddle = async () => await API.graphql(graphqlOperation(riddleByDate, { date: today }))
+  .then(({data: { riddleByDate: { items }}}) => items[0])
+  .catch(err => alert('Error getTodayRiddle utils'))
+
+const getTodayAnswers = async () => await API.graphql(graphqlOperation(answerByDate, { limit: 15, date: today }));
+
+const getTodayUserAnswer = async ({id}) => await API.graphql(graphqlOperation(answerByDate, { limit: 15, date: today }))
+  .then(({data: { answerByDate: { items }}}) => {
+    const [answer] = items.filter(({user}) => user.id === id)
+    if(answer && answer.userSolution && answer.riddle) {
+      return normaliseUserAnswer(answer);
+    }
+    return null;
+  }).catch(err => alert('Error getTodayUserAnswer utils'));
+
 export {
-  mapAndSortUserList,
-  getNormaliseList,
-  getNormaliseUserLiveList,
   getUserFromLocal,
+  getTodayRiddle,
+  getTodayAnswers,
+  getTodayUserAnswer,
+  normaliseUserList,
 }

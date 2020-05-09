@@ -1,73 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Input, Button, CheckBox } from 'react-native-elements';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, RefreshControl } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
-import { riddleByDate } from '../../src/graphql/queries';
 import { getUserAnswer } from '../shared';
 import { createRiddle, updateRiddle, updateAnswer } from '../../src/graphql/mutations';
 import { styles } from './style';
+import { getTodayRiddle, normaliseUserList } from '../utils';
 
-const normaliseList = items =>
-  items.map(user => ({
-    id: user.id,
-    name: user.name,
-    avatar: user.avatar,
-    answer: user.answers.items[0]
-  }));
-
-const getNewArray = (userAnswer, newItem) =>
-  userAnswer.map(user => user.id === newItem.id ? newItem : user);
+const initRiddle = today => ({
+  expired: false,
+  date: today,
+  solution: '',
+  riddle: '',
+});
 
 const Admin = ({user}) => {
   if(!user || user.name !== 'mattia') return null;
 
-  console.log('Admin');
   const today = new Date().toISOString().split('T')[0]
   const [userAnswer, setUserAnswer] = useState([]);
-  const [newItem, setNewItem] = useState({});
-  const [riddle, setRiddle] = useState({
-    expired: false,
-    date: today,
-    solution: '',
-    riddle: '',
-  });
+  const [refreshing, setRefreshing] = useState(false);
+  const [riddle, setRiddle] = useState({});
 
-  // Riddle
-  const getRiddleOfTheDay = () => API.graphql(graphqlOperation(riddleByDate, { date: today }))
-    .then(({data: { riddleByDate: { items }}}) => {
-      if(items.length > 0) {
-        return setRiddle(items[0]);
-      }})
-    .catch(({errors}) => alert('Error get riddle by date'));
+  const init = () => {
+    getTodayRiddle()
+      .then(data => data ? setRiddle(data) : setRiddle(initRiddle(today)));
+    getUsersAnswer();
+  };
 
-  const createTodayRiddle = () => API.graphql(graphqlOperation(createRiddle, { input: riddle }))
-    .then(({data: { createRiddle }}) => setRiddle(createRiddle))
-    .catch(({errors}) => alert('error creating the Riddles', errors[0].message));
+  const onRefresh = () => {
+    init();
+    setRefreshing(false);
+  };
 
-  const updateTodayRiddle = () => API.graphql(graphqlOperation(updateRiddle, { input: riddle }))
-    .then(({data: { updateRiddle }}) => setRiddle(updateRiddle))
-    .catch(({errors}) => alert('error updating the Riddle', errors[0].message))
-
-  // User answers
   const getUsersAnswer = () => API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
-    .then(({data: { listUsers: { items }}}) => setUserAnswer(normaliseList(items)))
+    .then(({data: { listUsers: { items }}}) => setUserAnswer(normaliseUserList(items)))
     .catch(({errors}) => alert('Error user Answer'));
 
-  const submit = () => riddle.id ? updateTodayRiddle() : createTodayRiddle();
+  const submit = () => {
+    if(riddle.id) {
+      return API.graphql(graphqlOperation(updateRiddle, { input: riddle }))
+        .then(({data: { updateRiddle }}) => setRiddle(updateRiddle))
+        .catch(({errors}) => alert('error updating the Riddle'))
+    } else if (riddle.riddle && riddle.solution){
+      return API.graphql(graphqlOperation(createRiddle, { input: riddle }))
+        .then(({data: { createRiddle }}) => setRiddle(createRiddle))
+        .catch(({errors}) => alert('error creating the Riddles'));
+    }
+    return alert('insert please');
+  }
+
   const updateUserAnswer = ({ answer }) => { if(answer)  {
     return API.graphql(graphqlOperation(updateAnswer, { input: { id: answer.id, result: !answer.result }}))
+      .then(getUsersAnswer)
       .catch(({errors}) => alert('Error updating the anser', errors[0].message))
   }}
 
   useEffect(() => {
-    getRiddleOfTheDay();
-    getUsersAnswer();
-    setUserAnswer(getNewArray(userAnswer, newItem));
-  }, [newItem]);
+    init();
+  }, []);
 
   return (
     <View style={styles.adminContainer}>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
         <Input
           placeholder="Question"
           containerStyle={styles.input}
@@ -90,11 +85,6 @@ const Admin = ({user}) => {
             title="Expired"
             checked={riddle.expired}
             onPress={() => setRiddle({...riddle, expired: !riddle.expired})}
-          />
-          <Button
-            type="outline"
-            title="Reload"
-            onPress={getUsersAnswer}
           />
           <Button
             type="outline"

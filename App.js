@@ -21,7 +21,6 @@ async function createNewUser(username) {
 };
 
 function App(props) {
-  console.log('APP MAIN');
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -33,28 +32,30 @@ function App(props) {
       }
       try {
         await AsyncStorage.setItem('user', JSON.stringify(currentUser))
+        setUser(currentUser);
       } catch (error) {
         alert('Set user localStorage');
       }
-      setUser(currentUser);
     }
     getUser()
   }, []);
 
-  return (
-    <>
-      {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#5c4fa1' }}} >
-          <Stack.Screen name="Home">
-            {props => <BottomTabNavigator {...props} user={user}/>}
-          </Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
-  );
+  if(!user) { return null }
+  else {
+    return (
+      <>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#5c4fa1' }}} >
+            <Stack.Screen name="Home">
+              {props => <BottomTabNavigator {...props} user={user}/>}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </>
+    );
+  }
 }
-//}
 
 const styles = StyleSheet.create({
   container: {

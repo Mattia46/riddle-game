@@ -15,7 +15,6 @@ function Solution({riddle}) {
 };
 
 function Riddle({ riddle }) {
-  console.log('Riddle', riddle);
   if(!riddle) return null;
 
   return (

@@ -4,7 +4,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { Avatar, Badge } from "react-native-elements";
 import { getUserAnswer, onCreateAnswer } from '../shared';
 import { styles } from './style';
-import { getNormaliseUserLiveList } from '../utils';
+import { normaliseUserList } from '../utils';
 
 function ShowBadge({user}) {
   if(!user.hasAnswered) return null;
@@ -21,8 +21,8 @@ const UserListAnwsers = () => {
 
   const today = new Date().toISOString().split('T')[0]
   const getLiveUserStatus = () => API.graphql(graphqlOperation(getUserAnswer, {filter: { date: { eq:  today }}}))
-    .then(({data}) => setListUsers([...getNormaliseUserLiveList(data)]))
-    .catch(err => alert('Error LiveUser getTodayUserAnswer'));
+    .then(({data: { listUsers: { items }}}) => setListUsers([...normaliseUserList(items)]))
+    .catch(err => alert('Error LiveUser getUserAnswer'));
 
   const updateUser = userId => {
     const updatedList = listUsers

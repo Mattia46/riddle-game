@@ -23,7 +23,7 @@ const GameAction = ({isGameOn, navigate}) => {
 };
 
 const Welcome = ({user, navigate, isGameOn}) => {
-  if(user.name === 'mattia') return null;
+  if(user && user.name === 'mattia') return null;
 
   return (
     <React.Fragment>
