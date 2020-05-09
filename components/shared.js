@@ -5,7 +5,7 @@ const getUserAnswer = /* GraphQL */ `
   listUsers(limit: 15) {
     items {
       name avatar id
-      answers(filter: $filter){
+      answers(limit: 15 filter: $filter){
         items{
           id
           date
