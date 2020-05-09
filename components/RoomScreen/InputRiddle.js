@@ -5,13 +5,16 @@ import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
 import { getTodayUserAnswers } from '../shared';
 import { Button, Input } from "react-native-elements";
 import { styles } from './style';
+import { getUserFromLocal } from '../utils';
 
-const InputRiddle = ({riddle, user}) => {
+const InputRiddle = ({riddle}) => {
+  console.log('InputRiddle');
   const [answer, setAnswer] = useState({});
+  const [user, setUser] = useState({});
   const [showSolution, setShowSolution] = useState(false);
   const today = new Date().toISOString().split('T')[0]
 
-  const getTodayUserAnswer = () => API.graphql(graphqlOperation(getTodayUserAnswers, {id: user.id, filter: { date: { eq: today}}}))
+  const getTodayUserAnswer = user => API.graphql(graphqlOperation(getTodayUserAnswers, {id: user.id, filter: { date: { eq: today}}}))
     .then(({data: { getUser: { answers: { items }}}}) => {
       if(items.length > 0) {
         setAnswer(items[0]);
@@ -36,10 +39,10 @@ const InputRiddle = ({riddle, user}) => {
   }).catch(err => alert('Error InputRiddle CreateAnswer'));
 
   useEffect(() => {
-    if(user && riddle) {
-      getTodayUserAnswer();
+    if(riddle) {
+      getUserFromLocal().then(user => getTodayUserAnswer(user));
     }
-  }, [user, riddle]);
+  }, [riddle]);
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');

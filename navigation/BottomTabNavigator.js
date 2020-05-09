@@ -16,22 +16,21 @@ export default function BottomTabNavigator({ navigation, route, user }) {
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-      <BottomTab.Screen name="Home"
+      <BottomTab.Screen
+        name="Home"
+        component={HomeScreen}
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
         }}
-      >
-        {props => <HomeScreen {...props} user={user} />}
-      </BottomTab.Screen>
+      />
       <BottomTab.Screen name="Room"
+        component={RoomScreen}
         options={{
           title: 'Room',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="logo-game-controller-b" />,
         }}
-      >
-        {props => <RoomScreen {...props} user={user} />}
-      </BottomTab.Screen>
+      />
       <BottomTab.Screen
         name="Rank"
         component={RankScreen}

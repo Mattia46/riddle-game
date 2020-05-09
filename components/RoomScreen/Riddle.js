@@ -14,7 +14,8 @@ function Solution({riddle}) {
   )
 };
 
-function Riddle({ riddle, user }) {
+function Riddle({ riddle }) {
+  console.log('Riddle', riddle);
   if(!riddle) return null;
 
   return (
@@ -24,7 +25,7 @@ function Riddle({ riddle, user }) {
         <Text style={styles.answer}>Answer</Text>
         {riddle.expired
           ? <Solution riddle={riddle} />
-          : <InputRiddle riddle={riddle} user={user} />
+          : <InputRiddle riddle={riddle} />
         }
       { !riddle.expired && <UserListAnwsers /> }
     </View>

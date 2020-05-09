@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
         },
         error: error => alert('Error HomeScreen: onCreateGame subscription')
       })
-    getUserFromLocal(setUser);
+    getUserFromLocal().then(user => setUser(user));
     getTodayRiddle();
 
     return () => onCreateGame.unsubscribe();

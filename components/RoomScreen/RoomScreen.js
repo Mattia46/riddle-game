@@ -34,7 +34,7 @@ export default function RoomScreen({user}) {
 
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-      <Riddle riddle={riddle} user={user} />
+      <Riddle riddle={riddle} />
       <NoRiddle riddle={riddle}/>
     </ScrollView>
   );

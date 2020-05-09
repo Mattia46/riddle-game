@@ -24,7 +24,7 @@ const getNormaliseUserLiveList = data => data.listUsers?.items.map(user => ({
 
 async function getUserFromLocal(setUser) {
   const user = await AsyncStorage.getItem('user');
-  setUser(JSON.parse(user));
+  return JSON.parse(user);
 }
 
 export {
