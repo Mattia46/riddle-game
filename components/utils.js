@@ -11,7 +11,7 @@ const normaliseUserList = data => data.map(user => ({
   answer: user.answers?.items[0]?.result || false,
   answer: user.answers.items[0],
   hasAnswered: user.answers?.items[0]?.userSolution ? true : false,
-  result: user.answers?.items.length
+  stars: user.answers?.items.length
 }));
 
 const normaliseUserAnswer = answer => ({

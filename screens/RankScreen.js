@@ -34,7 +34,8 @@ export default function RankScreen() {
   const getFilter = () => ({ filter: {result: {eq: true}, date: {between:[initDate, endDate]}}})
 
   const getAnswers = () => API.graphql(graphqlOperation(getUserAnswer, getFilter()))
-    .then(({data: { listUsers: { items }}}) => setUserResultsList(normaliseUserList(items).sort((a, b) => b.result = a.result)))
+    .then(({data: { listUsers: { items }}}) =>
+      setUserResultsList(normaliseUserList(items).sort((a, b) => b.stars - a.stars)))
     .catch(err => alert('Error RankScreen: getUserAnswers'));
 
   const onRefresh = () => {
@@ -64,7 +65,7 @@ export default function RankScreen() {
             readonly
             imageSize={25}
             ratingCount={5}
-            startingValue={user.result}
+            startingValue={user.stars}
           />
         </View>
       ))}
