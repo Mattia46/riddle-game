@@ -1,3 +1,5 @@
+import { AsyncStorage } from 'react-native';
+
 const mapAndSortUserList = (items = []) => items.map(x => ({
   name: x.name,
   avatar: x.avatar,
@@ -20,8 +22,14 @@ const getNormaliseUserLiveList = data => data.listUsers?.items.map(user => ({
   id: user.id
 }));
 
+async function getUserFromLocal(setUser) {
+  const user = await AsyncStorage.getItem('user');
+  setUser(JSON.parse(user));
+}
+
 export {
   mapAndSortUserList,
   getNormaliseList,
   getNormaliseUserLiveList,
+  getUserFromLocal,
 }

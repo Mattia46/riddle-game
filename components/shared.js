@@ -17,6 +17,22 @@ const getUserAnswer = /* GraphQL */ `
   }
 }`;
 
+const userByName = /* GraphQL */ `
+  query UserByName(
+    $name: String
+  ) {
+    userByName(
+      name: $name
+    ) {
+      items {
+        id
+        name
+        avatar
+      }
+    }
+  }
+`;
+
 const onCreateAnswer = /* GraphQL */ `
   subscription OnCreateAnswer {
     onCreateAnswer {
@@ -57,4 +73,5 @@ export {
   getUserAnswer,
   onCreateAnswer,
   getTodayUserAnswers,
+  userByName,
 };

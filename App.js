@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Platform, StatusBar, StyleSheet } from 'react-native';
+import { AsyncStorage, Platform, StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { createUser } from './src/graphql/mutations';
-import { userByName } from './src/graphql/queries';
+import { userByName } from './components/shared';
 import { API, graphqlOperation } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react-native'; // or 'aws-amplify-react-native';
 
@@ -21,6 +21,7 @@ async function createNewUser(username) {
 };
 
 function App(props) {
+  console.log('APP MAIN');
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -30,24 +31,29 @@ function App(props) {
       if(!currentUser) {
         currentUser = await createNewUser(Auth.user.username);
       }
+      try {
+        await AsyncStorage.setItem('user', JSON.stringify(currentUser))
+      } catch (error) {
+        alert('Set user localStorage');
+      }
       setUser(currentUser);
     }
     getUser()
   }, []);
 
-    return (
-      <>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#5c4fa1' }}} >
-            <Stack.Screen name="Home">
-              {props => <BottomTabNavigator {...props} user={user}/>}
-            </Stack.Screen>
-          </Stack.Navigator>
-        </NavigationContainer>
-      </>
-    );
-  }
+  return (
+    <>
+      {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#5c4fa1' }}} >
+          <Stack.Screen name="Home">
+            {props => <BottomTabNavigator {...props} user={user}/>}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
 //}
 
 const styles = StyleSheet.create({

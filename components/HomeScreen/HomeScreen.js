@@ -6,13 +6,13 @@ import { listRiddles } from '../../src/graphql/queries';
 import { onCreateRiddle } from '../../src/graphql/subscriptions';
 import { Welcome } from './Welcome';
 import { styles } from './style';
+import { getUserFromLocal } from '../utils';
 
-const HomeScreen = props => {
+const HomeScreen = ({ navigation }) => {
+  console.log('homeScreen');
   const today = new Date().toISOString().split('T')[0]
   const [user, setUser] = useState({});
   const [isGameOn, setIsGameOn] = useState(false);
-
-  if(!user) return null;
 
   const getTodayRiddle = () => API.graphql(graphqlOperation(listRiddles, { filter: { date: { eq: today }}}))
     .then(({data}) => {
@@ -29,23 +29,17 @@ const HomeScreen = props => {
         },
         error: error => alert('Error HomeScreen: onCreateGame subscription')
       })
+    getUserFromLocal(setUser);
     getTodayRiddle();
 
     return () => onCreateGame.unsubscribe();
   }, []);
 
-
-  useEffect(() => {
-    if(props.user) {
-      return setUser(props.user);
-    };
-  }, [props.user]);
-
   return (
     <View style={styles.container}>
       <Welcome
         user={user}
-        navigate={props.navigation.navigate}
+        navigate={navigation.navigate}
         isGameOn={isGameOn} />
       <Admin user={user} />
     </View>
