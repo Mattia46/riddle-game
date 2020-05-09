@@ -6,17 +6,22 @@ import { styles } from './style';
 import { getUsersAnswer } from '../utils';
 
 const RankList = () => {
-  const [usersAnswers, setUsersAnswers] = useState([]);
-  const today = new Date().toISOString().split('T')[0]
+  const [playingUsersAnswers, setPlayingUserAnswers] = useState([]);
+  const [notPlayingUsersAnswers, setNotPlayingUserAnswers] = useState([]);
 
   useEffect(() => {
-    getUsersAnswer().then(setUsersAnswers);
+    getUsersAnswer().then(user => {
+      const hasAnswered = user.filter(user => user.hasAnswered === true).sort((a, b) => b.correct - a.correct);
+      const notAnswered = user.filter(user => user.hasAnswered !== true);
+      setPlayingUserAnswers(hasAnswered)
+      setNotPlayingUserAnswers(notAnswered)
+    });
   }, []);
 
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
-      { usersAnswers.map((user, index) => (
+      { playingUsersAnswers.map((user, index) => (
         <View style={styles.containerRankList} key={index}>
           <Avatar
             rounded size={45}
@@ -24,14 +29,31 @@ const RankList = () => {
             title={user.name}
           />
           <Icon
-            name={user.answer ? 'check' : 'clear'}
+            name={user.hasAnswered ? 'check' : 'clear'}
             color="white"
             size={20}
-            containerStyle={[styles.icon, user.answer ? {backgroundColor: "#50F403"} : {backgroundColor: "#F42E03"}]}
+            containerStyle={[styles.icon, user.correct ? {backgroundColor: "#50F403"} : {backgroundColor: "#F42E03"}]}
           />
           <Text style={styles.solution}>{user.solution}</Text>
         </View>
       )) }
+      { notPlayingUsersAnswers.map((user, index) => (
+        <View style={styles.containerRankList} key={index}>
+          <Avatar
+            rounded size={45}
+            source={{uri: user.avatar}}
+            title={user.name}
+          />
+          <Icon
+            name={user.hasAnswered ? 'check' : 'clear'}
+            color="white"
+            size={20}
+            containerStyle={[styles.icon, {backgroundColor: "grey"}]}
+          />
+          <Text style={styles.solution}>{user.solution}</Text>
+        </View>
+      )) }
+
     </ScrollView>
   )
 };

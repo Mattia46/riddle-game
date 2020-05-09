@@ -8,7 +8,7 @@ const normaliseUserList = data => data.map(user => ({
   name: user.name,
   avatar: user.avatar,
   solution: user.answers?.items[0]?.userSolution || '',
-  answer: user.answers?.items[0]?.result || false,
+  correct: user.answers?.items[0]?.result || false,
   answer: user.answers.items[0],
   hasAnswered: user.answers?.items[0]?.userSolution ? true : false,
   stars: user.answers?.items.length
