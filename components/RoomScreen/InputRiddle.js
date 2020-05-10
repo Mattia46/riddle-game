@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
-import { getTodayUserAnswers } from '../shared';
 import { Button, Input } from "react-native-elements";
 import { styles } from './style';
 import { getUserFromLocal, getTodayUserAnswer } from '../utils';
