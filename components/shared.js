@@ -5,7 +5,7 @@ const getUserAnswer = /* GraphQL */ `
   listUsers(limit: 15) {
     items {
       name avatar id
-      answers(filter: $filter){
+      answers(limit: 15 filter: $filter){
         items{
           id
           date
@@ -16,6 +16,22 @@ const getUserAnswer = /* GraphQL */ `
     }
   }
 }`;
+
+const userByName = /* GraphQL */ `
+  query UserByName(
+    $name: String
+  ) {
+    userByName(
+      name: $name
+    ) {
+      items {
+        id
+        name
+        avatar
+      }
+    }
+  }
+`;
 
 const onCreateAnswer = /* GraphQL */ `
   subscription OnCreateAnswer {
@@ -57,4 +73,5 @@ export {
   getUserAnswer,
   onCreateAnswer,
   getTodayUserAnswers,
+  userByName,
 };

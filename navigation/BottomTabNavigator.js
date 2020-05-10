@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import RoomScreen from '../screens/RoomScreen';
+import HomeScreen from '../components/HomeScreen/HomeScreen';
+import RoomScreen from '../components/RoomScreen/RoomScreen';
 import RankScreen from '../screens/RankScreen';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -16,29 +16,26 @@ export default function BottomTabNavigator({ navigation, route, user }) {
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-      <BottomTab.Screen name="Home"
+      <BottomTab.Screen
+        name="Home"
+        component={HomeScreen}
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
         }}
-      >
-        {props => <HomeScreen {...props} user={user} />}
-      </BottomTab.Screen>
+      />
       <BottomTab.Screen name="Room"
+        component={RoomScreen}
         options={{
           title: 'Room',
-          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="logo-game-controller-b" />,
         }}
-      >
-        {props => <RoomScreen {...props} user={user} />}
-      </BottomTab.Screen>
+      />
       <BottomTab.Screen
         name="Rank"
         component={RankScreen}
         options={{
           title: 'Rank',
-          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-trophy" />,
         }}
       />
