@@ -12,7 +12,6 @@ const InputRiddle = ({
   user,
   showSolution,
   setShowSolution,
-  showButton,
 }) => {
 
   useEffect(() => {
@@ -51,7 +50,7 @@ const InputRiddle = ({
             onChangeText={e => setAnswer({...answer, userSolution: e})}
           /> }
       </View>
-      { showButton && <Button
+      { answer.attemps !== 1 && <Button
         title={showSolution ? 'Modify' : 'Confirm'}
         type="outline"
         onPress={() => showSolution ? setShowSolution(false) : confirm()}

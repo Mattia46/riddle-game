@@ -31,20 +31,19 @@ const Game = ({ riddle, isGameStarted, setIsGameStarted }) => {
 
 const Riddle = ({ riddle }) => {
   const [showDialog, setShowDialog] = useState(false);
-  const [showButton, setShowButton] = useState(true);
   const [showSolution, setShowSolution] = useState(false);
   const [answer, setAnswer] = useState({});
   const [user, setUser] = useState({});
 
   const continueGame = () => {
     setShowDialog(false);
-    setAnswer({...answer, attemps: 1});
+    setAnswer({...answer, attemps: 2});
   };
 
   const stopGame = () => {
     setShowDialog(false);
     setShowSolution(true);
-    setShowButton(false);
+    setAnswer({...answer, attemps: 1});
   };
 
   useEffect(() => {
@@ -62,12 +61,15 @@ const Riddle = ({ riddle }) => {
     }
   }, [riddle]);
 
-
+  // Game Timer status
+  // 0 Timer in progress
+  // 1 Timer expired && stopGame
+  // 2 Timer expired && continueGame
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <View style={styles.timer}>
         <Text style={styles.riddle}>Riddle</Text>
-        { answer.attemps !== 1 && <Timer setShowDialog={setShowDialog}/>}
+        { answer.attemps === 0 && <Timer setShowDialog={setShowDialog}/>}
       </View>
       <Text style={styles.boxContainer}>{riddle.riddle}</Text>
       <Text style={styles.answer}>Answer</Text>
@@ -80,13 +82,11 @@ const Riddle = ({ riddle }) => {
           setAnswer={setAnswer}
           showSolution={showSolution}
           setShowSolution={setShowSolution}
-          showButton={showButton}
         />
       }
       { !riddle.expired && <UserListAnwsers /> }
       <OptionDialog
         visible={showDialog}
-        setShowDialog={setShowDialog}
         continueGame={continueGame}
         stopGame={stopGame}
       />
