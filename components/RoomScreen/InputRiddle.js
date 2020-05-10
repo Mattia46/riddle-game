@@ -4,27 +4,20 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
 import { Button, Input } from "react-native-elements";
 import { styles } from './style';
-import { getUserFromLocal, getTodayUserAnswer } from '../utils';
 
-const InputRiddle = ({riddle}) => {
-  const [answer, setAnswer] = useState({});
-  const [user, setUser] = useState({});
-  const [showSolution, setShowSolution] = useState(false);
+const InputRiddle = ({
+  riddle,
+  answer,
+  setAnswer,
+  user,
+  showSolution,
+  setShowSolution,
+  showButton,
+}) => {
 
   useEffect(() => {
-    if(riddle) {
-      getUserFromLocal()
-        .then(user => {
-          setUser(user);
-          return user;
-        })
-        .then(getTodayUserAnswer)
-        .then(answer => {
-          setAnswer(answer);
-          setShowSolution(true);
-        });
-    }
-  }, [riddle]);
+    console.log('answer', answer);
+  }, [answer]);
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
@@ -34,7 +27,7 @@ const InputRiddle = ({riddle}) => {
         date: riddle.date,
         userSolution: answer.userSolution,
         result: false,
-        attemps: 0,
+        attemps: answer.attemps || 0,
         answerRiddleId: riddle.id,
         answerUserId: user.id
       }})).then(({data: { createAnswer }}) => {
@@ -56,15 +49,14 @@ const InputRiddle = ({riddle}) => {
             multiline={true}
             value={answer.userSolution}
             onChangeText={e => setAnswer({...answer, userSolution: e})}
-          />
-        }
+          /> }
       </View>
-      <Button
+      { showButton && <Button
         title={showSolution ? 'Modify' : 'Confirm'}
         type="outline"
         onPress={() => showSolution ? setShowSolution(false) : confirm()}
         containerStyle={styles.button}
-      />
+      /> }
     </>
   );
 };

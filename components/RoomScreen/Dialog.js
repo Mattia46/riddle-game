@@ -3,32 +3,18 @@ import Dialog from "react-native-dialog";
 
 function OptionDialog({
   visible,
-  setCompletedGame,
-  setShowDialog,
-  setSecondAttempt,
-  setShowTimer,
+  continueGame,
+  stopGame,
 }) {
-  const completeTheGame = () => {
-    setShowDialog(false);
-    setCompletedGame(true);
-    setShowTimer(false);
-  };
-
-  const continueTheGame = () => {
-    setShowDialog(false);
-    setSecondAttempt(1);
-    setShowTimer(false);
-  };
-
-  return (
+    return (
     <React.Fragment>
       <Dialog.Container visible={visible}>
         <Dialog.Title>Time's up!</Dialog.Title>
         <Dialog.Description>
           Do you still wanna play?
         </Dialog.Description>
-        <Dialog.Button label="Nope" onPress={completeTheGame}/>
-        <Dialog.Button label="Yes, please" onPress={continueTheGame}/>
+        <Dialog.Button label="Nope" onPress={stopGame}/>
+        <Dialog.Button label="Yes, please" onPress={continueGame}/>
       </Dialog.Container>
     </React.Fragment>
   )
