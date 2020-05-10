@@ -75,7 +75,9 @@ const Riddle = ({ riddle }) => {
     <View style={{backgroundColor: 'white', flex: 1}}>
       <View style={styles.timer}>
         <Text style={styles.riddle}>Riddle</Text>
-        { answer.attemps === 0 && <Timer setShowDialog={setShowDialog}/>}
+        { answer.attemps === 0
+        && !riddle.expired
+        &&<Timer setShowDialog={setShowDialog}/>}
       </View>
       <Text style={styles.boxContainer}>{riddle.riddle}</Text>
       <Text style={styles.answer}>Answer</Text>

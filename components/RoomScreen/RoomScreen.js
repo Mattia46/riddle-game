@@ -25,6 +25,7 @@ const RoomScreen = ({user}) => {
   };
   const onRefresh = () => {
     setRefreshing(false);
+    init();
   };
 
   useEffect(() => {
