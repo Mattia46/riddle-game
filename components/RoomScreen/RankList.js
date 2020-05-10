@@ -29,7 +29,7 @@ const RankList = () => {
             title={user.name}
           />
           <Icon
-            name={user.hasAnswered ? 'check' : 'clear'}
+            name={user.correct ? 'check' : 'clear'}
             color="white"
             size={20}
             containerStyle={[styles.icon, user.correct ? {backgroundColor: "#50F403"} : {backgroundColor: "#F42E03"}]}
