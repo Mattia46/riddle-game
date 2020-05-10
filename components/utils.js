@@ -4,6 +4,14 @@ import { riddleByDate, answerByDate } from '../src/graphql/queries';
 import { createAnswer, updateAnswer } from '../src/graphql/mutations';
 import { getUserAnswer } from './shared';
 
+const getStars = array => array.map(item => {
+  let stars = 0;
+  if(item.result === true) {
+    stars = item.attemps === 1 ? 1.5 : 1
+  }
+  return stars;
+})
+
 const normaliseUserList = data => data.map(user => ({
   id: user.id,
   name: user.name,
@@ -12,7 +20,7 @@ const normaliseUserList = data => data.map(user => ({
   correct: user.answers?.items[0]?.result || false,
   answer: user.answers.items[0],
   hasAnswered: user.answers?.items[0]?.userSolution ? true : false,
-  stars: user.answers?.items.length
+  stars: getStars(user.answers.items).reduce((a, c) => a + c, 0),
 }));
 
 const normaliseUserAnswer = answer => ({

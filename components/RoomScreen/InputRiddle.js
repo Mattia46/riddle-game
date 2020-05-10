@@ -15,10 +15,6 @@ const InputRiddle = ({
   setShowSolution,
 }) => {
 
-  useEffect(() => {
-    console.log('answer', answer);
-  }, [answer]);
-
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
     answer.id
