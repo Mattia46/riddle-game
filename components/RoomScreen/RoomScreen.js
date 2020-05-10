@@ -33,7 +33,12 @@ const RoomScreen = ({user}) => {
   }, []);
 
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+    <ScrollView
+      contentContainerStyle={{flexGrow: 1}}
+      refreshControl={<RefreshControl
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      />}>
       <Game
         riddle={riddle}
         isGameStarted={isGameStarted}
