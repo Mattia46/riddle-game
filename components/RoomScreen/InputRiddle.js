@@ -4,6 +4,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
 import { Button, Input } from "react-native-elements";
 import { styles } from './style';
+import { updateUserAnswer } from '../utils';
 
 const InputRiddle = ({
   riddle,
@@ -21,7 +22,7 @@ const InputRiddle = ({
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
     answer.id
-      ? API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}))
+      ? updateUserAnswer(answer)
       : API.graphql(graphqlOperation(createAnswer, { input: {
         date: riddle.date,
         userSolution: answer.userSolution,

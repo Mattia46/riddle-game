@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { riddleByDate, answerByDate } from '../src/graphql/queries';
+import { createAnswer, updateAnswer } from '../src/graphql/mutations';
 import { getUserAnswer } from './shared';
 
 const normaliseUserList = data => data.map(user => ({
@@ -42,13 +43,15 @@ const setGameStartedToday = async () => {
   await AsyncStorage.setItem('isGameStarted', today);
 };
 
-const getTodayRiddle = async () => await API.graphql(graphqlOperation(riddleByDate, { date: today }))
-  .then(({data: { riddleByDate: { items }}}) => items[0])
-  .catch(err => alert('Error getTodayRiddle utils'))
-
 const getUsersAnswer = async () => await API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
   .then(({data: { listUsers: { items }}}) => normaliseUserList(items))
   .catch(({errors}) => alert('Error user Answer'));
+
+const updateUserAnswer = async answer => await API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}))
+
+const getTodayRiddle = async () => await API.graphql(graphqlOperation(riddleByDate, { date: today }))
+  .then(({data: { riddleByDate: { items }}}) => items[0])
+  .catch(err => alert('Error getTodayRiddle utils'))
 
 const getTodayUserAnswer = async ({id}) => await API.graphql(graphqlOperation(answerByDate, { limit: 15, date: today }))
   .then(({data: { answerByDate: { items }}}) => {
@@ -56,7 +59,7 @@ const getTodayUserAnswer = async ({id}) => await API.graphql(graphqlOperation(an
     if(answer && answer.userSolution && answer.riddle) {
       return normaliseUserAnswer(answer);
     }
-    return {};
+    return {attemps: 0};
   }).catch(err => alert('Error getTodayUserAnswer utils'));
 
 const initRiddle = () => ({
@@ -75,4 +78,5 @@ export {
   initRiddle,
   getIsGameStarted,
   setGameStartedToday,
+  updateUserAnswer,
 }

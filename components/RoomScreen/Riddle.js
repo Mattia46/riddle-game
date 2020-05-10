@@ -4,7 +4,7 @@ import { InputRiddle } from './InputRiddle';
 import { RankList } from './RankList';
 import { UserListAnwsers } from './userLiveAnswers';
 import { Timer, LetsPlayCounter } from './LetsPlay';
-import { getUserFromLocal, getTodayUserAnswer } from '../utils';
+import { getUserFromLocal, getTodayUserAnswer, updateUserAnswer } from '../utils';
 import { styles } from './style';
 import { OptionDialog } from './Dialog';
 
@@ -42,8 +42,14 @@ const Riddle = ({ riddle }) => {
 
   const stopGame = () => {
     setShowDialog(false);
-    setShowSolution(true);
-    setAnswer({...answer, attemps: 1});
+    if(answer.id) {
+      const newAnswer = {...answer, attemps: 1};
+      setAnswer(newAnswer);
+      setShowSolution(true);
+      return updateUserAnswer(newAnswer);
+    };
+    continueGame();
+    alert('Too late');
   };
 
   useEffect(() => {
