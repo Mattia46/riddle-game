@@ -31,13 +31,24 @@ const getUserFromLocal = async () => {
   return JSON.parse(user);
 }
 
+const getIsGameStarted = async () => {
+  const isGameStarted = await AsyncStorage.getItem('isGameStarted');
+  return isGameStarted && isGameStarted === today
+    ? true
+    : false;
+};
+
+const setGameStartedToday = async () => {
+  await AsyncStorage.setItem('isGameStarted', today);
+};
+
 const getTodayRiddle = async () => await API.graphql(graphqlOperation(riddleByDate, { date: today }))
   .then(({data: { riddleByDate: { items }}}) => items[0])
   .catch(err => alert('Error getTodayRiddle utils'))
 
 const getUsersAnswer = async () => await API.graphql(graphqlOperation(getUserAnswer, { filter: { date: { eq: today}}}))
-    .then(({data: { listUsers: { items }}}) => normaliseUserList(items))
-    .catch(({errors}) => alert('Error user Answer'));
+  .then(({data: { listUsers: { items }}}) => normaliseUserList(items))
+  .catch(({errors}) => alert('Error user Answer'));
 
 const getTodayUserAnswer = async ({id}) => await API.graphql(graphqlOperation(answerByDate, { limit: 15, date: today }))
   .then(({data: { answerByDate: { items }}}) => {
@@ -62,4 +73,6 @@ export {
   normaliseUserList,
   getUsersAnswer,
   initRiddle,
+  getIsGameStarted,
+  setGameStartedToday,
 }

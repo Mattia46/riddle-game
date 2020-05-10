@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, RefreshControl } from 'react-native';
-import { getTodayRiddle } from '../utils';
-import { Riddle } from './Riddle';
+import { getTodayRiddle, getIsGameStarted } from '../utils';
+import { Game } from './Riddle';
 import { styles } from './style';
 
 function NoRiddle({riddle}) {
@@ -17,19 +17,27 @@ function NoRiddle({riddle}) {
 const RoomScreen = ({user}) => {
   const [riddle, setRiddle] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState();
 
-  const onRefresh = () => {
+  const init = () => {
     getTodayRiddle().then(setRiddle);
+    getIsGameStarted().then(setIsGameStarted);
+  };
+  const onRefresh = () => {
     setRefreshing(false);
   };
 
   useEffect(() => {
-    getTodayRiddle().then(setRiddle);
+    init();
   }, []);
 
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-      <Riddle riddle={riddle} />
+      <Game
+        riddle={riddle}
+        isGameStarted={isGameStarted}
+        setIsGameStarted={setIsGameStarted}
+      />
       <NoRiddle riddle={riddle}/>
     </ScrollView>
   );
