@@ -34,6 +34,7 @@ const Riddle = ({ riddle }) => {
   const [showSolution, setShowSolution] = useState(false);
   const [answer, setAnswer] = useState({});
   const [user, setUser] = useState({});
+  const [time, setTime] = useState(600);
 
   const continueGame = () => {
     setShowDialog(false);
@@ -62,7 +63,6 @@ const Riddle = ({ riddle }) => {
         .then(getTodayUserAnswer)
         .then(answer => {
           setAnswer(answer);
-          setShowSolution(true);
         });
     }
   }, [riddle]);
@@ -77,7 +77,7 @@ const Riddle = ({ riddle }) => {
         <Text style={styles.riddle}>Riddle</Text>
         { answer.attemps === 0
         && !riddle.expired
-        &&<Timer setShowDialog={setShowDialog}/>}
+        &&<Timer setShowDialog={setShowDialog} time={time}/>}
       </View>
       <Text style={styles.boxContainer}>{riddle.riddle}</Text>
       <Text style={styles.answer}>Answer</Text>

@@ -6,12 +6,12 @@ import CountDown from 'react-native-countdown-component';
 import {AsyncStorage} from 'react-native';
 import { setGameStartedToday } from '../utils';
 
-function Timer({setShowDialog}) {
+function Timer({setShowDialog, time}) {
   return (
     <CountDown
       digitStyle={{backgroundColor: 'orange'}}
       digitTxtStyle={{color: 'white'}}
-      until={10}
+      until={time}
       timeToShow={['M', 'S']}
       timeLabels={{m: 'MM', s: 'SS'}}
       onFinish={() => setShowDialog(true)}
