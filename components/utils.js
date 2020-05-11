@@ -7,7 +7,7 @@ import { getUserAnswer } from './shared';
 const getStars = array => array.map(item => {
   let stars = 0;
   if(item.result === true) {
-    stars = item.attemps === 1 ? 1.5 : 1
+    stars = item.attemps === 1 || item.attemps === 0 ? 1.5 : 1
   }
   return stars;
 })
