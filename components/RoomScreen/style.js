@@ -45,10 +45,6 @@ const styles = StyleSheet.create({
   riddle: {
     fontSize: 25,
     fontWeight: 'bold',
-    paddingLeft: 20,
-    paddingBottom: 10,
-    paddingTop: 20,
-    backgroundColor: '#5c4fa1',
     color: 'white',
   },
   answer: {
@@ -84,6 +80,14 @@ const styles = StyleSheet.create({
   avatar: {
     display: 'flex',
     marginLeft: -5,
+  },
+  timer: {
+    display: 'flex',
+    backgroundColor: '#5c4fa1',
+    flexDirection: 'row',
+    padding: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

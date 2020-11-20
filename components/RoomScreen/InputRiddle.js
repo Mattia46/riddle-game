@@ -2,40 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createAnswer, updateAnswer } from '../../src/graphql/mutations';
-import { getTodayUserAnswers } from '../shared';
 import { Button, Input } from "react-native-elements";
 import { styles } from './style';
-import { getUserFromLocal, getTodayUserAnswer } from '../utils';
+import { updateUserAnswer } from '../utils';
 
-const InputRiddle = ({riddle}) => {
-  const [answer, setAnswer] = useState({});
-  const [user, setUser] = useState({});
-  const [showSolution, setShowSolution] = useState(false);
-
-  useEffect(() => {
-    if(riddle) {
-      getUserFromLocal()
-        .then(user => {
-          setUser(user);
-          return user;
-        })
-        .then(getTodayUserAnswer)
-        .then(answer => {
-          setAnswer(answer);
-          setShowSolution(true);
-        });
-    }
-  }, [riddle]);
+const InputRiddle = ({
+  riddle,
+  answer,
+  setAnswer,
+  user,
+  showSolution,
+  setShowSolution,
+}) => {
 
   const confirm = () => {
     if(!answer.userSolution) return alert('Aggiungi una risposta');
     answer.id
-      ? API.graphql(graphqlOperation(updateAnswer, { input: { ...answer}}))
+      ? updateUserAnswer(answer)
       : API.graphql(graphqlOperation(createAnswer, { input: {
         date: riddle.date,
         userSolution: answer.userSolution,
         result: false,
-        attemps: 0,
+        attemps: answer.attemps || 0,
         answerRiddleId: riddle.id,
         answerUserId: user.id
       }})).then(({data: { createAnswer }}) => {
@@ -57,15 +45,14 @@ const InputRiddle = ({riddle}) => {
             multiline={true}
             value={answer.userSolution}
             onChangeText={e => setAnswer({...answer, userSolution: e})}
-          />
-        }
+          /> }
       </View>
-      <Button
+      { answer.attemps !== 1 && <Button
         title={showSolution ? 'Modify' : 'Confirm'}
         type="outline"
         onPress={() => showSolution ? setShowSolution(false) : confirm()}
         containerStyle={styles.button}
-      />
+      /> }
     </>
   );
 };

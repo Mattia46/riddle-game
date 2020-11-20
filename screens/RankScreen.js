@@ -64,7 +64,7 @@ export default function RankScreen() {
           <Rating
             readonly
             imageSize={25}
-            ratingCount={5}
+            ratingCount={8}
             startingValue={user.stars}
           />
         </View>
