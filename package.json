@@ -40,5 +40,8 @@
     "babel-preset-expo": "^8.1.0",
     "jest-expo": "^37.0.0"
   },
+  "[html]": {
+    "editor.semanticHighlighting.enabled": true
+  },
   "private": true
 }
