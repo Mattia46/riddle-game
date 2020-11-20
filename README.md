@@ -1,8 +1,8 @@
 # Riddle game
 
-Riddle game is a project that let's you play with your friend.
+Riddle game is a project that let's you play with your friends.
 
-This project was an excercise to practive various technologies, like AWS cloudformation, AWS
+This project was an excercise to practice various technologies, like AWS cloudformation, AWS
 AppSync, AWS S3, AWS DynamoDB with [Amplify](https://aws-amplify.github.io/) as well as
 [Expo](https://docs.expo.io/versions/v37.0.0/get-started/installation/) and [React Native](https://reactnative.dev/)
 
